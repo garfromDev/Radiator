@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 # inspired of example from Tony DiCola, License: Public Domain
 
-import FilteredVar
-import time
 import Adafruit_MCP3008
 
-# this object get the inside ambiant temperature from the sensor
+# this object get the inside ambiant temperature from the sensor connected to the SPI adc
 # it can be used with FilteredVar mechanism, using value() as getter
 
 class InsideTemperature
