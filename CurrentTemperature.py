@@ -6,7 +6,7 @@ import Adafruit_MCP3008
 # this object get the inside ambiant temperature from the sensor connected to the SPI adc
 # it can be used with FilteredVar mechanism, using value() as getter
 
-class InsideTemperature
+class InsideTemperature:
 # sensorPin : the pin of the MPC3008 where the sensor is connected (pin 5 in my schematic)
 # voltageRef : the reference voltage of the ADC, in mV (295mV in my schematic)
 # adcRange : the output range of ADC converter (0 to 1023 for MCP3008)
