@@ -34,6 +34,12 @@ class HeatMode:
     # Set the pilot wire to confort mode = no sinusoid    
     def setConfortMode(self):
         self._setOutputs( plus = GPIO.LOW, minus = GPIO.LOW)
+        
+    # concept a developper pour le mode +& et -1
+    # une file rotative contient les durée et les modes
+    # on met le premier mode, et on déclenche un timer avec la durée 
+    # chaque déclenchement du timer applique le mode, et relance le timer avec la nouvelle durée
+    
 
 
  
