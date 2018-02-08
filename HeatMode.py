@@ -23,4 +23,5 @@ class HeatMode:
         GPIO.setup(_outMinusWaveform, GPIO.OUT)
         self.initDone = True
 
-    
+
+ 
