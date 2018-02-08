@@ -1,18 +1,26 @@
 # -*- coding: utf-8 -*-
 
-# This module alow to drive pilot wire
+import RPi.GPIO as GPIO
+import time
 
-#
-class IoParameter:
+# This module alow to drive pilot wire
+class HeatMode:
+    
+    # outPlusWaveform :
     # The GPIO output that drive the first OptoTriac (in GPIO.BCM notation)
     # this output supress negative waveform
-    var output1
-    
+    # outMinusWaveform :
     # The GPIO output that drive the second OptoTriac (in GPIO.BCM notation)
     # this output supress positive waveform
-    var output2
+    def __init__(self, outPlusWaveform, outMinusWaveform):
+        self._outPlusWaveform = outPlusWaveform
+        self._outMinusWaveform = outMinusWaveform
+
+    # Must be called once prior to use to initialize HW setting
+    def hwInit(self):
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setup(_outPlusWaveform, GPIO.OUT)
+        GPIO.setup(_outMinusWaveform, GPIO.OUT)
+        self.initDone = True
+
     
-    def __init__(self, output1, ouput2):
-        self.output1 = output1
-        self.output2 = output2
-        
