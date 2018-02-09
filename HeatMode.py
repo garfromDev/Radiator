@@ -7,7 +7,6 @@ import ActionSequencer
         
 # This module alow to drive pilot wire
 class HeatMode:
-    hwNotInitializedError = ValueError('pilot wire optotriac hw control not initialized before calling setmode')
     # outPlusWaveform :
     # The GPIO output that drive the first OptoTriac (in GPIO.BCM notation)
     # this output supress negative waveform
@@ -56,7 +55,7 @@ class HeatMode:
         
     #-----------------------------------------------------------    
     # set the Triac control output to parameters value    
-    # raise exception ValueError if hw has not been initialized
+    # will initialize HW if hw has not been initialized
     def _setOutputs(self, plus, minus):
         if ! self.initDone:
             self.hwInit()
