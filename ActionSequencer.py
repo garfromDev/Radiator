@@ -9,7 +9,7 @@ class Action:
         
         
 # the sequencer will repeat each action, then wait for duration, rolling through the sequence of Action
-class Sequencer:
+class ActionSequencer:
 def __init__(self, sequence):
   self.sequence = sequence
  
