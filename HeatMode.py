@@ -2,6 +2,7 @@
 
 import RPi.GPIO as GPIO
 import time
+import Rolling
 
 # This module alow to drive pilot wire
 class HeatMode:
@@ -22,7 +23,12 @@ class HeatMode:
         GPIO.setup(_outPlusWaveform, GPIO.OUT)
         GPIO.setup(_outMinusWaveform, GPIO.OUT)
         self.initDone = True
-
+   # Set the pilot wire to confort mode = no sinusoid    
+    def setConfortMode(self):
+        self.timer.cancel()
+        self._setConfortMode()
+        
+    #-----------------------------------------------------------    
     # set the Triac control output to parameters value    
     # raise exception ValueError if hw has not been initialized
     def _setOutputs(self, plus, minus):
@@ -31,15 +37,20 @@ class HeatMode:
         GPIO.output(self._outPlusWaveform, plus)
         GPIO.output(self._outMinusWaveform, minus)
         
-    # Set the pilot wire to confort mode = no sinusoid    
-    def setConfortMode(self):
+    def _setConfortMode(self):
         self._setOutputs( plus = GPIO.LOW, minus = GPIO.LOW)
         
     # concept a developper pour le mode +& et -1
     # une file rotative contient les durée et les modes
     # on met le premier mode, et on déclenche un timer avec la durée 
     # chaque déclenchement du timer applique le mode, et relance le timer avec la nouvelle durée
+    confortMinus1Seq = Rolling([( _setConfortMode, duration=297), (_setEcoMode, duration=3)])
+    confortMinus2Seq = Rolling([( _setConfortMode, duration=293), (_setEcoMode, duration=7)])
     
+    def setConfortMinus1(self):
+        self.sequence =  confortMinus1Seq
+        self.timer = self.shoot()
 
+      
 
  
