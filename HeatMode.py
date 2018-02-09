@@ -3,7 +3,13 @@
 import RPi.GPIO as GPIO
 import time
 import Rolling
+import Action
 
+class Action:
+    def __init__(self, action, duration):
+        self.action = action
+        self.duration = duration
+        
 # This module alow to drive pilot wire
 class HeatMode:
     hwNotInitializedError = ValueError('pilot wire optotriac hw control not initialized before calling setmode')
@@ -44,13 +50,19 @@ class HeatMode:
     # une file rotative contient les durée et les modes
     # on met le premier mode, et on déclenche un timer avec la durée 
     # chaque déclenchement du timer applique le mode, et relance le timer avec la nouvelle durée
-    confortMinus1Seq = Rolling([( _setConfortMode, duration=297), (_setEcoMode, duration=3)])
-    confortMinus2Seq = Rolling([( _setConfortMode, duration=293), (_setEcoMode, duration=7)])
+    confortMinus1Seq = Rolling([Action(self._setConfortMode, duration=297), Action(self._setEcoMode, duration = 3)])
+    confortMinus2Seq = Rolling([Action(self._setConfortMode, duration=293), Action(self._setEcoMode, duration=7)])
     
     def setConfortMinus1(self):
+        self.timer.cancel()
         self.sequence =  confortMinus1Seq
         self.timer = self.shoot()
 
+    def shoot(self):
+        currentAction = self.sequence.get()
+        currentAction.action()
+        self.timer = Timer(currentAction.duration, self.shoot)
+        self.timer.start()
       
 
  
