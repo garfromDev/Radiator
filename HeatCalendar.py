@@ -6,6 +6,17 @@
 # note : use http://jsonviewer.stack.hu/ to look at  json file
 # note : use https://jsonlint.com/ to validate json structure with usefull warnings
 
+# concept : json file will be update by web server according user interaction
+# this module will check every 15mn the mode indicated by the json and set meta_mode 
+
+# =================================================
+# usage of json structure: 
+import json
+j = '{"weekCalendar":{"Monday":{"08:00":"confort","08:15":"confort"},"Tuesday":{"12:00":"eco","12:15":"confort"}}}'
+wk = json.loads(j)
+print(wk['weekCalendar']['Monday']['08:15'])
+#==================================================
+
 class HalfHour:
   def __init__(self, hour, metaMode):
     if hour > 48 or hour < 0 or (hour mod 2 != 0):
