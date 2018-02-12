@@ -1,26 +1,12 @@
 {
-  "weekCalendar": [
-    {
-      "day": "Monday",
-      "modeForHour": [
-        {
-          "08:00": "confort"
-        },
-        {
-          "08:15": "confort"
-        }
-      ]
-    },
-    {
-      "day": "Tuesday",
-      "modeForHour": [
-        {
-          "12:00": "eco"
-        },
-        {
-          "12:15": "confort"
-        }
-      ]
-    }
-  ]
+	"weekCalendar": {
+		"Monday": {
+			"08:00": "confort",
+			"08:15": "confort"
+		},
+		"Tuesday": {
+			"12:00": "eco",
+			"12:15": "confort"
+		}
+	}
 }
