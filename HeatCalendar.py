@@ -34,5 +34,7 @@ class HeatCalendar:
     with open('weekCalendar.json') as wcal:
       try:
         calendar = json.load(wcal)
+        metaMode=calendar['weekCalendar'][self.day][self.hour]
       except:
         # que fait-on en cas d erreur?
+        metaMode=
