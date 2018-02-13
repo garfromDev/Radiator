@@ -27,4 +27,12 @@ class HalfHour:
 class HeatCalendar:
 
   def setWeekCal(self, week):
+    pass
   
+  def getCurrentMode(self):
+    # ouvrir le fichier
+    with open('weekCalendar.json') as wcal:
+      try:
+        calendar = json.load(wcal)
+      except:
+        # que fait-on en cas d erreur?
