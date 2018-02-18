@@ -1,9 +1,9 @@
+*** Settings ***
 Documentation	Essais de robot pour tester HeatMode
-
 Library		testLibs/HeatModeLibrary.py
 
-*** Test cases ***
+*** Test Cases ***
 Confort Mode
 	set mode to confort
-	output plus should be LOW
+	output plus should be	 LOW
 

@@ -2,8 +2,8 @@
 
 import RPi.GPIO as GPIO
 import time
-import Rolling
-import ActionSequencer
+from Rolling import Rolling
+from ActionSequencer import Action, ActionSequencer
         
 # This module alow to drive pilot wire
 class HeatMode:
@@ -17,12 +17,18 @@ class HeatMode:
         self._outPlusWaveform = outPlusWaveform
         self._outMinusWaveform = outMinusWaveform
         self.sequencer = ActionSequencer()
+        self._confortMinus1Seq = Rolling([Action(self._setConfortMode, duration=297),
+                                Action(self._setEcoMode, duration = 3)])
+        self._confortMinus2Seq = Rolling([Action(self._setConfortMode, duration=293),
+                                Action(self._setEcoMode, duration=7)])
+	self.initDone = False
+
 
     # Must be called once prior to use to initialize HW setting
     def hwInit(self):
         GPIO.setmode(GPIO.BCM)
-        GPIO.setup(_outPlusWaveform, GPIO.OUT)
-        GPIO.setup(_outMinusWaveform, GPIO.OUT)
+        GPIO.setup(self._outPlusWaveform, GPIO.OUT)
+        GPIO.setup(self._outMinusWaveform, GPIO.OUT)
         self.initDone = True
         
    # Set the pilot wire to confort mode = no sinusoid    
@@ -37,11 +43,11 @@ class HeatMode:
         
     # set the pilot wire to confort minus 1 degree (4'57 flat, 3" sinusoid)    
     def setConfortMinus1(self):
-        self.sequencer.start(confortMinus1Seq)    
+        self.sequencer.start(self._confortMinus1Seq)    
 
     # set the pilot wire to confort minus 2 degree (4'53 flat, 7" sinusoid)    
     def setConfortMinus1(self):
-        self.sequencer.start(confortMinus2Seq)    
+        self.sequencer.start(self._confortMinus2Seq)    
 
     # set the pilot wire to a ratio of confort mode
     # allowed ration from 10 to 90
@@ -57,7 +63,7 @@ class HeatMode:
     # set the Triac control output to parameters value    
     # will initialize HW if hw has not been initialized
     def _setOutputs(self, plus, minus):
-        if ! self.initDone:
+        if not self.initDone:
             self.hwInit()
         GPIO.output(self._outPlusWaveform, plus)
         GPIO.output(self._outMinusWaveform, minus)
@@ -68,10 +74,6 @@ class HeatMode:
     def _setEcoMode(self):
         self._setOutputs( plus = GPIO.HIGH, minus = GPIO.HIGH)
 
-    confortMinus1Seq = Rolling([Action(self._setConfortMode, duration=297),
-                                Action(self._setEcoMode, duration = 3)])
-    confortMinus2Seq = Rolling([Action(self._setConfortMode, duration=293),
-                                Action(self._setEcoMode, duration=7)])
     
 
 

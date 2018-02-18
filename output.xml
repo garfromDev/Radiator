@@ -1,24 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<robot generated="20180218 13:47:39.490" generator="Robot 3.0.2 (Python 2.7.9 on linux2)">
+<robot generated="20180218 19:28:37.120" generator="Robot 3.0.2 (Python 2.7.9 on linux2)">
 <suite source="/home/pi/Programs/Radiator/testHeatMode.robot" id="s1" name="testHeatMode">
 <test id="s1-t1" name="Confort Mode">
-<kw name="set mode to confort">
-<msg timestamp="20180218 13:47:40.584" level="FAIL">No keyword with name 'set mode to confort' found.</msg>
-<status status="FAIL" endtime="20180218 13:47:40.586" starttime="20180218 13:47:40.582"></status>
+<kw name="Set Mode To Confort" library="HeatModeLibrary">
+<msg timestamp="20180218 19:28:38.233" level="INFO">/home/pi/Programs/Radiator/HeatMode.py:30: RuntimeWarning: This channel is already in use, continuing anyway.  Use GPIO.setwarnings(False) to disable warnings.
+  GPIO.setup(self._outPlusWaveform, GPIO.OUT)
+/home/pi/Programs/Radiator/HeatMode.py:31: RuntimeWarning: This channel is already in use, continuing anyway.  Use GPIO.setwarnings(False) to disable warnings.
+  GPIO.setup(self._outMinusWaveform, GPIO.OUT)</msg>
+<status status="PASS" endtime="20180218 19:28:38.238" starttime="20180218 19:28:38.215"></status>
 </kw>
-<status status="FAIL" endtime="20180218 13:47:40.598" critical="yes" starttime="20180218 13:47:40.485">No keyword with name 'set mode to confort' found.</status>
+<kw name="Output Plus Should Be" library="HeatModeLibrary">
+<doc>verifie que la sortie soit au niveau attendu</doc>
+<arguments>
+<arg>LOW</arg>
+</arguments>
+<status status="PASS" endtime="20180218 19:28:38.254" starttime="20180218 19:28:38.246"></status>
+</kw>
+<status status="PASS" endtime="20180218 19:28:38.259" critical="yes" starttime="20180218 19:28:38.202"></status>
 </test>
-<status status="FAIL" endtime="20180218 13:47:40.627" starttime="20180218 13:47:39.533"></status>
+<doc>Essais de robot pour tester HeatMode</doc>
+<status status="PASS" endtime="20180218 19:28:38.280" starttime="20180218 19:28:37.163"></status>
 </suite>
 <statistics>
 <total>
-<stat fail="1" pass="0">Critical Tests</stat>
-<stat fail="1" pass="0">All Tests</stat>
+<stat fail="0" pass="1">Critical Tests</stat>
+<stat fail="0" pass="1">All Tests</stat>
 </total>
 <tag>
 </tag>
 <suite>
-<stat fail="1" id="s1" name="testHeatMode" pass="0">testHeatMode</stat>
+<stat fail="0" id="s1" name="testHeatMode" pass="1">testHeatMode</stat>
 </suite>
 </statistics>
 <errors>
