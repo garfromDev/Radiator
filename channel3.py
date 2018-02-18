@@ -31,7 +31,7 @@ minT = 100
 maxT = 0
 try:
    while True:
-     t = float(mcp.read_adc(5)) * 295 / 10 / 1024
+     t = float(mcp.read_adc(5)) * 580 / 10 / 1024
      maxT = max( maxT, t)
      minT = min( minT, t)
      print(" Min: {:04.1f}   Max: {:04.1f}   Ecart {:03.1f}".format(minT, maxT, maxT-minT) )
@@ -39,4 +39,4 @@ try:
 except KeyboardInterrupt:
    pass
 finally:
-   print( "Ecart maxi releve : {}".format(maxT-minT) )
+   print( "Ecart maxi releve : {:05.2f}".format(maxT-minT) )
