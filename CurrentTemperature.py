@@ -2,6 +2,7 @@
 # inspired of example from Tony DiCola, License: Public Domain
 
 import Adafruit_MCP3008
+import spidev
 
 # this object get the inside ambiant temperature from the sensor connected to the SPI adc
 # it can be used with FilteredVar mechanism, using value() as getter
