@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 # inspired of example from Tony DiCola, License: Public Domain
 
+# Import SPI library (for hardware SPI) and MCP3008 library.
+import Adafruit_GPIO.SPI as SPI
 import Adafruit_MCP3008
-import spidev
 
 # this object get the inside ambiant temperature from the sensor connected to the SPI adc
 # it can be used with FilteredVar mechanism, using value() as getter
