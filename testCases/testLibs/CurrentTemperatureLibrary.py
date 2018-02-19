@@ -21,7 +21,7 @@ class CurrentTemperatureLibrary(object):
     class SimAdc(object):
         """ Definition d'un mock-up MCP """
         def __init__(self, targetInsideTemp, temp):
-            """ :param targetInsideTemp: the InsideTemperature object that is tested
+            """ :param targetInsideTemp: the InsideTemperature object that is tested """
             self._temp= float(temp) #to ensure float calculation
             self._target = targetInsideTemp
             
