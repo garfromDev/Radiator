@@ -29,8 +29,8 @@ class CurrentTemperatureLibrary(object):
             """ Return the voltage value corresponding to the temperature given in parameter,
                 using hw parameter from _target (InsideTemperature object)
             """
-            print('SimAdc.read_adc will return %s' % (self._temp * (trg._adcRange / trg._voltageRef) * trg._sensorGain))
             trg = self._target
+            print('SimAdc.read_adc will return %s' % (self._temp * (trg._adcRange / trg._voltageRef) * trg._sensorGain))
             return self._temp * (trg._adcRange / trg._voltageRef) * trg._sensorGain
         
     def simulate_temperature(self, temp):
