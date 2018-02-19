@@ -27,7 +27,7 @@ class InsideTemperature:
 # with my schematic, temperature range is 0 to 29,5 degree Celcius
 # higher temperature will be 29.5, this is not a concern for a heating regulation
     def value(self):
-        voltage = self._mcp.read_adc(_sensorPin)
+        voltage = self._mcp.read_adc(self._sensorPin)
         try:
             temp = float(voltage) * (self._voltageRef / self._adcRange) / self._sensorGain
         except:
