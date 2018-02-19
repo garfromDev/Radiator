@@ -36,5 +36,5 @@ class CurrentTemperatureLibrary(object):
         """ Remplace l'objet mcp de la librairie MCP3008 par un fake SimAdc qui expose la meme methode
             and return the voltage value corresponding to the temperature given in parameter
         """
-        self._inside._mcp = SimAdc(self._inside, temp)
+        self._inside._mcp = CurrentTemperatureLibrary.SimAdc(self._inside, temp)
             
