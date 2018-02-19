@@ -30,7 +30,7 @@ class CurrentTemperatureLibrary(object):
                 using hw parameter from _target (InsideTemperature object)
             """
             trg = self._target
-            return temp / (trg._voltageRef / trg._adcRange) * trg._sensorGain
+            return self._temp / (trg._voltageRef / trg._adcRange) * trg._sensorGain
         
     def simulate_temperature(self, temp):
         """ Remplace l'objet mcp de la librairie MCP3008 par un fake SimAdc qui expose la meme methode
