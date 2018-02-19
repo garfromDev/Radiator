@@ -21,8 +21,9 @@ class CurrentTemperatureLibrary(object):
     class SimAdc(object):
         """ Definition d'un mock-up MCP """
         def __init__(self, targetInsideTemp, temp):
-            self._temp= float(temp)
-            self._target = target
+            """ :param targetInsideTemp: the InsideTemperature object that is tested
+            self._temp= float(temp) #to ensure float calculation
+            self._target = targetInsideTemp
             
         def read_adc(self, pin):
             """ Return the voltage value corresponding to the temperature given in parameter,
