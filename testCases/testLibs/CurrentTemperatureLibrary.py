@@ -5,9 +5,9 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../.
 from CurrentTemperature import InsideTemperature
 
 class CurrentTemperatureLibrary(object):
-"""
+    """
     Allows to test CurrentTemperature.py with robot framework
-"""
+    """
     def __init__(self):
       self._inside = InsideTemperature()
       
