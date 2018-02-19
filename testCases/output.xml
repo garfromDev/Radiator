@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generated="20180219 08:49:34.102" generator="Robot 3.0.2 (Python 2.7.9 on linux2)">
+<suite source="/home/pi/Programs/Radiator/testCases/testHeatMode.robot" id="s1" name="testHeatMode">
+<test id="s1-t1" name="Confort Mode">
+<kw name="Set Mode To Confort" library="HeatModeLibrary">
+<msg timestamp="20180219 08:49:34.803" level="INFO">/home/pi/Programs/Radiator/HeatMode.py:30: RuntimeWarning: This channel is already in use, continuing anyway.  Use GPIO.setwarnings(False) to disable warnings.
+  GPIO.setup(self._outPlusWaveform, GPIO.OUT)
+/home/pi/Programs/Radiator/HeatMode.py:31: RuntimeWarning: This channel is already in use, continuing anyway.  Use GPIO.setwarnings(False) to disable warnings.
+  GPIO.setup(self._outMinusWaveform, GPIO.OUT)</msg>
+<status status="PASS" endtime="20180219 08:49:34.809" starttime="20180219 08:49:34.794"></status>
+</kw>
+<kw name="Output Plus Should Be" library="HeatModeLibrary">
+<doc>verifie que la sortie soit au niveau attendu</doc>
+<arguments>
+<arg>LOW</arg>
+</arguments>
+<status status="PASS" endtime="20180219 08:49:34.820" starttime="20180219 08:49:34.813"></status>
+</kw>
+<status status="PASS" endtime="20180219 08:49:34.825" critical="yes" starttime="20180219 08:49:34.780"></status>
+</test>
+<doc>Essais de robot pour tester HeatMode</doc>
+<status status="PASS" endtime="20180219 08:49:34.836" starttime="20180219 08:49:34.130"></status>
+</suite>
+<statistics>
+<total>
+<stat fail="0" pass="1">Critical Tests</stat>
+<stat fail="0" pass="1">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat fail="0" id="s1" name="testHeatMode" pass="1">testHeatMode</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
