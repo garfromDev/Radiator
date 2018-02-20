@@ -12,7 +12,7 @@ class CurrentTemperatureLibrary(object):
       self._inside = InsideTemperature()
       
     def read_temperature(self):
-      self._result = self._inside.value()
+      self._result = float(self._inside.value())
       
     def temperature_should_be(self, expected):
       if (float(self._result) - float(expected)) > 0.1:
