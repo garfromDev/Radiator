@@ -11,5 +11,5 @@ Read actual temperature
 Read simulated temperature
 	simulate temperature	25
   read temperature
-  temperature should be	25.0
+  temperature should be	25
   
