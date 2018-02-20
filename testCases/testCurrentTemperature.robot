@@ -15,7 +15,7 @@ Read simulated temperature
 
 *** Test Cases ***
 read many simulated temperature
-[Template] check simulated temperature
+	[Template] check simulated temperature
 	3.2
 	25
 	39.1
