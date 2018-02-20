@@ -13,7 +13,7 @@ class InsideTemperature:
 # voltageRef : the reference voltage of the ADC, in mV (295mV in my schematic)
 # adcRange : the output range of ADC converter (0 to 1023 for MCP3008)
 # sensorGain : the voltage change per degrees of the thermal sensor (10 mV / degree for LM35)
-    def __init__(self, sensorPin = 5.0, voltageRef = 295.0,adcRange = 1024.0, sensorGain = 10.0 ):
+    def __init__(self, sensorPin = 5, voltageRef = 295.0,adcRange = 1024.0, sensorGain = 10.0 ):
         self._sensorPin = sensorPin
         self._voltageRef = voltageRef
         self._adcRange = adcRange
