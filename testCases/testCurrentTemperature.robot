@@ -12,13 +12,11 @@ Read simulated temperature
 	simulate temperature	25
   read temperature
   temperature should be	25
-
+Test Template	check simulated temperature 
 *** Test Cases ***
-read many simulated temperature
-	[Template] check simulated temperature
-	3.2
-	25
-	39.1
+low	3.2
+mid	25
+high	39.1
 
 *** Keywords ***
 check simulated temperature
