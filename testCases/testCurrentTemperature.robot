@@ -14,6 +14,7 @@ Read simulated temperature
   temperature should be	25
 
 *** Test Cases ***
+read many simulated temperature
 [Template] check simulated temperature
 	3.2
 	25
