@@ -12,4 +12,16 @@ Read simulated temperature
 	simulate temperature	25
   read temperature
   temperature should be	25
-  
+
+*** Test Cases ***
+[Template] check simulated temperature
+	3.2
+	25
+	39.1
+
+*** Keywords ***
+check simulated temperature
+	[Arguments]    ${expected}
+	simulate temperature	${expected}
+	read temperature
+	temperature should be 	${expected}
