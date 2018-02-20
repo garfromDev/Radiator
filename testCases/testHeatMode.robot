@@ -6,4 +6,13 @@ Library		testLibs/HeatModeLibrary.py
 Confort Mode
 	set mode to confort
 	output plus should be	 LOW
+	output minus should be	 LOW
+
+Eco Mode
+	set mode to eco
+	output plus should be	 HIGH
+	output minus should be	 HIGH
+
+
+
 
