@@ -15,7 +15,7 @@ class CurrentTemperatureLibrary(object):
       self._result = self._inside.value()
       
     def temperature_should_be(self, expected):
-      if self._result != expected:
+      if (float(self._result) - float(expected)) > 0.1:
         raise AssertionError('%s != %s' % (self._result, expected))
         
     class SimAdc(object):
