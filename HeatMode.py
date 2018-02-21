@@ -13,7 +13,7 @@ class HeatMode:
     # outMinusWaveform :
     # The GPIO output that drive the second OptoTriac (in GPIO.BCM notation)
     # this output supress positive waveform
-    def __init__(self, outPlusWaveform, outMinusWaveform):
+    def __init__(self, outPlusWaveform=, outMinusWaveform=):
         self._outPlusWaveform = outPlusWaveform
         self._outMinusWaveform = outMinusWaveform
         self.sequencer = ActionSequencer()
@@ -46,14 +46,14 @@ class HeatMode:
         self.sequencer.start(self._confortMinus1Seq)    
 
     # set the pilot wire to confort minus 2 degree (4'53 flat, 7" sinusoid)    
-    def setConfortMinus1(self):
+    def setConfortMinus2(self):
         self.sequencer.start(self._confortMinus2Seq)    
 
     # set the pilot wire to a ratio of confort mode
     # allowed ration from 10 to 90
     def setConfortRatio(self, ratio):
-        ecoTime = 7 * 60 * ( 100 - ratio) / 100
-        confTime = 7 * 60 * ratio / 100
+        ecoTime = (7 * 60 * ( 100 - ratio)) / 100
+        confTime = (7 * 60 * ratio) / 100
         ratioSeq = Rolling([Action(self._setConfortMode, duration = confTime),
                             Action(self._setEcoMode, duration = ecoTime) 
                            ])
