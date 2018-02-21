@@ -11,19 +11,25 @@ PLUS = 23
 class HeatModeLibrary(object):
 
     def __init__(self):
-        self._sut_path = os.path.join(os.path.dirname(__file__),
-                                      '..',  'HeatMode.py')
-        #self._heat = HeatMode(outPlusWaveForm=PLUS, outMinusWaveForm=MINUS) 
-	self._heat = HeatMode(23,24)
-        self._status = ''
+        self._heat = HeatMode(outPlusWaveForm=PLUS, outMinusWaveForm=MINUS) 
+        # DO not run this test suite on actual HW, or change these number to actual one
+        #self._heat = HeatMode(23,24)
 
     def set_mode_to_confort(self):
-        # DO not run this test suite on actual HW, or change these number to actual one
-	self._heat.setConfortMode()
+	    self._heat.setConfortMode()
 	
     def output_plus_should_be(self, expected):
-	""" verifie que la sortie soit au niveau attendu """
+	    """ verifie que la sortie soit au niveau attendu HIGH ou LOW"""
         level = { "HIGH":GPIO.HIGH, "LOW":GPIO.LOW}[expected]
-	actual = GPIO.input(PLUS)
-	if actual != level:
-	    raise AssertionError('%s != %s' % (actual, expected))
+	    actual = GPIO.input(PLUS)
+	    if actual != level:
+	        raise AssertionError('%s != %s' % (actual, expected))
+
+    def set_mode_to_confort_minus_one(self):
+        self._heat.setConfortMinus1()
+        
+    def set_mode_to_confort_minus_two(self):
+        self._heat.setConfortMinus2()     
+        
+    def set_mode_to_custom_ratio(self, ratio):
+        self._heat.setConfortRatio(ratio)
