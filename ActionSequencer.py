@@ -17,12 +17,12 @@ class ActionSequencer:
     self.sequence = sequence
     self.timer = None
  
-  # start the sequencer if a sequence is given, or shhot the next action (called by the timer from previous call)
+  # start the sequencer if a sequence is given, or shoot the next action (called by the timer from previous call)
   def start(self, sequence=None):
    if sequence != None:
         self.cancel() #Setting a new sequence cancel the previous one if there was one
         self.sequence = sequence
-   currentAction = self.sequence.get() 
+   currentAction = self.sequence.get_next() 
    currentAction.action() #perform the first action
    self.timer = threading.Timer(currentAction.duration, self.start) 
    self.timer.start() #this will call start() again after duration, which will perform the next action
