@@ -14,7 +14,7 @@ Big list
 	result should be	9999
 	
 rolling over edge
-	@{list}=	Create List	"toto"	5	'c'	145.12
+	@{list} =	Create List	"toto"	5	'c'	145.12
 	create rolling list with	@{list}
 	get next
 	result should be	"toto"
