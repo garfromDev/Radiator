@@ -11,7 +11,7 @@ Big list
 	${big} =	Evaluate	range(10000)
 	create rolling list with	${big}
 	Repeat Keyword	10000 times	get next	
-	result should be	10000
+	result should be	9999
 	
 rolling over edge
 	@{list}=	Create List	"toto"	5	'c'	145.12
