@@ -8,7 +8,7 @@ Empty list #expected not to raise an error
 	get next
   
 Big list
-${big}=	Evaluate	range(10000)
+${big} =	Evaluate	range(10000)
 	create rolling list with	${big}
 Repeat Keyword	10001 times	get next	
 	result should be	10000
