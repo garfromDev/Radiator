@@ -10,11 +10,11 @@ Empty list #expected not to raise an error
 Big list
 	${big} =	Evaluate	range(10000)
 	create rolling list with	${big}
-	Repeat Keyword	10001 times	get next	
+	Repeat Keyword	10000 times	get next	
 	result should be	10000
 	
 rolling over edge
-	@{list}=	Create list	"toto"	5	'c'	145.12
+	@{list}=	Create List	"toto"	5	'c'	145.12
 	create rolling list with	@{list}
 	get next
 	result should be	"toto"
