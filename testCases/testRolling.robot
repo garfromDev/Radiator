@@ -4,7 +4,7 @@ Library		testLibs/RollingLibrary.py
 
 *** Test Cases ***
 Empty list #expected not to raise an error
- 	create rolling list with []
+ 	create rolling list with	[]
 	get next
   
 Big list
