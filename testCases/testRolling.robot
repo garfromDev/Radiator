@@ -8,8 +8,8 @@ Empty list #expected not to raise an error
 	get next
 	
 rolling over edge
-	@{list} =	Create List	"toto"	5	'c'	145.12
-	create rolling list with	@{list}
+	@{LST}	Create List	"toto"	5	'c'	145.12
+	create rolling list with	@{LST}
 	get next
 	result should be	"toto"
 	get next
