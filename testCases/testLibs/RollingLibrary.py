@@ -15,7 +15,7 @@ class RollingLibrary(object):
        self._roll = Rolling(list)
       
     def result_should_be(self, expected):
-      if self._result != expected:
+      if str(self._result) != expected: #arguments of robot are always string
          raise AssertionError('%s != %s' % (self._result, expected))
          
     def get_next(self):
