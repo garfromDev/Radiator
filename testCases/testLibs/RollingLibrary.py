@@ -5,7 +5,7 @@ from Rolling import Rolling
 
 class RollingLibrary(object):
     """
-    Allows to test Rolling.py with robot framework
+    Allows to test Rolling.py with robot framework 
     """
     def __init__(self):
       self._result = ''
