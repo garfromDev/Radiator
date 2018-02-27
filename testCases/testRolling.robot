@@ -6,12 +6,6 @@ Library		testLibs/RollingLibrary.py
 Empty list #expected not to raise an error
  	create rolling list with	[]
 	get next
-  
-Big list
-	${big} =	Evaluate	range(10000)
-	create rolling list with	${big}
-	Repeat Keyword	10000 times	get next	
-	result should be	9999
 	
 rolling over edge
 	@{list} =	Create List	"toto"	5	'c'	145.12
@@ -24,5 +18,10 @@ rolling over edge
 	Repeat Keyword	21 times	get next
 	result should be	145.12
 
+Big list
+	${big} =	Evaluate	range(10000)
+	create rolling list with	${big}
+	Repeat Keyword	10000 times	get next	
+	result should be	9999
 
 	
