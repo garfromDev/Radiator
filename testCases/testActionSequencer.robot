@@ -4,7 +4,7 @@ Library		testLibs/ActionSequencerLibrary.py
 
 *** Test Cases ***
 Not loaded
-	create action sequencer with 0 actions 
+	create action sequencer 
 	start it
 	stop it
 
@@ -51,4 +51,5 @@ start it with ${nb} actions
 create action sequencer with ${nb} actions
 	create default action sequencer	${nb}
 	
-
+create action sequencer
+	create default action sequencer	0
