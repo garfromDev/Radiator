@@ -19,7 +19,7 @@ Loaded during init
 Loaded during start
 	create action sequencer
 	start it with 3 actions
-	action should be 1
+	action should be	1
 	action should be	2	
 
 Not ending execution
@@ -41,7 +41,7 @@ Many actions
 
 
 *** Keywords ***
-action should be
+action should be #allow time for action to get executed (1 sec time frame)
 	[Arguments]	${action}
 	Wait Until Keyword Succeeds	2 sec.	0.1 sec.	executed action should be	${action}
 	
