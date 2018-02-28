@@ -16,7 +16,7 @@ class FilteredVar:
     # return the new value if value is invalid
     # if getter raise exception, value will be None, and exception will be re-raised
     def value(self):
-        if time() - self._valueDate > self.cacheDuration:
+        if time() - self._valueDate > self.cacheDuration: #always true if duration is None
             self._updateValue()
         return self._value
     
