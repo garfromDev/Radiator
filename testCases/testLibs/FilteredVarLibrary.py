@@ -18,11 +18,11 @@ class FilteredVarLibrary(object):
         
         
     def set_source_value(self, value):
-        self._getter = lambda value=value: value
+        self._sourceValue = value
         
         
     def set_filtered_var(self):
-        self._result = FilteredVar(1, getter = self._getter)
+        self._result = FilteredVar(1, getter = lambda value=value: self._sourceValue)
         
         
     def set_filtered_var_with_wrong_getter(self):
