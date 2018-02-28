@@ -23,18 +23,18 @@ class ActionSequencer:
         self.cancel() #Setting a new sequence cancel the previous one if there was one
         self.sequence = sequence
     
-	try:
-		currentAction = self.sequence.get()
-	except:
+    try:
+        currentAction = self.sequence.get()
+    except:
 		self.timer = None #not a Rolling we stop
 		return
     
-	try:
+    try:
    		currentAction.action() #perform the first action
 	except:
 		pass #None or crashy, maybe next action will behave better
     
-	try:
+    try:
 		dur = currentAction.duration
    		self.timer = threading.Timer(dur, self.start) 
    		self.timer.start() #this will call start() again after duration, which will perform the next action
