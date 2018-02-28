@@ -60,4 +60,18 @@ class HeatCalendar:
     # so I choose the json file will be english wathever the locale language                      
     dayNames = ["Sunday","Monday","Tuesday","Wenesday","Thursday","Friday","Saturday"]
     return dayNames[dayNr]
-                          
+  
+  def hour(self):
+    """ return a string with the current minute rounded to quarter
+      0 to 14 -> 00
+      15 to 29 -> 15
+    """
+    h = time.strftime(%H",localtime()) #get the hour 00 to 23
+    m = time.strftime(%M",localtime()) #get the minute 00 to 59
+    return "%s%s" % (h, self._normalize(m))
+                      
+  def _normalize(self, minutes):
+    m = int(minutes) / 15
+    rounded = m * 15
+    return '{:02d}'.format(rounded)
+                      
