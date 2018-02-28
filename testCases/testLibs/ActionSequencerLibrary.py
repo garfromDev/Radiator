@@ -42,5 +42,5 @@ class ActionSequencerLibrary(object):
         seq=Rolling()
         for i in range(nb):
             a = Action(self._store(lambda i=i:str(i+1)), 1) #merci http://sametmax.com/fonctions-anonymes-en-python-ou-lambda/
-            seq.add(a)
+            seq.append(a)
         return seq
