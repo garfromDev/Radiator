@@ -33,7 +33,7 @@ class ActionSequencerLibrary(object):
         self._sequencer.start()
     
     def stop_it(self):
-        self._sequencer.stop()
+        self._sequencer.cancel()
         
     def _createSeq(self,nb):
         """ create a sequence of Action with 1 sec timeframe
