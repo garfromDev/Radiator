@@ -26,20 +26,20 @@ class ActionSequencer:
     try:
         currentAction = self.sequence.get()
     except:
-		self.timer = None #not a Rolling we stop
-		return
+        self.timer = None #not a Rolling we stop
+        return
     
     try:
-   		currentAction.action() #perform the first action
-	except:
-		pass #None or crashy, maybe next action will behave better
+        currentAction.action() #perform the first action
+    except:
+        pass #None or crashy, maybe next action will behave better
     
     try:
-		dur = currentAction.duration
-   		self.timer = threading.Timer(dur, self.start) 
-   		self.timer.start() #this will call start() again after duration, which will perform the next action
-	except:
-		self.timer = None #duration not valid
+        dur = currentAction.duration
+        self.timer = threading.Timer(dur, self.start) 
+        self.timer.start() #this will call start() again after duration, which will perform the next action
+    except:
+        self.timer = None #duration not valid
 		
 		
   # stop the sequencer        
