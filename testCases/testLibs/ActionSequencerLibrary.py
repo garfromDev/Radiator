@@ -21,8 +21,8 @@ class ActionSequencerLibrary(object):
         seq = self._createSeq(int(nb))      
         self._sequencer = ActionSequencer(seq)
         
-    def executed_action_should_be(self, id):
-        if self._result != id:
+    def executed_action_should_be(self, expected):
+        if self._result != expected:
             raise AssertionError('%s != %s' % (self._result, expected))
         
     def start_current_sequencer_with(self, nb):
