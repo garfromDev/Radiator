@@ -44,7 +44,7 @@ Many actions
 #allow time for action to get executed (1 sec time frame)
 action should be 
 	[Arguments]	${action}
-	Wait Until Keyword Succeeds	2 sec.	0.1 sec.	executed action should be	${action}
+	Wait Until Keyword Succeeds	2 sec	0.1 sec	executed action should be	${action}
 	
 start it with ${nb} actions
 	start current sequencer with	${nb}
@@ -53,4 +53,4 @@ create action sequencer with ${nb} actions
 	create default action sequencer	${nb}
 	
 create action sequencer
-	create default action sequencer	0
+	create default action sequencer	1
