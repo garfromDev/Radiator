@@ -4,7 +4,7 @@ Library		testLibs/ActionSequencerLibrary.py
 
 *** Test Cases ***
 Not loaded
-	#create action sequencer 
+	create action sequencer 
 	start it
 	stop it
 
