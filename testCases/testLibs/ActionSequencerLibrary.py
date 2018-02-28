@@ -32,7 +32,7 @@ class ActionSequencerLibrary(object):
     def start_it(self):
         self._sequencer.start()
     
-    def stop_it(self)
+    def stop_it(self):
         self._sequencer.stop()
         
     def _createSeq(self,nb):
