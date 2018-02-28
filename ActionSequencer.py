@@ -19,14 +19,27 @@ class ActionSequencer:
  
   # start the sequencer if a sequence is given, or shoot the next action (called by the timer from previous call)
   def start(self, sequence=None):
-   if sequence != None:
+  	if sequence != None:
         self.cancel() #Setting a new sequence cancel the previous one if there was one
         self.sequence = sequence
-   currentAction = self.sequence.get() 
-   currentAction.action() #perform the first action
-   self.timer = threading.Timer(currentAction.duration, self.start) 
-   self.timer.start() #this will call start() again after duration, which will perform the next action
-
+    
+	try:
+		currentAction = self.sequence.get()
+	except:
+		self.timer = None #not a Rolling we stop
+		return
+	try:
+   		currentAction.action() #perform the first action
+	except:
+		pass #None or chrashy, maybe next action will behave better
+	try:
+		dur = currentAction.duration
+   		self.timer = threading.Timer(dur, self.start) 
+   		self.timer.start() #this will call start() again after duration, which will perform the next action
+	except:
+		self.timer = None #duration not valid
+		
+		
   # stop the sequencer        
   def cancel(self):
    try: #because timer may not exist
