@@ -22,7 +22,7 @@ class ActionSequencer:
    if sequence != None:
         self.cancel() #Setting a new sequence cancel the previous one if there was one
         self.sequence = sequence
-   currentAction = self.sequence.get_next() 
+   currentAction = self.sequence.get() 
    currentAction.action() #perform the first action
    self.timer = threading.Timer(currentAction.duration, self.start) 
    self.timer.start() #this will call start() again after duration, which will perform the next action
