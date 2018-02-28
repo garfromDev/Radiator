@@ -9,7 +9,7 @@ class Action:
         self.action = action
         self.duration = duration
         
-        
+   
 # the sequencer will repeat each action, then wait for duration, rolling through the sequence of Action
 class ActionSequencer:
    #sequence : a Rolling() collection of Action() 
