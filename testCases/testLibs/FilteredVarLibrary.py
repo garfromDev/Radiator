@@ -22,7 +22,7 @@ class FilteredVarLibrary(object):
         
         
     def set_filtered_var(self):
-        self._result = FilteredVar(1, getter = lambda value=value: self._sourceValue)
+        self._result = FilteredVar(1, getter = lambda x=0: self._sourceValue)
         
         
     def set_filtered_var_with_wrong_getter(self):
