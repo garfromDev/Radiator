@@ -7,9 +7,9 @@ from time import time
 class FilteredVar:
 
     def __init__(self, cacheDuration, getter):
-    """ cacheDuration : the time in sec after wiche the value is invalid
-        the function that will be called to retrieve a new value
-    """        
+        """ cacheDuration : the time in sec after wiche the value is invalid
+            the function that will be called to retrieve a new value
+        """        
         self.cacheDuration = cacheDuration
         self._getter = getter
         self._updateValue()
