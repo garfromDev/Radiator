@@ -9,7 +9,7 @@ class ActionSequencerLibrary(object):
     Allows to test ActionSequencer.py with robot framework 
     """
     def __init__(self):
-      self._result = ''
+      self._result = 'INIT'
     
     def _store(self, action):
         def deepStore():
