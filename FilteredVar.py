@@ -2,7 +2,7 @@
 
 # This utility module define an object that cache the value
 
-import time
+from time import time
 
 class FilteredVar:
     # cacheDuration : the time in sec after wiche the value is invalid
