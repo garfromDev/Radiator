@@ -41,7 +41,8 @@ Many actions
 
 
 *** Keywords ***
-action should be #allow time for action to get executed (1 sec time frame)
+#allow time for action to get executed (1 sec time frame)
+action should be 
 	[Arguments]	${action}
 	Wait Until Keyword Succeeds	2 sec.	0.1 sec.	executed action should be	${action}
 	
