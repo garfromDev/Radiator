@@ -53,4 +53,4 @@ create action sequencer with ${nb} actions
 	create default action sequencer	${nb}
 	
 create action sequencer
-	create default action sequencer	1
+	create default action sequencer	0
