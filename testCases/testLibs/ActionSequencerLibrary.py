@@ -1,7 +1,5 @@
 import os.path
 import sys
-
-
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 from ActionSequencer import Action, ActionSequencer
 from Rolling import Rolling
@@ -38,6 +36,9 @@ class ActionSequencerLibrary(object):
         self._sequencer.stop()
         
     def _createSeq(self,nb):
+        """ create a sequence of Action with 1 sec timeframe
+            each action will return its creation index from 1 to nb
+        """
         seq=Rolling()
         for i in range(nb):
             a = Action(self.store(lambda i=i:str(i+1)), 1) #merci http://sametmax.com/fonctions-anonymes-en-python-ou-lambda/
