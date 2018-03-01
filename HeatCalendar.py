@@ -28,9 +28,10 @@ class HeatCalendar:
       content may be changed by the distant user via the web server
       of course, in worst case change could take 15mn to apply
   """
-  def __init__(self, calFile = CST.WEEKCALJSON):
+  def __init__(self, calFile = CST.WEEKCALJSON, localtime = time.localtime):
     """ :param calFile name of the json file that describe the calendar """ 
     self._calFile = calFile
+    self.localtime = localtime
     
   # return the meta mode for the current hour and time
   # hour and time is given by system time
@@ -70,3 +71,6 @@ class HeatCalendar:
     rounded = m * 15
     return '{:02d}'.format(rounded)
                       
+# PROBLEMATIQUE DE TEST
+# faire :  HeatCalendar(localtime = lambda x=1: time.strptime("2018 02 26 08 00", "%Y %m %d %H %M") ) pour
+#initialiser le calendrier avec une heure donnée
