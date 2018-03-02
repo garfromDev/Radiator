@@ -5,11 +5,13 @@ Test Setup	set calendar	test.json
 
 *** Test Cases ***
 mode eco
-	set time to	Monday	02:45
+#Monday
+	set time to	2018 02 26 02:45
 	result should be	eco
 
 mode confort
-	set time to	Sunday	12:11
+#Sunday
+	set time to	2018 03 04 12:11
 	result should be	confort
 
 out of range
