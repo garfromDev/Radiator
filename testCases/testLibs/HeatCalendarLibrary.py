@@ -12,9 +12,12 @@ class HeatCalendarLibrary(object):
     self._result = 'INIT'
   
   def set_time_to(self, testTime):
-    self._cal = HeatCalendar(localtime = lambda t=testTime: time.strptime(t, "%Y %m %d %H %M") )
+    self._cal = HeatCalendar(calFile=self._calFile,localtime = lambda t=testTime: time.strptime(t, "%Y %m %d %H %M") )
     self._result = self._cal.getCurrentMode()
     
   def result_should_be(self, expected):
     if str(self._result) != expected: #arguments of robot are always string
       raise AssertionError('%s != %s' % (self._result, expected))
+
+  def set_calendar(self, calFile):
+    self._calFile = calFile
