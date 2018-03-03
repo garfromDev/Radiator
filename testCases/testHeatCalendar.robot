@@ -15,7 +15,7 @@ mode confort
 	result should be	confort
 
 out of range
-	set time to	Tuesday	02:45
+	set time to	2018 02 26 00:00
 	result should be	unknow
 
 
