@@ -1,35 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<robot generated="20180219 08:49:34.102" generator="Robot 3.0.2 (Python 2.7.9 on linux2)">
-<suite source="/home/pi/Programs/Radiator/testCases/testHeatMode.robot" id="s1" name="testHeatMode">
-<test id="s1-t1" name="Confort Mode">
-<kw name="Set Mode To Confort" library="HeatModeLibrary">
-<msg timestamp="20180219 08:49:34.803" level="INFO">/home/pi/Programs/Radiator/HeatMode.py:30: RuntimeWarning: This channel is already in use, continuing anyway.  Use GPIO.setwarnings(False) to disable warnings.
-  GPIO.setup(self._outPlusWaveform, GPIO.OUT)
-/home/pi/Programs/Radiator/HeatMode.py:31: RuntimeWarning: This channel is already in use, continuing anyway.  Use GPIO.setwarnings(False) to disable warnings.
-  GPIO.setup(self._outMinusWaveform, GPIO.OUT)</msg>
-<status status="PASS" endtime="20180219 08:49:34.809" starttime="20180219 08:49:34.794"></status>
-</kw>
-<kw name="Output Plus Should Be" library="HeatModeLibrary">
-<doc>verifie que la sortie soit au niveau attendu</doc>
+<robot generated="20180303 09:19:42.956" generator="Robot 3.0.2 (Python 2.7.9 on linux2)">
+<suite source="/home/pi/Programs/Radiator/testCases/testHeatCalendar.robot" id="s1" name="testHeatCalendar">
+<test id="s1-t1" name="mode eco">
+<kw type="setup" name="Set Calendar" library="HeatCalendarLibrary">
 <arguments>
-<arg>LOW</arg>
+<arg>test.json</arg>
 </arguments>
-<status status="PASS" endtime="20180219 08:49:34.820" starttime="20180219 08:49:34.813"></status>
+<status status="PASS" endtime="20180303 09:19:43.650" starttime="20180303 09:19:43.643"></status>
 </kw>
-<status status="PASS" endtime="20180219 08:49:34.825" critical="yes" starttime="20180219 08:49:34.780"></status>
+<kw name="Set Time To" library="HeatCalendarLibrary">
+<arguments>
+<arg>2018 02 26 02:45</arg>
+</arguments>
+<msg timestamp="20180303 09:19:43.667" level="FAIL">IOError: [Errno 2] No such file or directory: u'test.json'</msg>
+<status status="FAIL" endtime="20180303 09:19:43.670" starttime="20180303 09:19:43.656"></status>
+</kw>
+<status status="FAIL" endtime="20180303 09:19:43.676" critical="yes" starttime="20180303 09:19:43.631">IOError: [Errno 2] No such file or directory: u'test.json'</status>
 </test>
-<doc>Essais de robot pour tester HeatMode</doc>
-<status status="PASS" endtime="20180219 08:49:34.836" starttime="20180219 08:49:34.130"></status>
+<test id="s1-t2" name="mode confort">
+<kw type="setup" name="Set Calendar" library="HeatCalendarLibrary">
+<arguments>
+<arg>test.json</arg>
+</arguments>
+<status status="PASS" endtime="20180303 09:19:43.712" starttime="20180303 09:19:43.704"></status>
+</kw>
+<kw name="Set Time To" library="HeatCalendarLibrary">
+<arguments>
+<arg>2018 03 04 12:11</arg>
+</arguments>
+<msg timestamp="20180303 09:19:43.728" level="FAIL">IOError: [Errno 2] No such file or directory: u'test.json'</msg>
+<status status="FAIL" endtime="20180303 09:19:43.730" starttime="20180303 09:19:43.718"></status>
+</kw>
+<status status="FAIL" endtime="20180303 09:19:43.737" critical="yes" starttime="20180303 09:19:43.693">IOError: [Errno 2] No such file or directory: u'test.json'</status>
+</test>
+<test id="s1-t3" name="out of range">
+<kw type="setup" name="Set Calendar" library="HeatCalendarLibrary">
+<arguments>
+<arg>test.json</arg>
+</arguments>
+<status status="PASS" endtime="20180303 09:19:43.771" starttime="20180303 09:19:43.764"></status>
+</kw>
+<kw name="Set Time To" library="HeatCalendarLibrary">
+<arguments>
+<arg>Tuesday</arg>
+<arg>02:45</arg>
+</arguments>
+<msg timestamp="20180303 09:19:43.782" level="FAIL">Keyword 'HeatCalendarLibrary.Set Time To' expected 1 argument, got 2.</msg>
+<status status="FAIL" endtime="20180303 09:19:43.784" starttime="20180303 09:19:43.777"></status>
+</kw>
+<status status="FAIL" endtime="20180303 09:19:43.790" critical="yes" starttime="20180303 09:19:43.753">Keyword 'HeatCalendarLibrary.Set Time To' expected 1 argument, got 2.</status>
+</test>
+<doc>Testing Heat Calendrar libray</doc>
+<status status="FAIL" endtime="20180303 09:19:43.810" starttime="20180303 09:19:42.984"></status>
 </suite>
 <statistics>
 <total>
-<stat fail="0" pass="1">Critical Tests</stat>
-<stat fail="0" pass="1">All Tests</stat>
+<stat fail="3" pass="0">Critical Tests</stat>
+<stat fail="3" pass="0">All Tests</stat>
 </total>
 <tag>
 </tag>
 <suite>
-<stat fail="0" id="s1" name="testHeatMode" pass="1">testHeatMode</stat>
+<stat fail="3" id="s1" name="testHeatCalendar" pass="0">testHeatCalendar</stat>
 </suite>
 </statistics>
 <errors>
