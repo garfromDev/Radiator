@@ -4,7 +4,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../.
 from HeatCalendar import HeatCalendar
 import time
 
-class HeatCalendardLibrary(object):
+class HeatCalendarLibrary(object):
   """
     Allows to test HeatCalendar.py with robot framework 
   """
