@@ -51,7 +51,7 @@ class HeatCalendar:
   
   # return the day in the form of 'Monday', 'Tuesday', ...
   def day(self):
-    dayNr = int(time.strftime("%w",time.localtime())) #strftime return a string
+    dayNr = int(time.strftime("%w",self.localtime())) #strftime return a string
     # we use a table conversion because locale could be different between the pi running 
     # the python programm and the app sending data to the Json file
     # so I choose the json file will be english wathever the locale language                      
@@ -63,8 +63,8 @@ class HeatCalendar:
       0 to 14 -> 00
       15 to 29 -> 15
     """
-    h = time.strftime("%H",time.localtime()) #get the hour 00 to 23
-    m = time.strftime("%M",time.localtime()) #get the minute 00 to 59
+    h = time.strftime("%H",self.localtime()) #get the hour 00 to 23
+    m = time.strftime("%M",self.localtime()) #get the minute 00 to 59
     return "%s:%s" % (h, self._normalize(m))
                       
   def _normalize(self, minutes):
