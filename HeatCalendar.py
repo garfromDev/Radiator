@@ -46,7 +46,7 @@ class HeatCalendar:
       except:
         #soit le fichier n'a pu être lu, soit le calendrier n'est pas complet
         metaMode="unknow"
-     return metaMode
+    return metaMode
   
   # return the day in the form of 'Monday', 'Tuesday', ...
   def day(self):
@@ -74,3 +74,5 @@ class HeatCalendar:
 # PROBLEMATIQUE DE TEST
 # faire :  HeatCalendar(localtime = lambda x=1: time.strptime("2018 02 26 08 00", "%Y %m %d %H %M") ) pour
 #initialiser le calendrier avec une heure donnée
+
+ 
