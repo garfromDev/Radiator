@@ -76,4 +76,3 @@ class HeatCalendar:
 # faire :  HeatCalendar(localtime = lambda x=1: time.strptime("2018 02 26 08 00", "%Y %m %d %H %M") ) pour
 #initialiser le calendrier avec une heure donnée
 
- 
