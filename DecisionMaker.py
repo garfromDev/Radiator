@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from HeatCalendar import HeatCalendar
-from Heatmode import Heatmode
+from HeatMode import HeatMode
 from FilteredVar import FilteredVar
 from CurrentTemperature import InsideTemperature
 import CST
