@@ -18,7 +18,7 @@ class DecisionMaker(object):
 
   def __init__(self):
     self._calendar = HeatCalendar(calFile=CST.WEEKCALJSON)
-    self.metamode = FilteredVar(cacheDuration = CST.METACACHING, getter = self._calendar.getCurrentMode)
+    self.metaMode = FilteredVar(cacheDuration = CST.METACACHING, getter = self._calendar.getCurrentMode)
     self._heater = HeatMode()
     self._curTemp = InsideTemperature()
     self.insideTemp = FilteredVar(cacheDuration = CST.TEMPCACHING, getter=self._curTemp.value)
