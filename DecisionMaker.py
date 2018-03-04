@@ -37,19 +37,14 @@ class DecisionMaker(object):
     #2 adaptation of confort mode
     if metaMode == "confort":
       if self.userBonus.value():
-        action = self._heater.setConfortMode
+        self._heater.setConfortMode
       elif self.felTemp.value() < CST.FELT_TEMP_MIN:
-        action = self._heater.setConfortMode
+        self._heater.setConfortMode
       elif self.felTemp.value() > CST.FELT_TEMP_MAX:
-        action = self._heater.setConfortModeMinus2
+        self._heater.setConfortModeMinus2
       elif self.userDown.value():
-        action = self._heater.setConfortModeMinus2
+        self._heater.setConfortModeMinus2
       else:
-        action = self._heater.setConfortModeMinus1
+        self._heater.setConfortModeMinus1
       
-      action()
-      
-    
-      
-    
-    
+ 
