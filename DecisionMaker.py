@@ -16,7 +16,7 @@ class DecisionMaker(object):
         - felt internal temp (combine heat and humidity)
    """
 
-  def ___init___(self):
+  def __init__(self):
     self._calendar = HeatCalendar(calFile=CST.WEEKCALJSON)
     self.metamode = FilteredVar(cacheDuration = CST.METACACHING, getter = self._calendar.getCurrentMode)
     self._heater = Heatmode()
