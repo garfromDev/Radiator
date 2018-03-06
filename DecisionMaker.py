@@ -24,8 +24,8 @@ class DecisionMaker(object):
     self.insideTemp = FilteredVar(cacheDuration = CST.TEMPCACHING, getter=self._curTemp.value)
     self.userBonus = False #!!!! mécanisme à ajouter !!!!
     self.userDown = False #!!!! mécanisme à ajouter !!!!
-    self.feltTemp = FilteredVar(cacheDuration = CST.TEMPCACHING, getter=self.insideTemp.value) #!!!! à remplacer !!!
-    
+    self.feltTempCold = FilteredVar(cacheDuration = CST.TEMPCACHING, getter=lambda x=None:False) #!!!! à remplacer !!!
+    self.feltTempHot = FilteredVar(cacheDuration = CST.TEMPCACHING, getter=lambda x=None:False) #!!!! à remplacer !!!
     
   def makeDecision(self):
     #1 get meta mode
@@ -38,9 +38,9 @@ class DecisionMaker(object):
     if metaMode == "confort":
       if self.userBonus.value():
         self._heater.setConfortMode
-      elif self.felTemp.value() < CST.FELT_TEMP_MIN:
+      elif self.felTempCold.value():
         self._heater.setConfortMode
-      elif self.felTemp.value() > CST.FELT_TEMP_MAX:
+      elif self.felTempHot.value() :
         self._heater.setConfortModeMinus2
       elif self.userDown.value():
         self._heater.setConfortModeMinus2
