@@ -31,7 +31,12 @@ class DecisionMaker(object):
   def makeDecision(self):
     #1 get meta mode
     metaMode = self.metaMode.value()
-    logging.info("makeDecision metamode = {} userBonus = {} feltCold = {}".format(metaMode, self.userBonus.value(), self.felTempHot.value()))
+    logging.info("makeDecision metamode = {} Bonus = {} feltCold = {} feltHot = {} userDown = {}".format(metaMode,
+                                                                                                         self.userBonus.value(),
+                                                                                                         self.felTempHot.value(),
+                                                                                                         self.felTempCold.value(),
+                                                                                                         self.userDown.value())
+                )
     if metaMode != "confort":
       self._heater.setEcoMode()
     
@@ -39,13 +44,17 @@ class DecisionMaker(object):
     if metaMode == "confort":
       if self.userBonus.value():
         self._heater.setConfortMode
+        logging.info("makeDecision setConfortMode")
       elif self.felTempCold.value():
         self._heater.setConfortMode
+        logging.info("makeDecision setConfortMode")
       elif self.felTempHot.value() :
         self._heater.setConfortModeMinus2
+        logging.info("makeDecision setConfortModeMinus2")
       elif self.userDown.value():
         self._heater.setConfortModeMinus2
+        logging.info("makeDecision setConfortModeMinus2")
       else:
         self._heater.setConfortModeMinus1
-      
+        logging.info("makeDecision setConfortModeMinus1")
  
