@@ -11,4 +11,9 @@ def main():
   logging.info('Started')
   decider = DecisionMaker()
   action = Action( decider.makeDecision, CST.MAIN_TIMING)
-  mainSeq = Rolling(
+  mainSeq = Rolling(action)
+  sequencer = ActionSequencer(mainSeq)
+  sequencer.start()
+  
+if __name__ == '__main__':
+  main()
