@@ -4,6 +4,7 @@ from HeatMode import HeatMode
 from FilteredVar import FilteredVar
 from CurrentTemperature import InsideTemperature
 import CST
+import logging
 
 class DecisionMaker(object):
   """ Central decision point of Radiator
@@ -30,7 +31,7 @@ class DecisionMaker(object):
   def makeDecision(self):
     #1 get meta mode
     metaMode = self.metaMode.value()
-    
+    logging.info("makeDecision metamode = {} userBonus = {} feltCold = {}".format(metaMode, self.userBonus.value(), self.felTempHot.value()))
     if metaMode != "confort":
       self._heater.setEcoMode()
     
