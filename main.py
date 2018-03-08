@@ -9,7 +9,7 @@ import CST
 sequencer = ActionSequencer()
 
 def main():
-  logging.basicConfig(filename='Radiator.log', level=logging.INFO, format='%(asctime)s %(message)s')
+  logging.basicConfig(filename='Radiator.log', level=logging.DEBUG, format='%(asctime)s %(message)s')
   logging.info('Started')
   decider = DecisionMaker()
   action = Action( action = decider.makeDecision, duration = CST.MAIN_TIMING)
