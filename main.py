@@ -10,7 +10,7 @@ def main():
   logging.basicConfig(filename='Radiator.log', level=logging.INFO, format='%(asctime)s %(message)s')
   logging.info('Started')
   decider = DecisionMaker()
-  action = Action( decider.makeDecision, CST.MAIN_TIMING)
+  action = Action( action = decider.makeDecision, duration = CST.MAIN_TIMING)
   mainSeq = Rolling([action])
   sequencer = ActionSequencer(mainSeq)
   sequencer.start()
