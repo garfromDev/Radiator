@@ -18,6 +18,7 @@ class DecisionMaker(object):
    """
 
   def __init__(self):
+    logging.info("DecisionMaker init")
     self._calendar = HeatCalendar(calFile=CST.WEEKCALJSON)
     self.metaMode = FilteredVar(cacheDuration = CST.METACACHING, getter = self._calendar.getCurrentMode)
     self._heater = HeatMode()
