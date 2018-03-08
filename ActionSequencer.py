@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import threading
+import logging
 
 # this object is an elementary couple action + time before next action (in sec.) to use with the Sequencer 
 # action : a function
@@ -19,6 +20,7 @@ class ActionSequencer:
  
   # start the sequencer if a sequence is given, or shoot the next action (called by the timer from previous call)
   def start(self, sequence=None):
+    logging.debug("start sequencer")
     if sequence != None:
         self.cancel() #Setting a new sequence cancel the previous one if there was one
         self.sequence = sequence
@@ -28,10 +30,11 @@ class ActionSequencer:
     except:
         self.timer = None #not a Rolling we stop
         return
-    
+    logging.debug("perform action")
     try:
         currentAction.action() #perform the first action
     except:
+        logging.debug("action failed")
         pass #None or crashy, maybe next action will behave better
     
     try:
