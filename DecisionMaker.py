@@ -24,8 +24,8 @@ class DecisionMaker(object):
     self._heater = HeatMode()
     self._curTemp = InsideTemperature()
     self.insideTemp = FilteredVar(cacheDuration = CST.TEMPCACHING, getter=self._curTemp.value)
-    self.userBonus = False #!!!! mécanisme à ajouter !!!!
-    self.userDown = False #!!!! mécanisme à ajouter !!!!
+    self.userBonus = FilteredVar(cacheDuration = CST.TEMPCACHING, getter=lambda x=None:False) #!!!! à remplacer !!!
+    self.userDown = FilteredVar(cacheDuration = CST.TEMPCACHING, getter=lambda x=None:False) #!!!! à remplacer !!!
     self.feltTempCold = FilteredVar(cacheDuration = CST.TEMPCACHING, getter=lambda x=None:False) #!!!! à remplacer !!!
     self.feltTempHot = FilteredVar(cacheDuration = CST.TEMPCACHING, getter=lambda x=None:False) #!!!! à remplacer !!!
     
