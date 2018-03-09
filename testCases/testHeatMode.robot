@@ -19,8 +19,8 @@ Confort minus one mode
 # we want mode to come back to CONFORT
 	set mode to confort minus one
 	mode should be	'CONFORT'
-Wait Until Keyword Succeeds	4 min 58sec	1 sec	mode should be	'ECO'
-Wait Until Keyword Succeeds	4 sec		1 sec	mode should be	'CONFORT'
+	Wait Until Keyword Succeeds	4 min 58sec	1 sec	mode should be	'ECO'
+	Wait Until Keyword Succeeds	4 sec		1 sec	mode should be	'CONFORT'
 
 Confort minus two mode
 #we want mode to be CONFORT during 4 min 53 sec, checking every sec
@@ -28,8 +28,8 @@ Confort minus two mode
 # we want mode to come back to CONFORT
 	set mode to confort minus two
 	mode should be	'CONFORT'
-Wait Until Keyword Succeeds	4 min 54sec	1 sec	mode should be	'ECO'
-Wait Until Keyword Succeeds	8 sec		1 sec	mode should be	'CONFORT'
+	Wait Until Keyword Succeeds	4 min 54sec	1 sec	mode should be	'ECO'
+	Wait Until Keyword Succeeds	8 sec		1 sec	mode should be	'CONFORT'
 
 Custom confort ratio 50
 #we want mode to be CONFORT during 2 min 30 sec, checking every sec
@@ -37,8 +37,8 @@ Custom confort ratio 50
 # we want mode to come back to CONFORT
 	set mode to custom ratio of	50
 	mode should be	'CONFORT'
-Wait Until Keyword Succeeds	2 min 31sec	1 sec	mode should be	'ECO'
-Wait Until Keyword Succeeds	2 min 31sec	1 sec	mode should be	'CONFORT'
+	Wait Until Keyword Succeeds	2 min 31sec	1 sec	mode should be	'ECO'
+	Wait Until Keyword Succeeds	2 min 31sec	1 sec	mode should be	'CONFORT'
 
 Custom confort ratio 80
 #we want mode to be CONFORT during 4 min , checking every sec
@@ -46,8 +46,8 @@ Custom confort ratio 80
 # we want mode to come back to CONFORT
 	set mode to custom ratio of	80
 	mode should be	'CONFORT'
-Wait Until Keyword Succeeds	4 min 1 sec 	1 sec	mode should be	'ECO'
-Wait Until Keyword Succeeds	1 min 1sec	1 sec	mode should be	'CONFORT'
+	Wait Until Keyword Succeeds	4 min 1 sec 	1 sec	mode should be	'ECO'
+	Wait Until Keyword Succeeds	1 min 1sec	1 sec	mode should be	'CONFORT'
 
 *** Keywords ***
 mode should be 
