@@ -42,4 +42,4 @@ class HeatModeLibrary(object):
         level = { "HIGH":GPIO.HIGH, "LOW":GPIO.LOW}[expected]
         actual = GPIO.input(output)
         if actual != level:
-            raise AssertionError('%s != %s' % (actual, expected))
+            raise AssertionError('%s != %s' % (actual, level))
