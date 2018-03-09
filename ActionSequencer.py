@@ -30,7 +30,7 @@ class ActionSequencer:
     except:
         self.timer = None #not a Rolling we stop
         return
-    logging.debug("perform action %s", currentAction)
+    logging.debug("perform action %s", currentAction.action.__name__)
     try:
         currentAction.action() #perform the first action
     except:
