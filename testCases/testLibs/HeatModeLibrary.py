@@ -17,7 +17,10 @@ class HeatModeLibrary(object):
 
     def set_mode_to_confort(self):
         self._heat.setConfortMode()
-	
+        
+    def set_mode_to_eco(self):
+        self._heat.setEcoMode()	
+        
     def output_plus_should_be(self, expected):
         self._output_X_should_be( PLUS, expected)
         
