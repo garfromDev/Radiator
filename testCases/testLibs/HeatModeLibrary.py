@@ -11,7 +11,7 @@ PLUS = 23
 class HeatModeLibrary(object):
 
     def __init__(self):
-        self._heat = HeatMode(outPlusWaveForm=PLUS, outMinusWaveForm=MINUS) 
+        self._heat = HeatMode(outPlusWaveform=PLUS, outMinusWaveform=MINUS) 
         # DO not run this test suite on actual HW, or change these number to actual one
         #self._heat = HeatMode(23,24)
 
