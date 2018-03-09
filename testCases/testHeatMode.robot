@@ -52,7 +52,7 @@ Wait Until Keyword Succeeds	1 min 1sec	1 sec	mode should be	'CONFORT'
 *** Keywords ***
 mode should be 
 	[Arguments] ${mode}
-run keyword if	${mode}=='CONFORT'	output plus should be	 LOW	 	
-run keyword if	${mode}=='CONFORT'	output minus should be	 LOW
-run keyword if	${mode}=='ECO'		output plus should be	 HIGH
-run keyword if	${mode}=='ECO'		output minus should be	 HIGH
+	run keyword if	${mode}=='CONFORT'	output plus should be	 LOW	 	
+	run keyword if	${mode}=='CONFORT'	output minus should be	 LOW
+	run keyword if	${mode}=='ECO'		output plus should be	 HIGH
+	run keyword if	${mode}=='ECO'		output minus should be	 HIGH
