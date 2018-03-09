@@ -16,7 +16,7 @@ class HeatModeLibrary(object):
         #self._heat = HeatMode(23,24)
 
     def set_mode_to_confort(self):
-	    self._heat.setConfortMode()
+        self._heat.setConfortMode()
 	
     def output_plus_should_be(self, expected):
         self._output_X_should_be( PLUS, expected)
@@ -35,8 +35,8 @@ class HeatModeLibrary(object):
 
         
     def _output_X_should_be(self, output, expected):
-	    """ verifie que la sortie soit au niveau attendu HIGH ou LOW"""
+        """ verifie que la sortie soit au niveau attendu HIGH ou LOW"""
         level = { "HIGH":GPIO.HIGH, "LOW":GPIO.LOW}[expected]
-	    actual = GPIO.input(output)
-	    if actual != level:
-	        raise AssertionError('%s != %s' % (actual, expected))
+        actual = GPIO.input(output)
+        if actual != level:
+            raise AssertionError('%s != %s' % (actual, expected))
