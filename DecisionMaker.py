@@ -34,7 +34,7 @@ class DecisionMaker(object):
     metaMode = self.metaMode.value()
     logging.info("makeDecision metamode = {} Bonus = {} feltCold = {} feltHot = {} userDown = {}".format(metaMode,
                                                                                                          self.userBonus.value(),                                                                                                     
-                                                                                                         self.felTempCold.value(),
+                                                                                                         self.feltTempCold.value(),
                                                                                                          self.feltTempHot.value(),
                                                                                                          self.userDown.value())
                 )
@@ -46,7 +46,7 @@ class DecisionMaker(object):
       if self.userBonus.value():
         self._heater.setConfortMode
         logging.info("makeDecision setConfortMode")
-      elif self.felTempCold.value():
+      elif self.feltTempCold.value():
         self._heater.setConfortMode
         logging.info("makeDecision setConfortMode")
       elif self.feltTempHot.value() :
