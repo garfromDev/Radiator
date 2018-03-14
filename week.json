@@ -7,6 +7,26 @@
 		"Tuesday": {
 			"12:00": "eco",
 			"12:15": "confort"
+		},
+		"Wenesday": {
+			"08:00": "confort",
+			"08:15": "confort"
+		},
+		"Thursday": {
+			"08:00": "confort",
+			"08:15": "confort"
+		},
+		"Friday": {
+			"08:00": "confort",
+			"08:15": "confort"
+		},
+		"Saturday": {
+			"08:00": "confort",
+			"08:15": "confort"
+		},
+		"Sunday": {
+			"08:00": "confort",
+			"08:15": "confort"
 		}
 	}
 }
