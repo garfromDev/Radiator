@@ -4,7 +4,8 @@ import RPi.GPIO as GPIO
 import time
 from Rolling import Rolling
 from ActionSequencer import Action, ActionSequencer
-        
+import logging
+
 # This module alow to drive pilot wire
 class HeatMode:
     # outPlusWaveform :
@@ -70,9 +71,11 @@ class HeatMode:
         
     def _setConfortMode(self):
         self._setOutputs( plus = GPIO.LOW, minus = GPIO.LOW)
+	logging.debug("HeatMode -> setConfortMode")
  
     def _setEcoMode(self):
         self._setOutputs( plus = GPIO.HIGH, minus = GPIO.HIGH)
+	logging.debug("HeatMode -> setEcoMode")
 
     
 
