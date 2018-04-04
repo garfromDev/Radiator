@@ -14,7 +14,7 @@ class HeatMode:
     # outMinusWaveform :
     # The GPIO output that drive the second OptoTriac (in GPIO.BCM notation)
     # this output supress positive waveform
-    def __init__(self, outPlusWaveform=16, outMinusWaveform=12):
+    def __init__(self, outPlusWaveform=19, outMinusWaveform=12):
         self._outPlusWaveform = outPlusWaveform
         self._outMinusWaveform = outMinusWaveform
         self.sequencer = ActionSequencer()
