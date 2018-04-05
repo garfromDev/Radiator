@@ -50,12 +50,12 @@ class DecisionMaker(object):
         self._heater.setConfortMode
         logging.info("makeDecision setConfortMode")
       elif self.feltTempHot.value() :
-        self._heater.setConfortModeMinus2
+        self._heater.setConfortMinus2
         logging.info("makeDecision setConfortModeMinus2")
       elif self.userDown.value():
-        self._heater.setConfortModeMinus2
+        self._heater.setConfortMinus2
         logging.info("makeDecision setConfortModeMinus2")
       else:
-        self._heater.setConfortModeMinus1
+        self._heater.setConfortMinus1
         logging.info("makeDecision setConfortModeMinus1")
  
