@@ -1,0 +1,3 @@
+faire marcher lancement automatique
+ajouter un choix du mode debug ou info pour le logging (via un parametre  dans le json)
+ajouter la valeur de temperature dans le log
