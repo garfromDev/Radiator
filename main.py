@@ -16,6 +16,7 @@ def main():
   action = Action( action = decider.makeDecision, duration = CST.MAIN_TIMING)
   mainSeq = Rolling([action])
   global sequencer  #must be global to remain alive at the end of main
+  logging.debug("ready to start maln sesuencer")
   sequencer.start(mainSeq)
   
 if __name__ == '__main__':
