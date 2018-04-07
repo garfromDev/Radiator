@@ -23,6 +23,7 @@ class HeatMode:
         self._confortMinus2Seq = Rolling([Action(self._setConfortMode, duration=293),
                                 Action(self._setEcoMode, duration=7)])
 	self.initDone = False
+	logging.debug("HeatMode initialized")
 
 
     # Must be called once prior to use to initialize HW setting
