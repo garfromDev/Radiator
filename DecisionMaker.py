@@ -32,7 +32,7 @@ class DecisionMaker(object):
   def makeDecision(self):
     #1 get meta mode
     metaMode = self.metaMode.value()
-    logging.info("makeDecision metamode = {} temp = {0:.1f} Bonus = {} feltCold = {} feltHot = {} userDown = {}".format(metaMode,
+    logging.info("makeDecision metamode = {} temp = {:.1f} Bonus = {} feltCold = {} feltHot = {} userDown = {}".format(metaMode,
                                                                                                          self.insideTemp.value(),
                                                                                                          self.userBonus.value(),
                                                                                                          self.feltTempCold.value(),
