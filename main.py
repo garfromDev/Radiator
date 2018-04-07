@@ -19,5 +19,5 @@ def main():
   logging.debug("ready to start maln sesuencer")
   sequencer.start(mainSeq)
   
-if __name__ == '__main__':
-  main()
+#if __name__ == '__main__':
+main()
