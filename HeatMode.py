@@ -45,6 +45,7 @@ class HeatMode:
         
     # set the pilot wire to confort minus 1 degree (4'57 flat, 3" sinusoid)    
     def setConfortMinus1(self):
+	logging.debug("starting sequencer with sequence confortMinus1Seq") 
         self.sequencer.start(self._confortMinus1Seq)    
 
     # set the pilot wire to confort minus 2 degree (4'53 flat, 7" sinusoid)    
