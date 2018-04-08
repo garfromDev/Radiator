@@ -34,7 +34,7 @@ class HeatModeLibrary(object):
         self._heat.setConfortMinus2()     
         
     def set_mode_to_custom_ratio_of(self, ratio):
-        self._heat.setConfortRatio(ratio)
+        self._heat.setConfortRatio(int(ratio))
 
         
     def _output_X_should_be(self, output, expected):
