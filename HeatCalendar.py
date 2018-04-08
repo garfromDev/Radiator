@@ -28,7 +28,7 @@ class HeatCalendar:
       content may be changed by the distant user via the web server
       of course, in worst case change could take 15mn to apply
   """
-  def __init__(self, calFile = CST.WEEKCALJSON, localtime = time.localtime):
+  def __init__(self, calFile = CST.JSON_PATH + CST.WEEKCALJSON, localtime = time.localtime):
     """ :param calFile name of the json file that describe the calendar """ 
     self._calFile = calFile
     self.localtime = localtime
