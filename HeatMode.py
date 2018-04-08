@@ -55,8 +55,8 @@ class HeatMode:
     # set the pilot wire to a ratio of confort mode
     # allowed ration from 10 to 90
     def setConfortRatio(self, ratio):
-        ecoTime = (7 * 60 * ( 100 - ratio)) / 100
-        confTime = (7 * 60 * ratio) / 100
+        ecoTime = (5 * 60 * ( 100 - ratio)) / 100
+        confTime = (5 * 60 * ratio) / 100
         ratioSeq = Rolling([Action(self._setConfortMode, duration = confTime),
                             Action(self._setEcoMode, duration = ecoTime) 
                            ])
