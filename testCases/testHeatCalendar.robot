@@ -1,7 +1,7 @@
 *** Settings ***
 Documentation	Testing Heat Calendrar libray
 Library		testLibs/HeatCalendarLibrary.py
-Test Setup	set calendar	test.json
+Test Setup	set calendar	testCases/test.json
 
 *** Test Cases ***
 mode eco
