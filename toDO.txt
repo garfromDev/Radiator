@@ -1,3 +1,4 @@
-faire marcher lancement automatique
+faire marcher lancement automatique -> OK
 ajouter un choix du mode debug ou info pour le logging (via un parametre  dans le json)
-ajouter la valeur de temperature dans le log
+ajouter la valeur de temperature dans le log -> OK
+ajouter ecriture fichier CSV pour info heures, temperature et mode
