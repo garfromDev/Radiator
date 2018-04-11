@@ -80,9 +80,9 @@ class HeatMode:
 	logging.debug("HeatMode -> setEcoMode")
 
     
+if __name__ == '__main__':
+	print("testing Heatmode manually")
+	logging.basicConfig(filename='Radiator.log', level=logging.DEBUG, format='%(asctime)s %(message)s')
+	test = HeatMode()
+	test.setConfortMinus1()
 
-
-  
-      
-
- 

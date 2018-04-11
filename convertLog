@@ -1,5 +1,5 @@
-#!/usr/awk
+#! /usr/bin/awk -f
 # convert the Radiator.log file to csv file for graphical exploitation
 # see https://www.shellunix.com/awk.html for awk use
-' BEGIN { print "Time,Temperature,Mode" }
-$2 == "makeDecision" { print $1 "," $8 "," $5 } ' Radiator.log > Radiator.csv
+BEGIN { print "Time,Temperature,Mode" }
+$3 == "makeDecision" && NF > 5 { print $1 "," $2 "," $9 "," $6 }
