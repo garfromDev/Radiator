@@ -1,0 +1,4 @@
+#!/usr/awk
+# convert the Radiator.log file to csv file for graphical exploitation
+' BEGIN { print "Time,Temperature,Mode" }
+$2 == "makeDecision" { print $1 "," $8 "," $5 } ' Radiator.log > Radiator.csv
