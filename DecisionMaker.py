@@ -29,7 +29,7 @@ class DecisionMaker(object):
     self.feltTempCold = FilteredVar(cacheDuration = CST.TEMPCACHING, getter=lambda x=None:False) #!!!! à remplacer !!!
     self.feltTempHot = FilteredVar(cacheDuration = CST.TEMPCACHING, getter=lambda x=None:False) #!!!! à remplacer !!!
     self.overruled = FilteredVar(cacheDuration = CST.TEMPCACHING, getter=lambda x=None:False) #!!!! à remplacer !!!
-    self.overMode =  FilteredVar(cacheDuration = CST.TEMPCACHING, getter=lambda x=None:"Eco") #!!!! à remplacer !!!
+    self.overMode =  FilteredVar(cacheDuration = CST.TEMPCACHING, getter=lambda x=None:CST.ECO) #!!!! à remplacer !!!
   
   
   def makeDecision(self):
@@ -46,18 +46,16 @@ class DecisionMaker(object):
                 )
 
     #1 apply overrule by user
-    if self.overruled:
-      self._heater.apply(mode=self.overMode.value())
-      logging.info("maked decision {}".format(self.overMode.value())
-      return
+    if self.overruled.value():
+      metaMode=self.overMode.value())
 
     #2 apply calendar                  
-    if metaMode != "confort":
+    if metaMode != CST.CONFORT:
       self._heater.setEcoMode()
       logging.info("maked decision setEcoMode")
 
     #3 adaptation of confort mode
-    if metaMode == "confort":
+    if metaMode == CST.CONFORT:
       if self.userBonus.value():
         self._heater.setConfortMode()
         logging.info("maked Decision setConfortMode")
