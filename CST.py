@@ -10,4 +10,5 @@ TEMPCACHING = 2 * MIN       # caching duration for temperature check
 MAIN_TIMING  = 15 * MIN     # main looprefreshing
 CONFORT = "confort"         # confort meta mode
 ECO = "eco"                 # eco meta mode
+UNKNOW = "unknow"           # unknow meta mode
 
