@@ -1,4 +1,4 @@
-Date,Time,Temperature,Mode
+Date;Time;Temperature;Mode
 2018-04-07;18:31:30,836;22.6;confort
 2018-04-07;18:46:30,872;22.6;confort
 2018-04-07;19:01:30,911;22.5;confort
@@ -396,3 +396,4 @@ Date,Time,Temperature,Mode
 2018-04-11;21:37:03,464;20.4;confort
 2018-04-11;21:52:03,513;20.5;confort
 2018-04-11;22:07:03,563;20.6;confort
+2018-04-11;22:22:03,603;20.6;eco
