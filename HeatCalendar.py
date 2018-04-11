@@ -36,7 +36,7 @@ class HeatCalendar:
   # return the meta mode for the current hour and time
   # hour and time is given by system time
   # meta mode is given by the json file defined in CST.WEEKCALJSON
-  #
+  # WARNING: no check done on metamode value
   def getCurrentMode(self):
     # ouvrir le fichier
     with open( self._calFile) as wcal:
@@ -46,7 +46,7 @@ class HeatCalendar:
       except Exception as err:
         #soit le fichier n'a pu être lu, soit le calendrier n'est pas complet
         print(err)
-        metaMode="unknow"
+        metaMode=CST.UNKNOW
     return metaMode
   
   # return the day in the form of 'Monday', 'Tuesday', ...
