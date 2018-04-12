@@ -39,3 +39,7 @@ class InsideTemperature:
 
         return temp
 
+    def _filteredVoltage(self):
+        # mesure 3 valeurs
+        # calcule dans un tableau les écarts D(1,2), D(1,3), D(2,3) et le smoyennes M(1,2)...
+        # tri le tableau par ordre croissant et retourne la première moyenne
