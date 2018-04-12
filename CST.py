@@ -11,4 +11,5 @@ MAIN_TIMING  = 15 * MIN     # main looprefreshing
 CONFORT = "confort"         # confort meta mode
 ECO = "eco"                 # eco meta mode
 UNKNOW = "unknow"           # unknow meta mode
+MAX_DELTA_TEMP = 0.2        # maximum temperature span between 2 simultaneous measurement for filtering (in °C)
 
