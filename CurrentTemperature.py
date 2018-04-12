@@ -4,6 +4,8 @@
 # Import SPI library (for hardware SPI) and MCP3008 library.
 import Adafruit_GPIO.SPI as SPI
 import Adafruit_MCP3008
+import time
+import CST
 
 # this object get the inside ambiant temperature from the sensor connected to the SPI adc
 # it can be used with FilteredVar mechanism, using value() as getter
@@ -43,3 +45,23 @@ class InsideTemperature:
         # mesure 3 valeurs
         # calcule dans un tableau les écarts D(1,2), D(1,3), D(2,3) et le smoyennes M(1,2)...
         # tri le tableau par ordre croissant et retourne la première moyenne
+        t=[]
+        for i in range(3):
+            t.append(self._mcp.read_adc(self._sensorPin))
+            time.sleep(0.01)
+            
+        def m(a,b):
+            return (a+b)/2
+        def d(a,b):
+            if a > b:
+                return a - b
+            return b - a
+        
+        
+        if d(t[0], m(t[1],t[2]) ) > CST.MAX_DELTA_TEMP && d(t[1],t[2]) < CST.MAX_DELTA_TEMP:
+            return m(t[1],t[2])
+        if d(t[1], m(t[0],t[2]) ) > CST.MAX_DELTA_TEMP && d(t[0],t[2]) < CST.MAX_DELTA_TEMP:
+            return m(t[0],t[2])
+        
+            
+            
