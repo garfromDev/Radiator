@@ -33,7 +33,7 @@ class InsideTemperature:
             degree = CST.MAX_DELTA_TEMP * self._sensorGain * self._adcRange / 
         except:
             degree = self._adcRange #no filterig will be done
-        voltage = self._mcp.read_adc(self._sensorPin)
+        voltage = self._filteredVoltage(maxDelta=degree, measure = lambda x:self._mcp.read_adc(self._sensorPin))
         try:
             temp = float(voltage) * (self._voltageRef / self._adcRange) / self._sensorGain
         except:
@@ -41,14 +41,20 @@ class InsideTemperature:
 
         return temp
 
-    def _filteredVoltage(self):
-        # mesure 3 valeurs
-        # calcule dans un tableau les écarts D(1,2), D(1,3), D(2,3) et le smoyennes M(1,2)...
-        # tri le tableau par ordre croissant et retourne la première moyenne
+    #--------- internal ---------------------------------------------------
+    def _filteredVoltage(self, maxDelta, measure, interval = LM35_INTERVAL):
+        # perform 3 measurement at interval secondes delay using measure() and return the mean of the two closest value
+        # or None if the 2 closest value are more than maxDelta apart
+        # return None if measure() fails
+        # this function is potentially reusable and could be refactored, except for the LM35_INTERVAl const
+        # 
         t=[]
         for i in range(3):
-            t.append(self._mcp.read_adc(self._sensorPin))
-            time.sleep(0.01)
+            try:
+                t.append(measure())
+            except:
+                return None
+            time.sleep(interval)
             
         def m(a,b):
             return (a+b)/2
@@ -57,11 +63,14 @@ class InsideTemperature:
                 return a - b
             return b - a
         
-        
-        if d(t[0], m(t[1],t[2]) ) > CST.MAX_DELTA_TEMP && d(t[1],t[2]) < CST.MAX_DELTA_TEMP:
-            return m(t[1],t[2])
-        if d(t[1], m(t[0],t[2]) ) > CST.MAX_DELTA_TEMP && d(t[0],t[2]) < CST.MAX_DELTA_TEMP:
-            return m(t[0],t[2])
+        # we look for the smallest difference bewteen two measurement 
+        fv = sorted([ (d(t[0], t[1]),  m(t[0],t[1]) ) ,
+              (d(t[0], t[2]),  m(t[0],t[2]) ),
+              (d(t[1], t[2]),  m(t[1],t[2]) )
+             ], key=lambda f:f[0])
+        if fv[0][0] <maxDelta:
+            return fv[0][1] # return the mean of two closest value
+        return None         # if the value are two far apart, return None
         
             
             
