@@ -43,7 +43,7 @@ class InsideTemperature:
         return temp
 
     #--------- internal ---------------------------------------------------
-    def _filteredVoltage(self, maxDelta, measure, interval = LM35_INTERVAL):
+    def _filteredVoltage(self, maxDelta, measure, interval = CST.LM35_INTERVAL):
         # perform 3 measurement at interval secondes delay using measure() and return the mean of the two closest value
         # or None if the 2 closest value are more than maxDelta apart
         # return None if measure() fails
