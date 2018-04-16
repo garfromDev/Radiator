@@ -31,7 +31,7 @@ class InsideTemperature:
 # higher temperature will be 58,1, this is not a concern for a heating regulation
     def value(self):
         try: #calculate the adc delta value corresponding to MAX_DELTA_TEMP temperature delta in °
-            degree = CST.MAX_DELTA_TEMP * self._sensorGain * self._adcRange / 
+            degree = CST.MAX_DELTA_TEMP * self._sensorGain * self._adcRange / self._voltageRef
         except:
             degree = self._adcRange #no filterig will be done
         voltage = self._filteredVoltage(maxDelta=degree, measure = lambda x:self._mcp.read_adc(self._sensorPin))
