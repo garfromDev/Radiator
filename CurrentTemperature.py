@@ -35,7 +35,7 @@ class InsideTemperature:
             degree = CST.MAX_DELTA_TEMP * self._sensorGain * self._adcRange / self._voltageRef
         except:
             degree = self._adcRange #no filterig will be done
-        voltage = self._filteredVoltage(maxDelta=degree, measure = lambda x:self._mcp.read_adc(self._sensorPin))
+        voltage = self._filteredVoltage(maxDelta=degree, measure = lambda :self._mcp.read_adc(self._sensorPin))
         try:
             temp = float(voltage) * (self._voltageRef / self._adcRange) / self._sensorGain
         except: #would fail if voltage=None or adcRange=0 or sensorGain=0
