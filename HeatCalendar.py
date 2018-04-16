@@ -20,7 +20,7 @@
 import CST
 import time
 import json
- 
+import logging 
     
 class HeatCalendar:
   """ This object read the calendar in a file and extract the current mode
@@ -39,14 +39,14 @@ class HeatCalendar:
   # WARNING: no check done on metamode value
   def getCurrentMode(self):
     # ouvrir le fichier
-    with open( self._calFile) as wcal:
-      try:
+    try:
+      with open( self._calFile) as wcal:
         calendar = json.load(wcal)
         metaMode=calendar['weekCalendar'][self.day()][self.hour()]
-      except Exception as err:
-        #soit le fichier n'a pu être lu, soit le calendrier n'est pas complet
-        print(err)
-        metaMode=CST.UNKNOW
+    except Exception as err:
+      #soit le fichier n'a pu être lu, soit le calendrier n'est pas complet
+      logging.log(err)
+      metaMode=CST.UNKNOW
     return metaMode
   
   # return the day in the form of 'Monday', 'Tuesday', ...
