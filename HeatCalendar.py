@@ -45,7 +45,7 @@ class HeatCalendar:
         metaMode=calendar['weekCalendar'][self.day()][self.hour()]
     except Exception as err:
       #soit le fichier n'a pu être lu, soit le calendrier n'est pas complet
-      logging.log(err)
+      logging.error(err)
       metaMode=CST.UNKNOW
     return metaMode
   
