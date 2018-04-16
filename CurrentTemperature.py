@@ -16,6 +16,7 @@ class InsideTemperature:
 # adcRange : the output range of ADC converter (0 to 1023 for MCP3008)
 # sensorGain : the voltage change per degrees of the thermal sensor (10 mV / degree for LM35)
     def __init__(self, sensorPin = 1, voltageRef = 581.0,adcRange = 1024.0, sensorGain = 10.0 ):
+        GPIO.setmode(GPIO.BCM)
         self._sensorPin = sensorPin
         self._voltageRef = voltageRef
         self._adcRange = adcRange
@@ -36,7 +37,7 @@ class InsideTemperature:
         voltage = self._filteredVoltage(maxDelta=degree, measure = lambda x:self._mcp.read_adc(self._sensorPin))
         try:
             temp = float(voltage) * (self._voltageRef / self._adcRange) / self._sensorGain
-        except:
+        except: #would fail if voltage=None or adcRange=0 or sensorGain=0
             temp = None
 
         return temp
