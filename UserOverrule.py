@@ -1,7 +1,7 @@
 #
-# this module allow to interfec with user about
-# orverruling the calendar (vacation, day at home, ...)
-
+# this module allow to interface with user about
+# overruling the calendar (vacation, day at home, ...)
+# it will fetch the user decision in a json file 
 class UserOverrule:
   def __init__(userJson):
     self._jsonFile = CST.JSON_PATH + userJson
