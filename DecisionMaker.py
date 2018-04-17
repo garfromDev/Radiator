@@ -47,7 +47,7 @@ class DecisionMaker(object):
 
     #1 apply overrule by user
     if self.overruled.value():
-      metaMode=self.overMode.value())
+      metaMode=self.overMode.value()
 
     #2 apply calendar                  
     if metaMode != CST.CONFORT:
