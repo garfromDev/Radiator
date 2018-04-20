@@ -22,8 +22,7 @@ class DecisionMaker(object):
     self._calendar = HeatCalendar(calFile=CST.WEEKCALJSON)
     self.metaMode = FilteredVar(cacheDuration = CST.METACACHING, getter = self._calendar.getCurrentMode)
     self._heater = HeatMode()
-    self._curTemp = InsideTemperature()
-    self.insideTemp = FilteredVar(cacheDuration = CST.TEMPCACHING, getter=self._curTemp.value)
+    self.insideTemp = FilteredVar(cacheDuration = CST.TEMPCACHING, getter=InsideTemperature().value)
     self.userBonus = FilteredVar(cacheDuration = CST.TEMPCACHING, getter=lambda x=None:False) #!!!! à remplacer !!!
     self.userDown = FilteredVar(cacheDuration = CST.TEMPCACHING, getter=lambda x=None:False) #!!!! à remplacer !!!
     self.feltTempCold = FilteredVar(cacheDuration = CST.TEMPCACHING, getter=lambda x=None:False) #!!!! à remplacer !!!
