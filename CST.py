@@ -13,3 +13,4 @@ ECO = "eco"                 # eco meta mode
 UNKNOW = "unknow"           # unknow meta mode
 MAX_DELTA_TEMP = 0.2        # maximum temperature span between 2 simultaneous measurement for filtering (in °C)
 LM35_INTERVAL = 0.01        # interval in sec between 2 measure for filtering temperature measurement
+SUPER_HOT_DELTA = 3         # delta between target temp and measured temp to entre super hot mode
