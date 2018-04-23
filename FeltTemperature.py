@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import CST
 
 class FeltTemperature:
   """
@@ -23,6 +24,11 @@ class FeltTemperature:
       :param targetTemp: the target felt temperature (Celsius), similar to the air temperature without sun load under comfortable humidity
     """
     self.targetTemp = targetTemp
+    self.insideTemperature = insideTemperature
+    self.outsideSunLevel = outsideSunLevel
+    self.humidity = humidity
+    self.outsideTemperature = outsideTemperature
+    self.targetTemp = targetTemp
   
   def feltTempCold(self):
     """
@@ -39,8 +45,10 @@ class FeltTemperature:
     
     
     def feltTempSuperHot(self):
-    """
+      """
       :return: True if user will feel really hot versus target temperature
-    """
-    return False # TODO: implement!
+      """
+      if self.insideTemperature() - targetTemp > CST.SUPER_HOT_DELTA:
+        return true
+      return False 
     
