@@ -16,6 +16,11 @@ LM35_INTERVAL = 0.01        # interval in sec between 2 measure for filtering te
 SUPER_HOT_DELTA = 3         # delta between target temp and measured temp to entre super hot mode
 
 class _const:
+    """
+      now any client-code can import const
+      and bind an attribute ONCE:
+      const.magic = 23
+    """
     class ConstError(TypeError): pass
     def __setattr__(self,name,value):
         if self.__dict__.has_key(name):
