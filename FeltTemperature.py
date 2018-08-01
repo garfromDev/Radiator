@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-import CST
+import const
+const.RI = 0.125
 
 class FeltTemperature:
   """
