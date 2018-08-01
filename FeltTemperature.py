@@ -18,10 +18,16 @@ class FeltTemperature:
                insideSunLevel,
                humidity,
                outsideTemperature,
-               targetTemp = 19):
+               targetTemp = 19,
+               wallTransmissionCoeff = 0.146 ):
     """
-      :param insideTemperature: the room temperature in Celsius
+      :param insideTemperature: a function returning the room temperature in Celsius
+      :param outsideSunLevel: a function returning the sun level outside (HIGH, MEDIUM, LOW, NONE)
+      :param insideSunLevel: a function returning the sun level (light level) inside (HIGH, MEDIUM, LOW, NONE)
+      :param humidity: a function returning the humidity level inside in %RH
+      :param outsideTemperature: a function returning the outside temperature in Celsius
       :param targetTemp: the target felt temperature (Celsius), similar to the air temperature without sun load under comfortable humidity
+      :param wall: an object of type WallStackUp giving thermal property of wall material and insulation
     """
     self.targetTemp = targetTemp
     self.insideTemperature = insideTemperature
@@ -29,11 +35,14 @@ class FeltTemperature:
     self.humidity = humidity
     self.outsideTemperature = outsideTemperature
     self.targetTemp = targetTemp
-  
+    self.wallTransmissionCoeff = wallTransmissionCoeff
+    
+    
   def feltTempCold(self):
     """
       :return: True if user will feel cold versus target temperature
     """
+    
     return False # TODO: implement!
   
   
@@ -52,3 +61,10 @@ class FeltTemperature:
         return true
       return False 
     
+    def _wallTemperature(self):
+      """
+      :return the calculated wall temperature based on wall transmission coeff
+      """
+      delta = outsideTemperature() - insideTemperature()
+      phi = delta * self.wallTransmissionCoeff
+      return insideTemperature() + phi * const.RI 
