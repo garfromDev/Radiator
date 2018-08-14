@@ -42,6 +42,11 @@ class FeltTemperature:
   def feltTempCold(self):
     """
       :return: True if user will feel cold versus target temperature
+      user feel cold when :
+      - inside air temp is too low OR
+      - wall temperature is lower than air temperature and no sun OR
+      - humidity is high and no sun
+      - 
     """
     
     return False # TODO: implement!
