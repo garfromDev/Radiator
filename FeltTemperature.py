@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 import const
 const.RI = 0.125
+const.FELT_TEMP_COLD_DELTA = -1.0
+const.FELT_TEMP_HOT_DELTA = +0.8
+const.SUPER_HOT_DELTA = 2
 
 class FeltTemperature:
   """
@@ -20,7 +23,8 @@ class FeltTemperature:
                humidity,
                outsideTemperature,
                targetTemp = 19,
-               wallTransmissionCoeff = 0.146 ):
+               wallTransmissionCoeff = 0.146,
+               insideTempFactor = ):
     """
       :param insideTemperature: a function returning the room temperature in Celsius
       :param outsideSunLevel: a function returning the sun level outside (HIGH, MEDIUM, LOW, NONE)
@@ -28,7 +32,8 @@ class FeltTemperature:
       :param humidity: a function returning the humidity level inside in %RH
       :param outsideTemperature: a function returning the outside temperature in Celsius
       :param targetTemp: the target felt temperature (Celsius), similar to the air temperature without sun load under comfortable humidity
-      :param wall: an object of type WallStackUp giving thermal property of wall material and insulation
+      :param wallTransmissionCoeff: wall material and insulation property
+      :param windowTransmissionCoeff: window insulation property
     """
     self.targetTemp = targetTemp
     self.insideTemperature = insideTemperature
@@ -49,24 +54,29 @@ class FeltTemperature:
       - 
     """
     
-    return False # TODO: implement!
+    return ( self._feltTemperature < (self.targetTemp + const.FELT_TEMP_COLD_DELTA) )
   
   
   def feltTempHot(self):
     """
       :return: True if user will feel hot versus target temperature
     """
-    return False # TODO: implement!
+    return ( self._feltTemperature() > (self.targetTemp + const.FELT_TEMP_HOT_DELTA) )
     
     
     def feltTempSuperHot(self):
       """
       :return: True if user will feel really hot versus target temperature
       """
-      if self.insideTemperature() - targetTemp > CST.SUPER_HOT_DELTA:
-        return true
-      return False 
+      return ( ( self.insideTemperature() - targetTemp) > const.SUPER_HOT_DELTA)
     
+    
+    def _feltTemperature(self):
+      """
+      :return: the calculated felt temperature taking into account the different parameters
+      """
+      
+      
     def _wallTemperature(self):
       """
       :return the calculated wall temperature based on wall transmission coeff
