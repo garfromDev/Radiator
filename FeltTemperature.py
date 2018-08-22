@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import const
 const.RI = 0.125
+const.WINDOW_Ri = 0.13
 const.FELT_TEMP_COLD_DELTA = -1.0
 const.FELT_TEMP_HOT_DELTA = +0.8
 const.SUPER_HOT_DELTA = 2
@@ -81,6 +82,25 @@ class FeltTemperature:
       """
       :return the calculated wall temperature based on wall transmission coeff
       """
+      return _surfaceTemperature(self.wallTransmissionCoeff, const.RI)
+
+    
+    def _windowTemperature(self):
+      """
+      :return the calculated window surface temperature based on window transmission coeff
+      """
+      return _surfaceTemperature(self.windowTransmissionCoeff, const.WINDOW_Ri)
+    
+    
+    def _surfaceTemperature(U, Ri):
+      """
+      :param U: the total transmission coeff of the wall or window in W / m2 K
+      :return the surface temperature in °C
+      """
       delta = outsideTemperature() - insideTemperature()
-      phi = delta * self.wallTransmissionCoeff
-      return insideTemperature() + phi * const.RI 
+      phi = delta * U
+      return insideTemperature() + phi * Ri
+    
+    
+      
+      
