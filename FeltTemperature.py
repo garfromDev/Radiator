@@ -76,6 +76,10 @@ class FeltTemperature:
       """
       :return: the calculated felt temperature taking into account the different parameters
       """
+      felt = self._wallTemperatureEffect() * const.WALL_FACTOR \
+        + self._windowTemperatureEffect() * const.WINDOW_FACTOR \
+        + self.insideTemperatureEffect() * const.INSIDE_TEMP_EFFECT
+      
       
       
     def _wallTemperature(self):
