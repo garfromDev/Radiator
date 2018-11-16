@@ -3,6 +3,7 @@ from HeatCalendar import HeatCalendar
 from HeatMode import HeatMode
 from FilteredVar import FilteredVar
 from CurrentTemperature import InsideTemperature
+from UserManager import UserManager
 import CST
 import logging
 
@@ -22,17 +23,18 @@ class DecisionMaker(object):
     self._calendar = HeatCalendar(calFile=CST.WEEKCALJSON)
     self.metaMode = FilteredVar(cacheDuration = CST.METACACHING, getter = self._calendar.getCurrentMode)
     self._heater = HeatMode()
+    self._userManager = UserManager()
     self.insideTemp = FilteredVar(cacheDuration = CST.TEMPCACHING, getter=InsideTemperature().value)
-    self.userBonus = FilteredVar(cacheDuration = CST.TEMPCACHING, getter=lambda x=None:False) #!!!! à remplacer !!!
-    self.userDown = FilteredVar(cacheDuration = CST.TEMPCACHING, getter=lambda x=None:False) #!!!! à remplacer !!!
+    self.userBonus = FilteredVar(cacheDuration = CST.TEMPCACHING, getter=self._userManager.userBonus)
+    self.userDown = FilteredVar(cacheDuration = CST.TEMPCACHING, getter=self._userManager.userDown)
     self.feltTempCold = FilteredVar(cacheDuration = CST.TEMPCACHING, getter=lambda x=None:False) #!!!! à remplacer !!!
     self.feltTempHot = FilteredVar(cacheDuration = CST.TEMPCACHING, getter=lambda x=None:False) #!!!! à remplacer !!!
-    self.overruled = FilteredVar(cacheDuration = CST.TEMPCACHING, getter=lambda x=None:False) #!!!! à remplacer !!!
-    self.overMode =  FilteredVar(cacheDuration = CST.TEMPCACHING, getter=lambda x=None:CST.ECO) #!!!! à remplacer !!!
+    self.overruled = FilteredVar(cacheDuration = CST.TEMPCACHING, getter=self._userManager.overruled)
+    self.overMode =  FilteredVar(cacheDuration = CST.TEMPCACHING, getter=self._userManager.overMode)
   
   
   def makeDecision(self):
-    #0 get meta mode  
+    #0 get meta mode from calendar  
     metaMode = self.metaMode.value()
     logging.info("makeDecision metamode = {} temp = {:.1f} Bonus = {} feltCold = {} feltHot = {} userDown = {} overruled = {} overMode = {}".format(metaMode,
                                                                                                          self.insideTemp.value(),
@@ -48,7 +50,7 @@ class DecisionMaker(object):
     if self.overruled.value():
       metaMode=self.overMode.value()
 
-    #2 apply calendar                  
+    #2 eco mode                 
     if metaMode != CST.CONFORT:
       self._heater.setEcoMode()
       logging.info("maked decision setEcoMode")
