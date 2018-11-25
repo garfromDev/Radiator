@@ -18,41 +18,40 @@ class RGB_Displayer:
         self._outRed = outRed
         self._outGreen = outGreen
         self._outBlue = outBlue
-	self._inhibit=inhibit
-	GPIO.setmode(GPIO.BCM)
+	    self._inhibit=inhibit
+	    GPIO.setmode(GPIO.BCM)
         GPIO.setup(self._outRed, GPIO.OUT)
         GPIO.setup(self._outGreen, GPIO.OUT)
-	GPIO.setup(self._outBlue, GPIO.OUT)
-	logging.debug("RGB_Displayer initialized")
+	    GPIO.setup(self._outBlue, GPIO.OUT)
+	    logging.debug("RGB_Displayer initialized")
 
 
    # Set the Led to red    
     def setColorRed(self):
-	self.turnOff()
-        if !inhibit():
-            ouput(self._outRed, GPIO.HIGH)
+        _turnColorOn(self._outRed)
       
 
    # Set the Led to green    
-    def setColorGreen(self):
-        self.turnOff()
-        if !inhibit()	    
-            ouput(self._outGreen, GPIO.HIGH)
+    def setColorGreen(self):	    
+        _turnColorOn(self._outGreen)
 		
 		
    # Set the Led to Blue    
-    def setColorBlue(self):
-        self.turnOff()
-        if !inhibit()	    
-            ouput(self._outBlue, GPIO.HIGH)
+    def setColorBlue(self):   
+        _turnColorOn(self._outBlue)
               
     # turn all Leds off
     def turnOff(self):
-	ouput(self._outRed, GPIO.LOW)
-	ouput(self._outGreen, GPIO.LOW)
-	ouput(self._outBlue, GPIO.LOW)
+	    ouput(self._outRed, GPIO.LOW)
+	    ouput(self._outGreen, GPIO.LOW)
+	    ouput(self._outBlue, GPIO.LOW)
 	
-
+    #---------------------------------------
+    def _turnColorOn(self, ledOutput):
+        self.turnOff()
+        if not inhibit()	    
+            ouput(ledOutput, GPIO.HIGH)
+    
     
 if __name__ == '__main__':
 	print("testing RGB_Displayer manually")
