@@ -42,15 +42,15 @@ class RGB_Displayer:
               
     # turn all Leds off
     def turnOff(self):
-        GPIO.ouput(self._outRed, GPIO.LOW)
-        GPIO.ouput(self._outGreen, GPIO.LOW)
-        GPIO.ouput(self._outBlue, GPIO.LOW)
+        GPIO.output(self._outRed, GPIO.LOW)
+        GPIO.output(self._outGreen, GPIO.LOW)
+        GPIO.output(self._outBlue, GPIO.LOW)
 	
     #---------------------------------------
     def _turnColorOn(self, ledOutput):
         self.turnOff()
         if not inhibit():	    
-            GPIO.ouput(ledOutput, GPIO.HIGH)
+            GPIO.output(ledOutput, GPIO.HIGH)
     
     
 if __name__ == '__main__':
@@ -58,9 +58,9 @@ if __name__ == '__main__':
     logging.basicConfig(filename='Radiator.log', level=logging.DEBUG, format='%(asctime)s %(message)s')
     test = RGB_Displayer()
     test.setColorRed()
-    time.sleep(0.5)
+    time.sleep(1)
     test.setColorGreen()
-    time.sleep(0.5)
+    time.sleep(1)
     test.setColorBlue()
-    time.sleep(0.5)
+    time.sleep(1)
     test.turnOff()
