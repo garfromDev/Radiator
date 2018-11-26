@@ -14,7 +14,7 @@ class RGB_Displayer:
     # The GPIO output that drive the green Led (in GPIO.BCM notation)
     # inhibit :
     # function that when return true, forbid to light Led on
-    def __init__(self, outRed=23, outGreen=25, outBlue=24, inhibit=lambda x=None : false ):
+    def __init__(self, outRed=23, outGreen=25, outBlue=24, inhibit=lambda x=None : False ):
         self._outRed = outRed
         self._outGreen = outGreen
         self._outBlue = outBlue
