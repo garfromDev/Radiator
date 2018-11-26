@@ -49,7 +49,7 @@ class RGB_Displayer:
     #---------------------------------------
     def _turnColorOn(self, ledOutput):
         self.turnOff()
-        if not inhibit():	    
+        if not self._inhibit():	    
             GPIO.output(ledOutput, GPIO.HIGH)
     
     
