@@ -22,28 +22,35 @@ class HeatingStateDisplayer:
     def displayConfortMode(self):
         self.sequencer.cancel()
         self._displayer.setColorRed()
-        
+    
+    
     def displayEcoMode(self):
         self.sequencer.cancel()
         self._displayer.setColorBlue()
-         
-    def displayConfortModeMinus1(self):
+    
+    
+    def displayConfortMinus1Mode(self):
         self.sequencer.cancel()
         self._displayer.setColorGreen()
-        
-     def displayConfortModeMinus2(self):
+    
+    
+    def displayConfortMinus2Mode(self):
         self.sequencer.start(self._minus2Sequence)
-       
+    
+    
+    def displayRatioMode(self, ratio):
+        pass #pas d'affichage prévu
+    
     
 if __name__ == '__main__':
-	print("testing HeatingStateDisplayer manually")
-	logging.basicConfig(filename='Radiator.log', level=logging.DEBUG, format='%(asctime)s %(message)s')
-	test = HeatingStateDisplayer()
+    print("testing HeatingStateDisplayer manually")
+    logging.basicConfig(filename='Radiator.log', level=logging.DEBUG, format='%(asctime)s %(message)s')
+    test = HeatingStateDisplayer()
     test.displayConfortMode()
     print("Red Led light on")
     time.sleep(1)
     test.displayEcoMode()
     print("Blue Led light on")
     time.sleep(1)
-	test.displayConfortMinus2() 
+	test.displayConfortMinus2Mode() 
     print("Green LED blink")
