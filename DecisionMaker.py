@@ -3,7 +3,7 @@ from HeatCalendar import HeatCalendar
 from HeatMode import HeatMode
 from FilteredVar import FilteredVar
 from CurrentTemperature import InsideTemperature
-from UserManager import UserManager
+from UserInteractionManager import UserInteractionManager
 import CST
 import logging
 
@@ -18,12 +18,12 @@ class DecisionMaker(object):
         - felt internal temp (combine heat and humidity)
    """
 
-  def __init__(self):
+  def __init__(self, calendar=HeatCalendar(calFile=CST.WEEKCALJSON), userManager=UserInteractionManager()):
     logging.info("DecisionMaker init")
-    self._calendar = HeatCalendar(calFile=CST.WEEKCALJSON)
+    self._calendar = calendar
     self.metaMode = FilteredVar(cacheDuration = CST.METACACHING, getter = self._calendar.getCurrentMode)
     self._heater = HeatMode()
-    self._userManager = UserManager()
+    self._userManager = userManager
     self.insideTemp = FilteredVar(cacheDuration = CST.TEMPCACHING, getter=InsideTemperature().value)
     self.userBonus = FilteredVar(cacheDuration = CST.TEMPCACHING, getter=self._userManager.userBonus)
     self.userDown = FilteredVar(cacheDuration = CST.TEMPCACHING, getter=self._userManager.userDown)
