@@ -73,3 +73,11 @@ class DecisionMaker(object):
         self._heater.setConfortMinus1()
         logging.info("maked Decision setConfortModeMinus1")
  
+
+if __name__ == '__main__':
+  print("testing DecisionMaker manually")
+  logging.basicConfig(filename='Radiator.log', level=logging.DEBUG, format='%(asctime)s %(message)s')
+  test = DecisionMaker()
+  test.makeDecision()
+  print("Decision taken can be inspected in log file or through StateDisplay")
+  
