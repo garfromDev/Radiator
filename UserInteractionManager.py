@@ -4,7 +4,7 @@ import const
 const.USER_JSON = "userInteraction.json"
 const.JSON_PATH = "/home/pi/Program/Radiator/" # the path to the weekly calendar
 
-class UserInteractionManager:
+class UserInteractionManager(object):
   """
     this module allow to interface with user about
     overruling the calendar (vacation, day at home, ...)
@@ -12,6 +12,7 @@ class UserInteractionManager:
   """
   def __init__(self, path=const.JSON_PATH, file=const.USER_JSON):
     self._jsonFile = path + file
+    
     
   def overruled(self):
     """
@@ -46,3 +47,11 @@ class UserInteractionManager:
       return: the target temp chosen by the user or None
     """
     return None # TODO implement!
+  
+    
+if __name__ == '__main__':  
+  print("testing UserInteractionManager manually")
+  logging.basicConfig(filename='Radiator.log', level=logging.DEBUG, format='%(asctime)s %(message)s')
+  test = UserInteractionManager()
+  print("overruled : {}  userBonus : {}  userDown : {}".format(test.overruled(), test.userBonus(), test.userDown()))
+ 
