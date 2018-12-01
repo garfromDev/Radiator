@@ -5,7 +5,7 @@ import time
 from Rolling import Rolling
 from ActionSequencer import Action, ActionSequencer
 import logging
-import HeatingStateDisplayer
+from HeatingStateDisplayer import HeatingStateDisplayer
 
 # This module alow to drive pilot wire
 class HeatMode:
@@ -23,7 +23,7 @@ class HeatMode:
                                 Action(self._setEcoMode, duration = 3)])
         self._confortMinus2Seq = Rolling([Action(self._setConfortMode, duration=293),
                                 Action(self._setEcoMode, duration=7)])
-        self._stateDisplayer=stateDisplayer
+        self._displayer=stateDisplayer
         self.initDone = False
         logging.debug("HeatMode initialized")
 

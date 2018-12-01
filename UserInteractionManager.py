@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
+import logging
 import CST
-import const
-const.USER_JSON = "userInteraction.json"
-const.JSON_PATH = "/home/pi/Program/Radiator/" # the path to the weekly calendar
+CST.USER_JSON = "userInteraction.json"
+CST.JSON_PATH = "/home/pi/Program/Radiator/" # the path to the weekly calendar
 
 class UserInteractionManager(object):
   """
@@ -10,7 +10,7 @@ class UserInteractionManager(object):
     overruling the calendar (vacation, day at home, ...)
     it will fetch the user decision in a json file 
   """
-  def __init__(self, path=const.JSON_PATH, file=const.USER_JSON):
+  def __init__(self, path=CST.JSON_PATH, file=CST.USER_JSON):
     self._jsonFile = path + file
     
     

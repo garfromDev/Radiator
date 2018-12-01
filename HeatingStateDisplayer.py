@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
 
 import logging
-import RGB_Displayer
+from RGB_Displayer import RGB_Displayer
 from Rolling import Rolling
 from ActionSequencer import Action, ActionSequencer
-
+import time
 
 class HeatingStateDisplayer:
-"""
+    """
     This object will display Heating State to local user
     current implementation use RGB_Displayer to dispaly status using one RGB led
-"""
+    """
     def __init__(self, displayer=RGB_Displayer()):
         self._displayer = displayer
         self._displayer.turnOff
@@ -20,22 +20,22 @@ class HeatingStateDisplayer:
                                       
                                       
     def displayConfortMode(self):
-        self.sequencer.cancel()
+        self._sequencer.cancel()
         self._displayer.setColorRed()
     
     
     def displayEcoMode(self):
-        self.sequencer.cancel()
+        self._sequencer.cancel()
         self._displayer.setColorBlue()
     
     
     def displayConfortMinus1Mode(self):
-        self.sequencer.cancel()
+        self._sequencer.cancel()
         self._displayer.setColorGreen()
     
     
     def displayConfortMinus2Mode(self):
-        self.sequencer.start(self._minus2Sequence)
+        self._sequencer.start(self._minus2Sequence)
     
     
     def displayRatioMode(self, ratio):
@@ -52,5 +52,5 @@ if __name__ == '__main__':
     test.displayEcoMode()
     print("Blue Led light on")
     time.sleep(1)
-	test.displayConfortMinus2Mode() 
+    test.displayConfortMinus2Mode() 
     print("Green LED blink")
