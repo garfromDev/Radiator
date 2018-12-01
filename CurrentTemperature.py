@@ -75,4 +75,8 @@ class InsideTemperature:
         return None         # if the value are two far apart, return None
         
             
-            
+if __name__ == '__main__':
+    print("testing InsideTemperature manually")
+    logging.basicConfig(filename='Radiator.log', level=logging.DEBUG, format='%(asctime)s %(message)s')
+    test = InsideTemperature()
+    print(test.value())            
