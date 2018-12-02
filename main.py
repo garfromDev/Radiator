@@ -4,7 +4,7 @@ import logging
 from ActionSequencer import Action, ActionSequencer
 from DecisionMaker import DecisionMaker
 from Rolling import Rolling
-import CST
+from CST import CST
 
 sequencer = ActionSequencer() #must be global to remain alive at the end of main
 
