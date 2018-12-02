@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import logging
-import CST
+from CST import CST
 CST.USER_JSON = "userInteraction.json"
 CST.JSON_PATH = "/home/pi/Program/Radiator/" # the path to the weekly calendar
 
