@@ -4,7 +4,7 @@ from HeatMode import HeatMode
 from FilteredVar import FilteredVar
 from CurrentTemperature import InsideTemperature
 from UserInteractionManager import UserInteractionManager
-import CST
+from CST import CST
 import logging
 
 class DecisionMaker(object):
