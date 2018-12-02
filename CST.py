@@ -6,10 +6,10 @@ import const as CST
 
 CST.MIN         = 60            # conversion of minutes to second
 CST.WEEKCALJSON = "week.json"   # the file that defines the weekly calendar
-CST.CALENDAR_PATH = "."         # the path to the weekly calendar file
-CST.METACACHING = 5 * MIN       # caching duration for meta mode check
-CST.TEMPCACHING = 2 * MIN       # caching duration for temperature check
-CST.MAIN_TIMING  = 15 * MIN     # main looprefreshing
+CST.CALENDAR_PATH = "./"         # the path to the weekly calendar file
+CST.METACACHING = 5 * CST.MIN   # caching duration for meta mode check
+CST.TEMPCACHING = 2 * CST.MIN   # caching duration for temperature check
+CST.MAIN_TIMING  = 15 * CST.MIN # main looprefreshing
 CST.CONFORT = "confort"         # confort meta mode
 CST.CONFORTPLUS = "confortPlus" # confort plus meta mode
 CST.ECO = "eco"                 # eco meta mode
