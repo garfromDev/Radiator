@@ -36,10 +36,18 @@ class HeatModeLibrary(object):
     def set_mode_to_custom_ratio_of(self, ratio):
         self._heat.setConfortRatio(int(ratio))
 
+    def color_should_be(self, color):
+        ucolor = color.upper()
+        maping = { "BLUE":24, "RED":23, "GREEN":25}
+        others = set(maping.keys())
+        others.discard(ucolor)
+        self._output_X_should_be(maping[color], GPIO.HIGH) #output for this color led should be high
+        for c in others:
+             self._output_X_should_be(maping[c], GPIO.LOW) #other output should be low
         
     def _output_X_should_be(self, output, expected):
         """ verifie que la sortie soit au niveau attendu HIGH ou LOW"""
         level = { "HIGH":GPIO.HIGH, "LOW":GPIO.LOW}[expected]
         actual = GPIO.input(output)
         if actual != level:
-            raise AssertionError('%s != %s' % (actual, level))
+            raise AssertionError('output %s : actual %s != expected %s' % (output, actual, level))
