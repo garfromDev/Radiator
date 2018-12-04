@@ -45,7 +45,7 @@ class HeatMode:
     def setEcoMode(self):
         self.sequencer.cancel()
         self._setEcoMode()
-        self._displayer.displayConfortMode()
+        self._displayer.displayEcoMode()
         
     # set the pilot wire to confort minus 1 degree (4'57 flat, 3" sinusoid)    
     def setConfortMinus1(self):
