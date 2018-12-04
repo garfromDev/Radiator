@@ -7,11 +7,13 @@ Confort Mode
 	set mode to confort
 	output plus should be	 LOW
 	output minus should be	 LOW
+	color should be	         RED
 
 Eco Mode
 	set mode to eco
 	output plus should be	 HIGH
 	output minus should be	 HIGH
+	color should be	         BLUE
 
 Confort minus one mode
 #we want mode to be CONFORT during 4 min 57 sec, checking every sec
