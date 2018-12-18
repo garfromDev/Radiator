@@ -1,0 +1,15 @@
+{"UserInteraction": 
+  {"overruled": 
+    {"status": false, 
+    "overmode": "UNKNOW",
+    "expirationDate": "01/01/2018"}
+  },
+  {"userBonus":
+    {"status": false, 
+    "expirationDate": "01/01/2018"}
+  },
+  {"userDown":
+    {"status": false, 
+    "expirationDate": "01/01/2018"}
+  }
+}
