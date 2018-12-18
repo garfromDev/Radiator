@@ -4,7 +4,7 @@ import json
 from FilteredVar import FilteredVar
 from CST import CST
 CST.USER_JSON = "userInteraction.json"
-CST.JSON_PATH = "~/Program/Radiator/" # the path to the weekly calendar
+CST.JSON_PATH = '/home/pi/Program/Radiator/' # the path to the weekly calendar
 
 class UserInteractionManager(object):
   """
