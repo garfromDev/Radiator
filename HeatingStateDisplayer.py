@@ -55,4 +55,4 @@ if __name__ == '__main__':
     test.displayConfortMinus2Mode() 
     print("Green LED blink")
     time.sleep(6)
-    exit()
+    test._sequencer.cancel()
