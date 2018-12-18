@@ -4,7 +4,7 @@ import json
 from FilteredVar import FilteredVar
 from CST import CST
 CST.USER_JSON = "userInteraction.json"
-CST.JSON_PATH = "/home/pi/Program/Radiator/" # the path to the weekly calendar
+CST.JSON_PATH = "~/Program/Radiator/" # the path to the weekly calendar
 
 class UserInteractionManager(object):
   """
@@ -68,7 +68,7 @@ class UserInteractionManager(object):
     
 if __name__ == '__main__':  
   print("testing UserInteractionManager manually")
-  logging.basicConfig(filename='Radiator.log', level=logging.DEBUG, format='%(asctime)s %(message)s')
+  #logging.basicConfig(filename='Radiator.log', level=logging.DEBUG, format='%(asctime)s %(message)s')
   test = UserInteractionManager()
   print("overruled : {}  userBonus : {}  userDown : {}".format(test.overruled(), test.userBonus(), test.userDown()))
  
