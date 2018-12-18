@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 import logging
+import json
+from FilteredVar import FilteredVar
 from CST import CST
 CST.USER_JSON = "userInteraction.json"
 CST.JSON_PATH = "/home/pi/Program/Radiator/" # the path to the weekly calendar
@@ -12,7 +14,7 @@ class UserInteractionManager(object):
   """
   def __init__(self, path=CST.JSON_PATH, file=CST.USER_JSON):
     self._jsonFile = path + file
-    
+    self._userInputs=FilteredVar(cacheDuration = CST.METACACHING, getter = self._getUserInputs)
     
   def overruled(self):
     """
@@ -40,6 +42,21 @@ class UserInteractionManager(object):
       return: true if user has requested to increase temperature
     """
     return False # TODO implement! 
+  
+  
+  def _getUserInputs(self):
+    # ouvrir le fichier
+    try:
+      with open( self._jsonFile) as usrDecision:
+        usr = json.load(usrDecision)
+        res=usr['userInteraction']
+    except Exception as err:
+      #soit le fichier n'a pu être lu, soit le calendrier n'est pas complet
+      logging.error(err)
+      res={"overruled":{"status":false, "expirationDate":"01/01/2000","overMode"="UNKNOW"},
+           "userBonus":{"status":false, "expirationDate":"01/01/2000"},
+           "userDown":{"status":false, "expirationDate":"01/01/2000"}}
+    return res
 
   
   def targetTemp(self):
