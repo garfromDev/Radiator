@@ -3,13 +3,12 @@
     {"status": false, 
     "overmode": "UNKNOW",
     "expirationDate": "01/01/2018"}
-  },
-  {"userBonus":
+  ,
+  "userBonus":
     {"status": false, 
     "expirationDate": "01/01/2018"}
-  },
-  {"userDown":
+  ,
+  "userDown":
     {"status": false, 
     "expirationDate": "01/01/2018"}
-  }
 }
