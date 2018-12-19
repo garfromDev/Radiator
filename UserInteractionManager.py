@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import logging
 import json
+from datetime import datetime
 from FilteredVar import FilteredVar
 from CST import CST
 CST.USER_JSON = "userInteraction.json"
@@ -12,39 +13,50 @@ class UserInteractionManager(object):
     overruling the calendar (vacation, day at home, ...)
     it will fetch the user decision in a json file 
   """
+  
   def __init__(self, path=CST.JSON_PATH, file=CST.USER_JSON):
     self._jsonFile = path + file
     self._userInputs=FilteredVar(cacheDuration = CST.METACACHING, getter = self._getUserInputs)
+    
     
   def overruled(self):
     """
       return: true if user has decided to temporary overrule the heatCalendar
     """
-    return False # TODO implement!
+    return self._isValid(self._userInputs["overruled"])
   
   
   def overMode(self):
     """
-      return: the metamode choosen by the user (ECO, CONFORT)
+      return: the metamode choosen by the user (ECO, CONFORT, ..)
+      It is the consumer responsability to check overrule validity, no check done here
+      In case the userInputs dictionary do not contains key, return UNKNOW
     """
-    return CST.UNKNOW # TODO implement!
+    try:
+      return self._userInputs["overruled"]["overMode"] 
+    except Exception as err:
+      return CST.UNKNOW
     
     
   def userBonus(self):
     """
       return: true if user has requested to increase temperature
     """
-    return False # TODO implement!
+    return self._isValid(self._userInputs["userBonus"])
   
   
   def userDown(self):
     """
       return: true if user has requested to increase temperature
     """
-    return False # TODO implement! 
+    return self._isValid(self._userInputs["userDown"]) 
   
   
   def _getUserInputs(self):
+    """
+      return userInteraction dictionary from the file
+      if file opening fails, return stub object
+    """
     # ouvrir le fichier
     try:
       with open( self._jsonFile) as usrDecision:
@@ -59,6 +71,26 @@ class UserInteractionManager(object):
     return res
 
   
+  def _isValid(self,  decisionBloc):
+    """
+      return true if the status is true and the expiration date not met
+      will return False if decisionBloc dictionnary do not contain appropriate keys
+    """
+    try:
+      return decisionBloc["status"] and self._isValidDate(decisionBloc["expirationDate"])
+    except Exception as err:
+      return False
+  
+  
+  def __isValidDate(self, dateString):
+    """
+      return true if the datestring in format 30/06/2018 is in the future
+      be carrefull, it is taken at 0h am, so if the date is today, it is no valid anymore
+    """
+    var thisDate = =datetime.strptime(dateString,"%d/%m/%Y")
+    return thisDate >= datetime.now()
+    
+    
   def targetTemp(self):
     """
       return: the target temp chosen by the user or None
