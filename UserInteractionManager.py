@@ -23,7 +23,7 @@ class UserInteractionManager(object):
     """
       return: true if user has decided to temporary overrule the heatCalendar
     """
-    return self._isValid(self._userInputs["overruled"])
+    return self._isValid(self._userInputs.value()["overruled"])
   
   
   def overMode(self):
@@ -33,7 +33,7 @@ class UserInteractionManager(object):
       In case the userInputs dictionary do not contains key, return UNKNOW
     """
     try:
-      return self._userInputs["overruled"]["overMode"] 
+      return self._userInputs.value()["overruled"]["overMode"] 
     except Exception as err:
       return CST.UNKNOW
     
@@ -42,14 +42,14 @@ class UserInteractionManager(object):
     """
       return: true if user has requested to increase temperature
     """
-    return self._isValid(self._userInputs["userBonus"])
+    return self._isValid(self._userInputs.value()["userBonus"])
   
   
   def userDown(self):
     """
       return: true if user has requested to increase temperature
     """
-    return self._isValid(self._userInputs["userDown"]) 
+    return self._isValid(self._userInputs.value()["userDown"]) 
   
   
   def _getUserInputs(self):
@@ -88,7 +88,7 @@ class UserInteractionManager(object):
       return true if the datestring in format 30/06/2018 is in the future
       be carrefull, it is taken at 0h am, so if the date is today, it is no valid anymore
     """
-    var thisDate = datetime.strptime(dateString,"%d/%m/%Y")
+    thisDate = datetime.strptime(dateString,"%d/%m/%Y")
     return thisDate >= datetime.now()
     
     
