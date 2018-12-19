@@ -64,7 +64,7 @@ class UserInteractionManager(object):
         res=usr['userInteraction']
     except Exception as err:
       #soit le fichier n'a pu être lu, soit le calendrier n'est pas complet
-      logging.error(err)
+      logging.error(err.message)
       res={"overruled":{"status":False, "expirationDate":"01/01/2000","overMode":"UNKNOW"},
            "userBonus":{"status":False, "expirationDate":"01/01/2000"},
            "userDown":{"status":False, "expirationDate":"01/01/2000"}}
@@ -79,6 +79,7 @@ class UserInteractionManager(object):
     try:
       return decisionBloc["status"] and self._isValidDate(decisionBloc["expirationDate"])
     except Exception as err:
+      logging.error(err.message)
       return False
   
   
@@ -87,7 +88,7 @@ class UserInteractionManager(object):
       return true if the datestring in format 30/06/2018 is in the future
       be carrefull, it is taken at 0h am, so if the date is today, it is no valid anymore
     """
-    var thisDate = =datetime.strptime(dateString,"%d/%m/%Y")
+    var thisDate = datetime.strptime(dateString,"%d/%m/%Y")
     return thisDate >= datetime.now()
     
     
