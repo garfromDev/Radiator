@@ -65,9 +65,9 @@ class UserInteractionManager(object):
     except Exception as err:
       #soit le fichier n'a pu être lu, soit le calendrier n'est pas complet
       logging.error(err.message)
-      res={"overruled":{"status":False, "expirationDate":"01/01/2000","overMode":"UNKNOW"},
-           "userBonus":{"status":False, "expirationDate":"01/01/2000"},
-           "userDown":{"status":False, "expirationDate":"01/01/2000"}}
+      res={"overruled":{"status":False, "expirationDate":"01-01-2000","overMode":"UNKNOW"},
+           "userBonus":{"status":False, "expirationDate":"01-01-2000"},
+           "userDown":{"status":False, "expirationDate":"01-01-2000"}}
     return res
 
   
