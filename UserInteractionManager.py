@@ -4,7 +4,6 @@ import json
 from datetime import datetime
 from FilteredVar import FilteredVar
 from CST import CST
-CST.USER_JSON = "userInteraction.json"
 CST.JSON_PATH = '/home/pi/Program/Radiator/' # the path to the weekly calendar
 
 class UserInteractionManager(object):
@@ -70,7 +69,7 @@ class UserInteractionManager(object):
            "userDown":{"status":False, "expirationDate":"01-01-2000"}}
     return res
 
-   def __isValidDate(self, dateString):
+  def _isValidDate(self, dateString):
     """
       return true if the datestring in format 30/06/2018 is in the future
       be carrefull, it is taken at 0h am, so if the date is today, it is no valid anymore
@@ -80,15 +79,15 @@ class UserInteractionManager(object):
     
     
   def _isValid(self,  decisionBloc):
-    """
-      return true if the status is true and the expiration date not met
-      will return False if decisionBloc dictionnary do not contain appropriate keys
-    """
-    try:
-      return decisionBloc["status"] and self._isValidDate(decisionBloc["expirationDate"])
-    except Exception as err:
-      logging.error(err.message)
-      return False
+     """
+       return true if the status is true and the expiration date not met
+       will return False if decisionBloc dictionnary do not contain appropriate keys
+     """
+     try:
+       return decisionBloc["status"] and self._isValidDate(decisionBloc["expirationDate"])
+     except Exception as err:
+       logging.error(err.message)
+       return False
   
     
   def targetTemp(self):
@@ -102,5 +101,5 @@ if __name__ == '__main__':
   print("testing UserInteractionManager manually")
   #logging.basicConfig(filename='Radiator.log', level=logging.DEBUG, format='%(asctime)s %(message)s')
   test = UserInteractionManager()
-  print("overruled : {}  userBonus : {}  userDown : {}".format(test.overruled(), test.userBonus(), test.userDown()))
+  print("overruled : {}  userBonus : {}  userDown : {}  mode : {}".format(test.overruled(), test.userBonus(), test.userDown(), test.overMode()))
  

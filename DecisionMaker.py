@@ -34,8 +34,9 @@ class DecisionMaker(object):
   
   
   def makeDecision(self):
-    #0 get meta mode from calendar  
+    #0 get meta mode from calendar
     metaMode = self.metaMode.value()
+    info = "mode from calendar : "+metaMode
     logging.info("makeDecision metamode = {} temp = {:.1f} Bonus = {} feltCold = {} feltHot = {} userDown = {} overruled = {} overMode = {}".format(metaMode,
                                                                                                          self.insideTemp.value(),
                                                                                                          self.userBonus.value(),
@@ -49,35 +50,42 @@ class DecisionMaker(object):
     #1 apply overrule by user
     if self.overruled.value():
       metaMode=self.overMode.value()
+      info = "applyed overruled "+metaMode
 
-    #2 eco mode                 
+    print("!!!!! meta mode :"+metaMode+"  <>  "+CST.CONFORT)
+
+    #2 eco mode
     if metaMode != CST.CONFORT:
       self._heater.setEcoMode()
-      logging.info("maked decision setEcoMode")
+      info="maked decision setEcoMode"
 
     #3 adaptation of confort mode
     if metaMode == CST.CONFORT:
       if self.userBonus.value():
         self._heater.setConfortMode()
-        logging.info("maked Decision setConfortMode")
+        info="maked Decision setConfortMode"
       elif self.feltTempCold.value():
         self._heater.setConfortMode()
-        logging.info("maked Decision setConfortMode")
+        info="maked Decision setConfortMode"
       elif self.feltTempHot.value() :
         self._heater.setConfortMinus2()
-        logging.info("maked Decision setConfortModeMinus2")
+        info="maked Decision setConfortModeMinus2"
       elif self.userDown.value():
         self._heater.setConfortMinus2()
-        logging.info("maked Decision setConfortModeMinus2")
+        info="maked Decision setConfortModeMinus2"
       else:
         self._heater.setConfortMinus1()
-        logging.info("maked Decision setConfortModeMinus1")
- 
+        info="maked Decision setConfortModeMinus1"
+
+    logging.info(info)
+    return info
+
+
 
 if __name__ == '__main__':
   print("testing DecisionMaker manually")
   logging.basicConfig(filename='Radiator.log', level=logging.DEBUG, format='%(asctime)s %(message)s')
   test = DecisionMaker()
-  test.makeDecision()
+  print("decision  taken : "+test.makeDecision())
   print("Decision taken can be inspected in log file or through StateDisplay")
   
