@@ -22,3 +22,13 @@ class DistantFileInterface(object):
           logging.error("failure ftp retrieval of " + fileName + "  "+error.message)
           pass
       ftp.quit()
+
+if __name__ == '__main__':
+  print("testing ftp manually")
+  var testFtp=DistantFileInterface()
+  testFtp.configure(server="ftp://ftp://perso-ftp.orange.fr",
+                    path="/Applications/maxouf14/Parameters",
+                    login="fromontaline@orange.fr,
+                    pswd="orange3310")
+  ftp.fetch('userDecision.json')
+  
