@@ -14,21 +14,22 @@ class DistantFileInterface(object):
     self._pswd = pswd
     
   def fetch(self, fileName):
-    with ftplib.FTP(self._server, self._login, self._pswd) as ftp:
-      ftp.cwd(path)
-      with open(fileName, 'wb') as f:
-        try ftp.retrbinary('RETR ' + fileName, f.write)
-        except error:
-          logging.error("failure ftp retrieval of " + fileName + "  "+error.message)
-          pass
-      ftp.quit()
+    ftp =  ftplib.FTP(self._server, self._login, self._pswd)
+    ftp.cwd(self._path)
+    with open(fileName, 'wb') as f:
+      try:
+        ftp.retrbinary('RETR ' + fileName, f.write)
+      except:
+        logging.error("failure ftp retrieval of " + fileName)
+        pass
+    ftp.quit()
 
 if __name__ == '__main__':
   print("testing ftp manually")
-  var testFtp=DistantFileInterface()
-  testFtp.configure(server="ftp://ftp://perso-ftp.orange.fr",
+  testFtp=DistantFileInterface()
+  testFtp.configure(server="perso-ftp.orange.fr",
                     path="/Applications/maxouf14/Parameters",
-                    login="fromontaline@orange.fr,
+                    login="fromontaline@orange.fr",
                     pswd="orange3310")
-  ftp.fetch('userDecision.json')
+  testFtp.fetch('userInteraction.json')
   
