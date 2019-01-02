@@ -61,7 +61,7 @@ class UserInteractionManager(object):
     try:
       with open( self._jsonFile) as usrDecision:
         usr = json.load(usrDecision)
-        res=usr['userInteraction']
+        res=usr
     except Exception as err:
       #soit le fichier n'a pu être lu, soit le calendrier n'est pas complet
       logging.error(err.message)
