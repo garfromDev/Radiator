@@ -70,7 +70,15 @@ class UserInteractionManager(object):
            "userDown":{"status":False, "expirationDate":"01-01-2000"}}
     return res
 
-  
+   def __isValidDate(self, dateString):
+    """
+      return true if the datestring in format 30/06/2018 is in the future
+      be carrefull, it is taken at 0h am, so if the date is today, it is no valid anymore
+    """
+    thisDate = datetime.strptime(dateString,"%d/%m/%Y")
+    return thisDate >= datetime.now()
+    
+    
   def _isValid(self,  decisionBloc):
     """
       return true if the status is true and the expiration date not met
@@ -82,15 +90,6 @@ class UserInteractionManager(object):
       logging.error(err.message)
       return False
   
-  
-  def __isValidDate(self, dateString):
-    """
-      return true if the datestring in format 30/06/2018 is in the future
-      be carrefull, it is taken at 0h am, so if the date is today, it is no valid anymore
-    """
-    thisDate = datetime.strptime(dateString,"%d/%m/%Y")
-    return thisDate >= datetime.now()
-    
     
   def targetTemp(self):
     """
