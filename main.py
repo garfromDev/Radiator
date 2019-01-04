@@ -4,6 +4,7 @@ import logging
 import threading
 from ActionSequencer import Action, ActionSequencer
 from DecisionMaker import DecisionMaker
+from CloudManager import CloudManager
 from Rolling import Rolling
 from CST import CST
 from RGB_Displayer import RGB_Displayer
@@ -17,8 +18,11 @@ def main():
   logging.info('Started')
   global decider  #must be global to remain alive at the end of main
   decider = DecisionMaker()
-  action = Action( action = decider.makeDecision, duration = CST.MAIN_TIMING)
-  mainSeq = Rolling([action])
+  global cloudManager #must be global to remain alive at the end of main
+  cloudManager = CloudManager()
+  makeDecision = Action( action = decider.makeDecision, duration = CST.MAIN_TIMING)
+  updateLocalFiles = Action( action = cloudManager.update, duration = CST.MAIN_TIMING)
+  mainSeq = Rolling([updateLocalFiles, makeDecision])
   global sequencer  #must be global to remain alive at the end of main
   logging.debug("ready to start maln sequencer")
   sequencer.start(mainSeq)
