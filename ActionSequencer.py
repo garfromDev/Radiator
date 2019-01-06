@@ -47,7 +47,7 @@ class ActionSequencer:
         logging.debug("action failed")
         #print("action failed", self._caller)
         pass #None or crashy, maybe next action will behave better
-    print("preparing next action", self._caller)
+    #print("preparing next action", self._caller)
     try:
         dur = currentAction.duration
         self.timer = threading.Timer(dur, self.start)
