@@ -52,8 +52,6 @@ class DecisionMaker(object):
       metaMode=self.overMode.value()
       info = "applyed overruled "+metaMode
 
-    print("!!!!! meta mode :"+metaMode+"  <>  "+CST.CONFORT)
-
     #2 eco mode
     if metaMode != CST.CONFORT:
       self._heater.setEcoMode()
