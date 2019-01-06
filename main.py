@@ -14,7 +14,7 @@ sequencer = ActionSequencer() #must be global to remain alive at the end of main
 def main():
   for handler in logging.root.handlers[:]:
     logging.root.removeHandler(handler)
-  logging.basicConfig(filename='Radiator2.log', level=logging.DEBUG, format='%(asctime)s %(message)s')
+  logging.basicConfig(filename='Radiator2.log', level=logging.INFO, format='%(asctime)s %(message)s')
   logging.info('Started')
   global decider  #must be global to remain alive at the end of main
   decider = DecisionMaker()
