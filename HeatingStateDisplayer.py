@@ -15,33 +15,33 @@ class HeatingStateDisplayer:
         self._displayer = displayer
         self._displayer.turnOff
         self._sequencer=ActionSequencer() #used to blink the LED
-        self._minus2Sequence=Rolling([Action(self._displayer.setColorGreen(), duration=4),
+        self._minus2Sequence=Rolling([Action(self._displayer.setColorGreen, duration=4),
                                       Action(self._displayer.turnOff, duration=1)])
-                                      
-                                      
+
+
     def displayConfortMode(self):
         self._sequencer.cancel()
         self._displayer.setColorRed()
-    
-    
+
+
     def displayEcoMode(self):
         self._sequencer.cancel()
         self._displayer.setColorBlue()
-    
-    
+
+
     def displayConfortMinus1Mode(self):
         self._sequencer.cancel()
         self._displayer.setColorGreen()
-    
-    
+
+
     def displayConfortMinus2Mode(self):
         self._sequencer.start(self._minus2Sequence)
-    
-    
+
+
     def displayRatioMode(self, ratio):
         pass #pas d'affichage prévu
-    
-    
+
+
 if __name__ == '__main__':
     print("testing HeatingStateDisplayer manually")
     logging.basicConfig(filename='Radiator.log', level=logging.DEBUG, format='%(asctime)s %(message)s')
@@ -52,7 +52,7 @@ if __name__ == '__main__':
     test.displayEcoMode()
     print("Blue Led light on")
     time.sleep(2)
-    test.displayConfortMinus2Mode() 
+    test.displayConfortMinus2Mode()
     print("Green LED blink")
     time.sleep(6)
     test._sequencer.cancel()

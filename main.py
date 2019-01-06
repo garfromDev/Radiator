@@ -28,7 +28,7 @@ def main():
   sequencer.start(mainSeq)
   
 if __name__ == '__main__':
-  displayer=RGB_Displayer() 
+  displayer=RGB_Displayer()
   seq=Rolling([Action(displayer.setColorGreen, 2),
               Action(displayer.turnOff, 2)])
   s=ActionSequencer()
