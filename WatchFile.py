@@ -2,17 +2,24 @@
 from os import os.path.getmtime
 import threading
 import time
+import os
+
 
 #default parameter, to be modified directly or using configure()
 delay = 30 * 60
 timeBetweenCheck = 2 * 60 * 60
 fileToWatch = None
 maxRetry = 3
+reboot = performReboot
 
 _retryNb = 0
 _watchTimer = None
 
-def configure( fileName):
+def configure( fileName, action = performReboot, maxRetry = 3, timeBetween = 2*60*60, delay = 30*60):
+  fileToWatch = fileName
+  WatchFile.reboot = action
+  WatchFile.maxRetry = maxRetry
+  
   pass
 
 def check():
@@ -20,11 +27,15 @@ def check():
     _retryNb = 0
     return
     
-
-  _retryNb++
+  _retryNb += 1
   if _retryNb >= maxRetry:
+    reboot()
     
-    
+
+def performReboot():
+  os.system('reboot')
+  
+  
 def _checkFile():
 """
 Check if last modification of fileToWatch is more recent than delay (in sec.)
@@ -51,8 +62,8 @@ def start():
   if delay == None or fileToWatch == None:
     return False
   
-  _WatchTimer = threading.Timer(timeBetweenCheck, _check)
-  _WatchTimer.start()
+  _watchTimer = threading.Timer(timeBetweenCheck, check)
+  _watchTimer.start()
  
  
  
