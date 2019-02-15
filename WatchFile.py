@@ -4,6 +4,7 @@ import threading
 import time
 import os
 import sys
+import logging
 
 # this is a pointer to the module object instance itself.
 this = sys.modules[__name__]
@@ -14,12 +15,12 @@ timeBetweenCheck = 2 * 60 * 60
 fileToWatch = None
 maxRetry = 3
 def performReboot():
+  logging.critical("Reboot triggered by WatchFile because file %s is outdated by more than %s sec.", this.fileToWatch, this.delay)
   os.system('reboot')
 
 reboot = performReboot
-
 _retryNb = 0
-_watchTimer = None
+
 
 def configure( fileName, action = performReboot, maxRetry = 3, timeBetweenCheck = 2*60*60, delay = 30*60):
   """
@@ -30,7 +31,7 @@ def configure( fileName, action = performReboot, maxRetry = 3, timeBetweenCheck 
     :param int timeBetweenCheck: time in sec. bewteen each check of the file modification date
     :param int delay: max time allowed in sec. since last modification of the file
   """
-  fileToWatch = fileName
+  this.fileToWatch = fileName
   this.reboot = action
   this.maxRetry = maxRetry
   this.timeBetweenCheck = timeBetweenCheck
@@ -43,15 +44,17 @@ def check():
     after maxRetry tentative, will trigger action
   """
   if _checkFile():
-    _retryNb = 0
-    return
+    this._retryNb = 0
+    logging.debug("file %s not outdated", this.fileToWatch)
+  else:
   #file outDated
-  print("file outdated")
-  _retryNb += 1
-  if _retryNb > maxRetry:
-    reboot()
+    logging.debug("file %s outdated", this.fileToWatch)
+    this._retryNb += 1
+    if _retryNb > maxRetry:
+      reboot()
   # launch again timer for next check
-  _watchTimer.start()
+  logging.debug("start again WatchFile timer")
+  start()
 
 
 def _checkFile():
@@ -61,13 +64,13 @@ def _checkFile():
     :return: True if last modification is more recent
     :rtype: bool
   """
-  print("checking file")
   t=0
   try:
     t = os.path.getmtime(fileToWatch)
   except: #file not accessible
+    logging.error("file %s not found", this.fileToWatch)
     return False
-  return (t - time.time()) < delay
+  return (time.time() - t) < this.delay
 
 
 def start():
@@ -80,9 +83,8 @@ def start():
   """
   if delay == None or fileToWatch == None:
     return False
-
-  _watchTimer = threading.Timer(timeBetweenCheck, check)
-  _watchTimer.start()
+  watchTimer = threading.Timer(timeBetweenCheck, check)
+  watchTimer.start()
 
 
 
@@ -93,6 +95,7 @@ if __name__ == '__main__':
   time.sleep(2)
   def sayDone():
     print("simulating reboot...")
+    exit()
   configure(fileName = "testWatchFile.dummy",
             action = sayDone,
             maxRetry = 1,
