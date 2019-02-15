@@ -8,6 +8,7 @@ from CloudManager import CloudManager
 from Rolling import Rolling
 from CST import CST
 from RGB_Displayer import RGB_Displayer
+import WatchFile
 
 sequencer = ActionSequencer() #must be global to remain alive at the end of main
 
@@ -28,15 +29,21 @@ def main():
   sequencer.start(mainSeq)
   
 if __name__ == '__main__':
+  #display flashing sequence to confirm reboot
   displayer=RGB_Displayer()
   seq=Rolling([Action(displayer.setColorGreen, 2),
               Action(displayer.turnOff, 2)])
   s=ActionSequencer()
   s.start(seq)
+
+  #start main sequencer and stop flashing
   def go():
     s.cancel()
     main()
 
   timer=threading.Timer(12,go)
   timer.start()
-  
+
+  #start WatchFile (will reboot if wifi connexion lost)
+  WatchFile.configure(fileName=CST.USER_JSON)
+  WatchFile.start()
