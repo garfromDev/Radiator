@@ -24,7 +24,8 @@ class DecisionMaker(object):
     self.metaMode = FilteredVar(cacheDuration = CST.METACACHING, getter = self._calendar.getCurrentMode)
     self._heater = HeatMode()
     self._userManager = userManager
-    self.insideTemp = FilteredVar(cacheDuration = CST.TEMPCACHING, getter=InsideTemperature().value)
+    self._tempProvider = InsideTemperature()
+    self.insideTemp = FilteredVar(cacheDuration = CST.TEMPCACHING, getter=self._tempProvider.value)
     self.userBonus = FilteredVar(cacheDuration = CST.TEMPCACHING, getter=self._userManager.userBonus)
     self.userDown = FilteredVar(cacheDuration = CST.TEMPCACHING, getter=self._userManager.userDown)
     self.feltTempCold = FilteredVar(cacheDuration = CST.TEMPCACHING, getter=lambda x=None:False) #!!!! à remplacer !!!
@@ -82,7 +83,7 @@ class DecisionMaker(object):
 
 if __name__ == '__main__':
   print("testing DecisionMaker manually")
-  logging.basicConfig(filename='Radiator.log', level=logging.DEBUG, format='%(asctime)s %(message)s')
+  logging.basicConfig(filename='testDecisionMaker.log', level=logging.DEBUG, format='%(asctime)s %(message)s')
   test = DecisionMaker()
   print("decision  taken : "+test.makeDecision())
   print("Decision taken can be inspected in log file or through StateDisplay")
