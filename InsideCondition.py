@@ -11,18 +11,19 @@ import logging
 
 CST.MAX_LIGHT_DELTA = 4 #max delta in percent between 2 measurement
 
-class InsideTemperature:
+class InsideCondition:
     """
-      get the inside light level from the sensor connected to the SPI adc
+      get the inside light level and temperature from the sensor connected to the SPI adc
       it can be used with FilteredVar mechanism, using value() as getter 
     """  
 # sensorPin : the pin of the MPC3008 where the sensor is connected (pin 1 in my schematic)
 # voltageRef : the reference voltage of the ADC, in mV (581mV in my schematic)
 # adcRange : the output range of ADC converter (0 to 1023 for MCP3008)
 # sensorGain : the voltage change per degrees of the thermal sensor (10 mV / degree for LM35)
-    def __init__(self, sensorPin = 1, voltageRef = 581.0,adcRange = 1024.0, sensorGain = 10.0 ):
+    def __init__(self, ThSensorPin = 1, voltageRef = 581.0,adcRange = 1024.0, ThsensorGain = 10.0, lightSensorPin = 3):
         GPIO.setmode(GPIO.BCM)
-        self._sensorPin = sensorPin
+        self._sensorPin = ThSensorPin
+        self._lightSensorPin = lightSensorPin
         self._voltageRef = voltageRef
         self._adcRange = adcRange
         self._sensorGain = sensorGain
@@ -33,13 +34,13 @@ class InsideTemperature:
 
 # return the light value in percent , None if impossible to calculate
 # with my schematic, light range is 0 to 100%
-    def value(self):
+    def light(self):
         try:
             maxDelta= CST.MAX_LIGHT_DELTA * self._adcRange / 100
         except:
             maxDelta = self._adcRange #no filterig will be done
             
-        voltage = self._filteredVoltage(maxDelta=maxDelta, measure = lambda :self._mcp.read_adc(self._sensorPin))
+        voltage = self._filteredVoltage(maxDelta=maxDelta, measure = lambda :self._mcp.read_adc(self._lightSensorPin))
         try:
             light = int( (float(voltage)  / self._adcRange) * 100)
         except: #would fail if voltage=None or adcRange=0 
@@ -47,6 +48,24 @@ class InsideTemperature:
 
         return light
 
+    
+# return the temperature value in degree, None if impossible to calculate
+# with my schematic, temperature range is 0 to 58,1 degree Celcius
+# higher temperature will be 58,1, this is not a concern for a heating regulation
+    def temperature(self):
+        try: #calculate the adc delta value corresponding to MAX_DELTA_TEMP temperature delta in °
+            degree = CST.MAX_DELTA_TEMP * self._sensorGain * self._adcRange / self._voltageRef
+        except:
+            degree = self._adcRange #no filterig will be done
+        voltage = self._filteredVoltage(maxDelta=degree, measure = lambda :self._mcp.read_adc(self._sensorPin))
+        try:
+            temp = float(voltage) * (self._voltageRef / self._adcRange) / self._sensorGain
+        except: #would fail if voltage=None or adcRange=0 or sensorGain=0
+            temp = None
+
+        return temp
+    
+    
     #--------- internal ---------------------------------------------------
     def _filteredVoltage(self, maxDelta, measure, interval = CST.LM35_INTERVAL):
         # perform 3 measurement at interval secondes delay using measure() and return the mean of the two closest value
@@ -80,7 +99,7 @@ class InsideTemperature:
         
             
 if __name__ == '__main__':
-    print("testing InsideTemperature manually")
-    logging.basicConfig(filename='Radiator.log', level=logging.DEBUG, format='%(asctime)s %(message)s')
-    test = InsideTemperature()
-    print(test.value())            
+    print("testing InsideCondition manually")
+    test = InsideCondition()
+    print(test.temperature())
+    print(test.light())
