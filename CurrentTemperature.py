@@ -74,10 +74,9 @@ class InsideTemperature:
         if fv[0][0] <maxDelta:
             return fv[0][1] # return the mean of two closest value
         return None         # if the value are two far apart, return None
-        
-            
+
+
 if __name__ == '__main__':
     print("testing InsideTemperature manually")
-    logging.basicConfig(filename='Radiator.log', level=logging.DEBUG, format='%(asctime)s %(message)s')
     test = InsideTemperature()
-    print(test.value())            
+    print(test.value())
