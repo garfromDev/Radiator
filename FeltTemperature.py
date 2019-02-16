@@ -5,6 +5,7 @@ const.WINDOW_Ri = 0.13
 const.FELT_TEMP_COLD_DELTA = -1.0
 const.FELT_TEMP_HOT_DELTA = +0.8
 const.SUPER_HOT_DELTA = 2
+const.LIGHT_EFFECT = 0.2
 
 class FeltTemperature:
   """
@@ -78,7 +79,8 @@ class FeltTemperature:
       """
       felt = self._wallTemperatureEffect() * const.WALL_FACTOR \
         + self._windowTemperatureEffect() * const.WINDOW_FACTOR \
-        + self.insideTemperatureEffect() * const.INSIDE_TEMP_EFFECT
+        + self.insideTemperatureEffect() * const.INSIDE_TEMP_EFFECT\
+        + self.lightEffect() * const.LIGHT_EFFECT
       
       
       
