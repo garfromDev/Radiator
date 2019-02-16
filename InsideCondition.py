@@ -15,18 +15,18 @@ class InsideCondition:
     """
       get the inside light level and temperature from the sensor connected to the SPI adc
       it can be used with FilteredVar mechanism, using value() as getter 
-    """  
+    """
 # sensorPin : the pin of the MPC3008 where the sensor is connected (pin 1 in my schematic)
 # voltageRef : the reference voltage of the ADC, in mV (581mV in my schematic)
 # adcRange : the output range of ADC converter (0 to 1023 for MCP3008)
 # sensorGain : the voltage change per degrees of the thermal sensor (10 mV / degree for LM35)
-    def __init__(self, ThSensorPin = 1, voltageRef = 581.0,adcRange = 1024.0, ThsensorGain = 10.0, lightSensorPin = 3):
+    def __init__(self, ThSensorPin = 1, voltageRef = 581.0,adcRange = 1024.0, thSensorGain = 10.0, lightSensorPin = 3):
         GPIO.setmode(GPIO.BCM)
         self._sensorPin = ThSensorPin
         self._lightSensorPin = lightSensorPin
         self._voltageRef = voltageRef
         self._adcRange = adcRange
-        self._sensorGain = sensorGain
+        self._sensorGain = thSensorGain
         #init SPI connexion
         SPI_PORT   = 0
         SPI_DEVICE = 0
@@ -39,16 +39,16 @@ class InsideCondition:
             maxDelta= CST.MAX_LIGHT_DELTA * self._adcRange / 100
         except:
             maxDelta = self._adcRange #no filterig will be done
-            
+
         voltage = self._filteredVoltage(maxDelta=maxDelta, measure = lambda :self._mcp.read_adc(self._lightSensorPin))
         try:
-            light = int( (float(voltage)  / self._adcRange) * 100)
+            light = 100 - int( (float(voltage)  / self._adcRange) * 100)
         except: #would fail if voltage=None or adcRange=0 
             light = None
 
         return light
 
-    
+
 # return the temperature value in degree, None if impossible to calculate
 # with my schematic, temperature range is 0 to 58,1 degree Celcius
 # higher temperature will be 58,1, this is not a concern for a heating regulation
