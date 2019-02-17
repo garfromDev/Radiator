@@ -6,7 +6,7 @@ const.FELT_TEMP_COLD_DELTA = -1.0
 const.FELT_TEMP_HOT_DELTA = +0.8
 const.SUPER_HOT_DELTA = 2
 const.LIGHT_EFFECT = 0.2
-
+const.WALL_FACTOR = 0 #to change when outside temp available
 class FeltTemperature:
   """
     this class proovide calculation of felt temperature from environmental condition
@@ -25,8 +25,7 @@ class FeltTemperature:
                humidity,
                outsideTemperature,
                targetTemp = 19,
-               wallTransmissionCoeff = 0.146,
-               insideTempFactor = ):
+               wallTransmissionCoeff = 0.146):
     """
       :param insideTemperature: a function returning the room temperature in Celsius
       :param outsideSunLevel: a function returning the sun level outside (HIGH, MEDIUM, LOW, NONE)
@@ -79,8 +78,9 @@ class FeltTemperature:
       """
       felt = self._wallTemperatureEffect() * const.WALL_FACTOR \
         + self._windowTemperatureEffect() * const.WINDOW_FACTOR \
-        + self.insideTemperatureEffect() * const.INSIDE_TEMP_EFFECT\
-        + self.lightEffect() * const.LIGHT_EFFECT
+        + self._insideTemperatureEffect() * const.INSIDE_TEMP_EFFECT\
+        + self._lightEffect() * const.LIGHT_EFFECT\
+        + self._humidity
       
       
       
