@@ -16,7 +16,7 @@ const.HUMIDITY_FACTOR = 0.6
 
 class FeltTemperature:
   """
-    this class proovide calculation of felt temperature from environmental condition
+    this class provide calculation of felt temperature from environmental condition
     use : 
     - create an object initialized with proper target temperature (real air temperature under normal condition)
     - at init, give it access to requested information (getter function)
@@ -32,7 +32,8 @@ class FeltTemperature:
                humidity = lambda x: None,
                outsideTemperature = lambda x: None,
                targetTemp = 19,
-               wallTransmissionCoeff = 0.146):
+               wallTransmissionCoeff = 0.146,
+               windowTransmissionCoeff = ):
     """
       :param insideTemperature: a function returning the room temperature in Celsius
       :param outsideSunLevel: a function returning the sun level outside (HIGH, MEDIUM, LOW, NONE)
@@ -61,7 +62,7 @@ class FeltTemperature:
       - 
     """
     
-    return ( self._feltTemperature < (self.targetTemp + const.FELT_TEMP_COLD_DELTA) )
+    return ( self._feltTemperature() < (self.targetTemp + const.FELT_TEMP_COLD_DELTA) )
   
   
   def feltTempHot(self):
@@ -75,7 +76,7 @@ class FeltTemperature:
       """
       :return: True if user will feel really hot versus target temperature
       """
-      return ( ( self.insideTemperature() - targetTemp) > const.SUPER_HOT_DELTA)
+      return (  self._feltTemperature()  > self.targetTemp + const.SUPER_HOT_DELTA)
     
     
     def _feltTemperature(self):
