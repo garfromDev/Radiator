@@ -5,8 +5,15 @@ const.WINDOW_Ri = 0.13
 const.FELT_TEMP_COLD_DELTA = -1.0
 const.FELT_TEMP_HOT_DELTA = +0.8
 const.SUPER_HOT_DELTA = 2
-const.LIGHT_EFFECT = 0.2
+
+#factors define the ratio that is applied to the effect
 const.WALL_FACTOR = 0 #to change when outside temp available
+const.LIGHT_FACTOR = 0.2
+const.WINDOW_FACTOR = 0 #to change when outside temp available
+const.INSIDE_TEMP_FACTOR = 0.4
+const.SUN_FACTOR = 0.8
+const.HUMIDITY_FACTOR = 0.6
+
 class FeltTemperature:
   """
     this class proovide calculation of felt temperature from environmental condition
@@ -20,10 +27,10 @@ class FeltTemperature:
   
   def __init__(self, 
                insideTemperature,
-               outsideSunLevel,
-               insideSunLevel,
-               humidity,
-               outsideTemperature,
+               outsideSunLevel = lambda x: "NONE",
+               insideSunLevel = lambda x: "NONE",
+               humidity = lambda x: None,
+               outsideTemperature = lambda x: None,
                targetTemp = 19,
                wallTransmissionCoeff = 0.146):
     """
@@ -41,7 +48,6 @@ class FeltTemperature:
     self.outsideSunLevel = outsideSunLevel
     self.humidity = humidity
     self.outsideTemperature = outsideTemperature
-    self.targetTemp = targetTemp
     self.wallTransmissionCoeff = wallTransmissionCoeff
     
     
@@ -76,12 +82,12 @@ class FeltTemperature:
       """
       :return: the calculated felt temperature taking into account the different parameters
       """
-      felt = self._wallTemperatureEffect() * const.WALL_FACTOR \
+      felt = self.insideTemperature()\
+        + self._wallTemperatureEffect() * const.WALL_FACTOR \
         + self._windowTemperatureEffect() * const.WINDOW_FACTOR \
-        + self._insideTemperatureEffect() * const.INSIDE_TEMP_EFFECT\
-        + self._lightEffect() * const.LIGHT_EFFECT\
-        + self._humidity
-      
+        + self._insideTemperatureEffect() * const.INSIDE_TEMP_FACTOR\
+        + self._lightEffect() * const.SUN_FACTOR\
+        + self._humidity() * const.HUMIDITY_FACTOR
       
       
     def _wallTemperature(self):
