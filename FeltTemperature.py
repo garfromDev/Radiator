@@ -13,6 +13,8 @@ const.WINDOW_FACTOR = 0 #to change when outside temp available
 const.INSIDE_TEMP_FACTOR = 0.4
 const.SUN_FACTOR = 0.8
 const.HUMIDITY_FACTOR = 0.6
+const.MAX_INSIDE_TEMP_EFFECT = 2 #max value of effect of delta inside temp vs target temp
+const.MIN_INSIDE_TEMP_EFFECT = -2 #min value of effect of delta inside temp vs target temp
 
 class FeltTemperature:
   """
@@ -33,7 +35,7 @@ class FeltTemperature:
                outsideTemperature = lambda x: None,
                targetTemp = 19,
                wallTransmissionCoeff = 0.146,
-               windowTransmissionCoeff = ):
+               windowTransmissionCoeff = 0.855):
     """
       :param insideTemperature: a function returning the room temperature in Celsius
       :param outsideSunLevel: a function returning the sun level outside (HIGH, MEDIUM, LOW, NONE)
@@ -88,12 +90,26 @@ class FeltTemperature:
         + self._windowTemperatureEffect() * const.WINDOW_FACTOR \
         + self._insideTemperatureEffect() * const.INSIDE_TEMP_FACTOR\
         + self._lightEffect() * const.SUN_FACTOR\
-        + self._humidity() * const.HUMIDITY_FACTOR
+        + self._humidityEffect() * const.HUMIDITY_FACTOR
       return felt or self.insideTemperature()
       
+    #==  Effect on felt temperature  ==
+    def  _wallTemperatureEffect(self):
+      return 0 #TODO: implement
       
+     
+    def _windowTemperatureEffect(self):
+      return 0 #TODO: implement
+
+    
+    def _insideTemperatureEffect(self)
+      """ the effect is the difference vs target temp, truncated at MAX_INSIDE_TEMP_EFFECT / MIN_INSIDE_TEMP_EFFECT """
+      return max(min((self.insideTemperature()-self.targetTemp);const.MAX_INSIDE_TEMP_EFFECT);const.MIN_INSIDE_TEMP_EFFECT)
+    
+    
+    #== Calculation of raw temperatures ==  
     def _wallTemperature(self):
-      """
+    """
       :return the calculated wall temperature based on wall transmission coeff
       """
       return _surfaceTemperature(self.wallTransmissionCoeff, const.RI)
