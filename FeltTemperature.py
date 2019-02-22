@@ -89,6 +89,7 @@ class FeltTemperature:
         + self._insideTemperatureEffect() * const.INSIDE_TEMP_FACTOR\
         + self._lightEffect() * const.SUN_FACTOR\
         + self._humidity() * const.HUMIDITY_FACTOR
+      return felt or self.insideTemperature()
       
       
     def _wallTemperature(self):
@@ -114,6 +115,3 @@ class FeltTemperature:
       phi = delta * U
       return insideTemperature() + phi * Ri
     
-    
-      
-      
