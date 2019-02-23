@@ -1,15 +1,20 @@
 # -*- coding: utf-8 -*-
 # inspired of example from Tony DiCola, License: Public Domain
+import logging
+import time
 
 # Import SPI library (for hardware SPI) and MCP3008 library.
 import Adafruit_GPIO.SPI as SPI
 import Adafruit_MCP3008
 import RPi.GPIO as GPIO
-import time
+
 from CST import CST
-import logging
 
 CST.MAX_LIGHT_DELTA = 4 #max delta in percent between 2 measurement
+CST.SUN = "SUN"
+CST.LOWSUN = "LOWSUN"
+CST.SUN_NONE = "NONE"
+
 
 class InsideCondition:
     """
@@ -32,9 +37,12 @@ class InsideCondition:
         SPI_DEVICE = 0
         self._mcp = Adafruit_MCP3008.MCP3008(spi=SPI.SpiDev(SPI_PORT, SPI_DEVICE))
 
-# return the light value in percent , None if impossible to calculate
-# with my schematic, light range is 0 to 100%
+
     def light(self):
+        """
+            :return: the light value in percent , None if impossible to calculate
+            with my schematic, light range is 0 to 100%
+        """"
         try:
             maxDelta= CST.MAX_LIGHT_DELTA * self._adcRange / 100
         except:
@@ -48,7 +56,19 @@ class InsideCondition:
 
         return light
 
-
+    
+    def light_condition(self):
+        """
+            :return: the light condition SUN, LOWSUN, NONE , NONE if impossible to calculate
+        """"
+        light_percent = self.light()
+        if light_percent > CST.SUN_PERCENT_THRESHOLD:
+            return CST.SUN
+        if light_percent > CST.LOWSUN_PERCENT_THRESHOLD:
+            return CST.LOWSUN
+        return CST.SUN_NONE
+    
+    
 # return the temperature value in degree, None if impossible to calculate
 # with my schematic, temperature range is 0 to 58,1 degree Celcius
 # higher temperature will be 58,1, this is not a concern for a heating regulation
