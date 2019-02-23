@@ -125,3 +125,4 @@ if __name__ == '__main__':
     test = InsideCondition()
     print(test.temperature())
     print(test.light())
+    print(test.light_condition())
