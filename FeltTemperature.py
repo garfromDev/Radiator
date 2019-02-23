@@ -23,7 +23,7 @@ class FeltTemperature:
     - create an object initialized with proper target temperature (real air temperature under normal condition)
     - at init, give it access to requested information (getter function)
     - use feltHot(), f
-    .. warning:: version provisoire non entierement fonctionnelle
+    .. warning:: version provisoire non entierement fonctionnelle, prise en compte temp et lumière uniquement
     
   """
   
@@ -53,8 +53,9 @@ class FeltTemperature:
     self.humidity = humidity
     self.outsideTemperature = outsideTemperature
     self.wallTransmissionCoeff = wallTransmissionCoeff
-    
-    
+    self.windowTransmissionCoeff = windowTransmissionCoeff
+   
+  
   def feltTempCold(self):
     """
       :return: True if user will feel cold versus target temperature
@@ -64,7 +65,6 @@ class FeltTemperature:
       - humidity is high and no sun
       - 
     """
-    
     return ( self._feltTemperature() < (self.targetTemp + const.FELT_TEMP_COLD_DELTA) )
   
   
