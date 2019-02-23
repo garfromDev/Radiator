@@ -104,7 +104,7 @@ class FeltTemperature:
     
     def _insideTemperatureEffect(self)
       """ the effect is the difference vs target temp, truncated at MAX_INSIDE_TEMP_EFFECT / MIN_INSIDE_TEMP_EFFECT """
-      return max(min((self.insideTemperature()-self.targetTemp);const.MAX_INSIDE_TEMP_EFFECT);const.MIN_INSIDE_TEMP_EFFECT)
+      return max(min((self.insideTemperature()-self.targetTemp), const.MAX_INSIDE_TEMP_EFFECT), const.MIN_INSIDE_TEMP_EFFECT)
     
     
     #== Calculation of raw temperatures ==  
