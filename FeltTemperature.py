@@ -49,6 +49,7 @@ class FeltTemperature:
     self.targetTemp = targetTemp
     self.insideTemperature = insideTemperature
     self.outsideSunLevel = outsideSunLevel
+    self.insideSunLevel = insideSunLevel
     self.humidity = humidity
     self.outsideTemperature = outsideTemperature
     self.wallTransmissionCoeff = wallTransmissionCoeff
@@ -93,7 +94,9 @@ class FeltTemperature:
         + self._humidityEffect() * const.HUMIDITY_FACTOR
       return felt or self.insideTemperature()
       
+      
     #==  Effect on felt temperature  ==
+    
     def  _wallTemperatureEffect(self):
       return 0 #TODO: implement
       
@@ -107,6 +110,15 @@ class FeltTemperature:
       return max(min((self.insideTemperature()-self.targetTemp), const.MAX_INSIDE_TEMP_EFFECT), const.MIN_INSIDE_TEMP_EFFECT)
     
     
+    def _lightEffect(self):
+      """ effect is +1 when "SUN", zero otherwise """
+      return 1 if self.insideSunLevel()=="SUN" else 0
+   
+  
+     def _humidityEffect(self):
+      return 0 #TODO: implement
+
+     
     #== Calculation of raw temperatures ==  
     def _wallTemperature(self):
     """
