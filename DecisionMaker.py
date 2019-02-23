@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
+import logging
+
+from CST import CST
+from CurrentTemperature import InsideCondition
+from FeltTemperature import FeltTemperature
+from FilteredVar import FilteredVar
 from HeatCalendar import HeatCalendar
 from HeatMode import HeatMode
-from FilteredVar import FilteredVar
-from CurrentTemperature import InsideTemperature
 from UserInteractionManager import UserInteractionManager
-from CST import CST
-import logging
+
 
 class DecisionMaker(object):
   """ Central decision point of Radiator
@@ -24,7 +27,9 @@ class DecisionMaker(object):
     self.metaMode = FilteredVar(cacheDuration = CST.METACACHING, getter = self._calendar.getCurrentMode)
     self._heater = HeatMode()
     self._userManager = userManager
-    self.insideTemp = FilteredVar(cacheDuration = CST.TEMPCACHING, getter=InsideTemperature().value)
+    self.insideTemp = FilteredVar(cacheDuration = CST.TEMPCACHING, getter=InsideCondition().temperature)
+    self._felt_temp_manager = FeltTemperature( insideTemperature=self.insideTemp,
+                                             insideSunLevel = InsideCondition().light_condition)
     self.userBonus = FilteredVar(cacheDuration = CST.TEMPCACHING, getter=self._userManager.userBonus)
     self.userDown = FilteredVar(cacheDuration = CST.TEMPCACHING, getter=self._userManager.userDown)
     self.feltTempCold = FilteredVar(cacheDuration = CST.TEMPCACHING, getter=lambda x=None:False) #!!!! à remplacer !!!
