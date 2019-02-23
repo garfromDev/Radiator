@@ -14,7 +14,8 @@ CST.MAX_LIGHT_DELTA = 4 #max delta in percent between 2 measurement
 CST.SUN = "SUN"
 CST.LOWSUN = "LOWSUN"
 CST.SUN_NONE = "NONE"
-
+CST.SUN_PERCENT_THRESHOLD = 80
+CST.LOWSUN_PERCENT_THRESHOLD = 60
 
 class InsideCondition:
     """
@@ -42,6 +43,7 @@ class InsideCondition:
         """
             :return: the light value in percent , None if impossible to calculate
             with my schematic, light range is 0 to 100%
+            0% means no light
         """"
         try:
             maxDelta= CST.MAX_LIGHT_DELTA * self._adcRange / 100
