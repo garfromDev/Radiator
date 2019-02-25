@@ -20,7 +20,8 @@ class DecisionMaker(object):
         - sun
         - felt internal temp (combine heat and humidity)
    """
-
+  modes_list = [ 'minus2', 'minus2', 'minus1', 'confort', 'confort']
+  
   def __init__(self, calendar=HeatCalendar(calFile=CST.WEEKCALJSON), userManager=UserInteractionManager()):
     logging.info("DecisionMaker init")
     self._calendar = calendar
@@ -37,7 +38,32 @@ class DecisionMaker(object):
     self.overruled = FilteredVar(cacheDuration = CST.TEMPCACHING, getter=self._userManager.overruled)
     self.overMode =  FilteredVar(cacheDuration = CST.TEMPCACHING, getter=self._userManager.overMode)
   
-  
+  class Confort_mode(object):
+    minus1 = 'minus1'
+    minus2 = 'minus2'
+    confort = 'confort'
+    _mode_list = [minus2, minus1, confort]
+    _current_index = 1
+    
+    def __init__(self, confort_mode = minus1):
+      self._set(confort_mode)
+      
+    def _set(self, confort_mode):
+      self.confort_mode = confort_mode
+      self._current_index = self.mode_list.index(confort_mode) 
+      
+    def make_hot(self)
+      new_mode = self._mode_list[min(self._current_index+1, len(self._mode_list)-1 )
+      return Confort_mode(new_mode)
+                            
+    def make_cold(self):
+      new_mode = self._mode_list[max(self._current_index-1, 0 )
+      return Confort_mode(new_mode)                  
+                 
+    def __repr__(self):
+      return self._mode_list[self._current_index]
+                                 
+                            
   def makeDecision(self):
     #0 get meta mode from calendar
     metaMode = self.metaMode.value()
@@ -61,19 +87,32 @@ class DecisionMaker(object):
     if metaMode != CST.CONFORT:
       self._heater.setEcoMode()
       info="maked decision setEcoMode"
+      return
 
-    #3 adaptation of confort mode
-    if metaMode == CST.CONFORT:
-      if self.userBonus.value():
-        self._heater.setConfortMode()
+    # metaMode == CST.CONFORT:
+    #3 adaptation of confort mode according felt temperature
+    confort_mode = Confort_mode()
+    if self._felt_temp_manager.feltTempCold():
+      confort_mode = confort_mode.make_hot()
+    elif self._felt_temp_manager.feltTempHot():
+      confort_mode = confort_mode.make_cold()
+    elif self._felt_temp_manager.feltTempSuperHot(): 
+      confort_mode = confort_mode.make_cold().make_cold()
+    logging.info("after feltTemperature evaluation, mode is %s",confort_mode)
+                                 
+    #4 adaptation of confort mode according user bonus
+    if self.userBonus.value():
+      confort_mode = confort_mode.make_hot()
+    elif self.userDown.value():
+      confort_mode = confort_mode.make_cold()
+                      
+    # application of confort mode
+      self._heater.setConfortMode()
+      info="maked Decision setConfortMode"
+
         info="maked Decision setConfortMode"
-      elif self.feltTempCold.value():
-        self._heater.setConfortMode()
-        info="maked Decision setConfortMode"
-      elif self.feltTempHot.value() :
-        self._heater.setConfortMinus2()
-        info="maked Decision setConfortModeMinus2"
-      elif self.userDown.value():
+
+      
         self._heater.setConfortMinus2()
         info="maked Decision setConfortModeMinus2"
       else:
