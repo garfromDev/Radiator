@@ -38,30 +38,7 @@ class DecisionMaker(object):
     self.overruled = FilteredVar(cacheDuration = CST.TEMPCACHING, getter=self._userManager.overruled)
     self.overMode =  FilteredVar(cacheDuration = CST.TEMPCACHING, getter=self._userManager.overMode)
   
-  class Confort_mode(object):
-    minus1 = 'minus1'
-    minus2 = 'minus2'
-    confort = 'confort'
-    _mode_list = [minus2, minus1, confort]
-    _current_index = 1
-    
-    def __init__(self, confort_mode = minus1):
-      self._set(confort_mode)
-      
-    def _set(self, confort_mode):
-      self.confort_mode = confort_mode
-      self._current_index = self.mode_list.index(confort_mode) 
-      
-    def make_hot(self)
-      new_mode = self._mode_list[min(self._current_index+1, len(self._mode_list)-1 )
-      return Confort_mode(new_mode)
-                            
-    def make_cold(self):
-      new_mode = self._mode_list[max(self._current_index-1, 0 )
-      return Confort_mode(new_mode)                  
-                 
-    def __repr__(self):
-      return self._mode_list[self._current_index]
+  
                                  
                             
   def makeDecision(self):
@@ -106,19 +83,9 @@ class DecisionMaker(object):
     elif self.userDown.value():
       confort_mode = confort_mode.make_cold()
                       
-    # application of confort mode
-      self._heater.setConfortMode()
-      info="maked Decision setConfortMode"
-
-        info="maked Decision setConfortMode"
-
-      
-        self._heater.setConfortMinus2()
-        info="maked Decision setConfortModeMinus2"
-      else:
-        self._heater.setConfortMinus1()
-        info="maked Decision setConfortModeMinus1"
-
+    #5 application of confort mode
+    self._heater.set_from_confort_mode(confort_mode)
+    info = "Heating mode applied : {}".format(confort_mode)
     logging.info(info)
     return info
 
