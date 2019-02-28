@@ -8,6 +8,37 @@ import logging
 from HeatingStateDisplayer import HeatingStateDisplayer
 
 # This module alow to drive pilot wire
+
+class Confort_mode(object):
+    """ abstract representation of confort mode
+        use make_hot() and make_cold() to change desired confort mode
+    """
+    minus1 = 'minus1'
+    minus2 = 'minus2'
+    confort = 'confort'
+    _mode_list = [minus2, minus1, confort]
+    _current_index = 1
+    
+    def __init__(self, confort_mode = minus1):
+        self._set(confort_mode)
+      
+    def _set(self, confort_mode):
+        self.confort_mode = confort_mode
+        self._current_index = self.mode_list.index(confort_mode) 
+      
+    def make_hot(self)
+        new_mode = self._mode_list[min(self._current_index+1, len(self._mode_list)-1 )
+        return Confort_mode(new_mode)
+                            
+    def make_cold(self):
+        new_mode = self._mode_list[max(self._current_index-1, 0 )
+        return Confort_mode(new_mode)                  
+                 
+    def __repr__(self):
+        return self._mode_list[self._current_index]
+				 
+				 
+				 
 class HeatMode:
     # outPlusWaveform :
     # The GPIO output that drive the first OptoTriac (in GPIO.BCM notation)
@@ -69,6 +100,20 @@ class HeatMode:
         self.sequencer.start(ratioSeq)
         self._displayer.displayRatioMode(ratio) 
         
+                                   
+    def set_from_confort_mode( new_mode):
+        """
+        :param Confort_mode new_mode: the mode to apply
+        Apply the mode if confort, minus1, minus2, does nothing else
+        """
+        if new_mode == Confort_mode.confort:
+            setConfortMode()
+        elif new_mode == Confort_mode.minus1:
+            setConfortMinus1()
+        elif new_mode == Confort_mode.minus2:
+            setConfortMinus2()  
+                                   
+                                   
     #-----------------------------------------------------------    
     # set the Triac control output to parameters value    
     # will initialize HW if hw has not been initialized
