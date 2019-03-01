@@ -29,8 +29,8 @@ class FeltTemperature(object):
 
   def __init__(self,
                insideTemperature,
+               insideSunLevel ,
                outsideSunLevel = lambda x: "NONE",
-               insideSunLevel = lambda x: "NONE",
                humidity = lambda x: None,
                outsideTemperature = lambda x: None,
                targetTemp = 19,
@@ -75,14 +75,14 @@ class FeltTemperature(object):
     return ( self._feltTemperature() > (self.targetTemp + const.FELT_TEMP_HOT_DELTA) )
     
     
-    def feltTempSuperHot(self):
+  def feltTempSuperHot(self):
       """
       :return: True if user will feel really hot versus target temperature
       """
       return (  self._feltTemperature()  > self.targetTemp + const.SUPER_HOT_DELTA)
     
     
-    def _feltTemperature(self):
+  def _feltTemperature(self):
       """
       :return: the calculated felt temperature taking into account the different parameters
       """
@@ -97,49 +97,49 @@ class FeltTemperature(object):
 
     #==  Effect on felt temperature  ==
 
-    def  _wallTemperatureEffect(self):
+  def  _wallTemperatureEffect(self):
       return 0 #TODO: implement
 
 
-    def _windowTemperatureEffect(self):
+  def _windowTemperatureEffect(self):
       return 0 #TODO: implement
 
 
-    def _insideTemperatureEffect(self):
+  def _insideTemperatureEffect(self):
       """ the effect is the difference vs target temp, truncated at MAX_INSIDE_TEMP_EFFECT / MIN_INSIDE_TEMP_EFFECT """
       return max(min((self.insideTemperature()-self.targetTemp), const.MAX_INSIDE_TEMP_EFFECT), const.MIN_INSIDE_TEMP_EFFECT)
     
     
-    def _lightEffect(self):
+  def _lightEffect(self):
       """ effect is +1 when "SUN", zero otherwise """
       return 1 if self.insideSunLevel()=="SUN" else 0
    
   
-    def _humidityEffect(self):
+  def _humidityEffect(self):
       return 0 #TODO: implement
 
      
     #== Calculation of raw temperatures ==  
-    def _wallTemperature(self):
+  def _wallTemperature(self):
       """
       :return the calculated wall temperature based on wall transmission coeff
       """
       return _surfaceTemperature(self.wallTransmissionCoeff, const.RI)
 
 
-    def _windowTemperature(self):
+  def _windowTemperature(self):
       """
       :return the calculated window surface temperature based on window transmission coeff
       """
       return _surfaceTemperature(self.windowTransmissionCoeff, const.WINDOW_Ri)
     
     
-    def _surfaceTemperature(U, Ri):
+  def _surfaceTemperature(U, Ri):
       """
       :param U: the total transmission coeff of the wall or window in W / m2 K
       :return the surface temperature in °C
       """
-      delta = outsideTemperature() - insideTemperature()
+      delta = outsideTemperature(None) - insideTemperature()
       phi = delta * U
       return insideTemperature() + phi * Ri
 
@@ -148,7 +148,11 @@ class FeltTemperature(object):
 if __name__ == '__main__':
   print("testing Felt Temperature manually")
   mock_temp = 21
-  test = FeltTemperature(insideTemperature=lambda x: mock_temp)
+  def it():
+    return mock_temp
+  def isl():
+    return "NONE"
+  test = FeltTemperature(insideTemperature=it, insideSunLevel=isl)
   print("temp:{} -> feltTempCold:{} feltTempHot{} feltTempSuperHot:{}".format(mock_temp,
                                                                                 test.feltTempCold(),
                                                                                test.feltTempHot(),
@@ -158,4 +162,3 @@ if __name__ == '__main__':
                                                                                 test.feltTempCold(),
                                                                                test.feltTempHot(),
                                                                                test.feltTempSuperHot()))
-
