@@ -44,7 +44,7 @@ class InsideCondition:
             :return: the light value in percent , None if impossible to calculate
             with my schematic, light range is 0 to 100%
             0% means no light
-        """"
+        """
         try:
             maxDelta= CST.MAX_LIGHT_DELTA * self._adcRange / 100
         except:
@@ -62,7 +62,7 @@ class InsideCondition:
     def light_condition(self):
         """
             :return: the light condition SUN, LOWSUN, NONE , NONE if impossible to calculate
-        """"
+        """
         light_percent = self.light()
         if light_percent > CST.SUN_PERCENT_THRESHOLD:
             return CST.SUN
