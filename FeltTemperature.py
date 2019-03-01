@@ -115,13 +115,13 @@ class FeltTemperature:
       return 1 if self.insideSunLevel()=="SUN" else 0
    
   
-     def _humidityEffect(self):
+    def _humidityEffect(self):
       return 0 #TODO: implement
 
      
     #== Calculation of raw temperatures ==  
     def _wallTemperature(self):
-    """
+      """
       :return the calculated wall temperature based on wall transmission coeff
       """
       return _surfaceTemperature(self.wallTransmissionCoeff, const.RI)
@@ -146,15 +146,15 @@ class FeltTemperature:
     
     
 if __name__ == '__main__':
-    print("testing Felt Temperature manually")
-    mock_temp = 21
-    test = FeltTemperature(insideTemperature=lambda x: mock_temp)
-    print("temp:{} -> feltTempCold:{} feltTempHot{} feltTempSuperHot:{}".format(mock_temp,
+  print("testing Felt Temperature manually")
+  mock_temp = 21
+  test = FeltTemperature(insideTemperature=lambda x: mock_temp)
+  print("temp:{} -> feltTempCold:{} feltTempHot{} feltTempSuperHot:{}".format(mock_temp,
                                                                                 test.feltTempCold(),
                                                                                test.feltTempHot(),
                                                                                test.feltTempSuperHot())
-    mock_temp = 14
-    print("temp:{} -> feltTempCold:{} feltTempHot{} feltTempSuperHot:{}".format(mock_temp,
+  mock_temp = 14
+  print("temp:{} -> feltTempCold:{} feltTempHot{} feltTempSuperHot:{}".format(mock_temp,
                                                                                 test.feltTempCold(),
                                                                                test.feltTempHot(),
                                                                                test.feltTempSuperHot())
