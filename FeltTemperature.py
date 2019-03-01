@@ -142,4 +142,20 @@ class FeltTemperature:
       delta = outsideTemperature() - insideTemperature()
       phi = delta * U
       return insideTemperature() + phi * Ri
+
     
+    
+if __name__ == '__main__':
+    print("testing Felt Temperature manually")
+    mock_temp = 21
+    test = FeltTemperature(insideTemperature=lambda x: mock_temp)
+    print("temp:{} -> feltTempCold:{} feltTempHot{} feltTempSuperHot:{}".format(mock_temp,
+                                                                                test.feltTempCold(),
+                                                                               test.feltTempHot(),
+                                                                               test.feltTempSuperHot())
+    mock_temp = 14
+    print("temp:{} -> feltTempCold:{} feltTempHot{} feltTempSuperHot:{}".format(mock_temp,
+                                                                                test.feltTempCold(),
+                                                                               test.feltTempHot(),
+                                                                               test.feltTempSuperHot())
+          
