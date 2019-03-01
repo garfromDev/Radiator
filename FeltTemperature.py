@@ -105,7 +105,7 @@ class FeltTemperature:
       return 0 #TODO: implement
 
     
-    def _insideTemperatureEffect(self)
+    def _insideTemperatureEffect(self):
       """ the effect is the difference vs target temp, truncated at MAX_INSIDE_TEMP_EFFECT / MIN_INSIDE_TEMP_EFFECT """
       return max(min((self.insideTemperature()-self.targetTemp), const.MAX_INSIDE_TEMP_EFFECT), const.MIN_INSIDE_TEMP_EFFECT)
     
