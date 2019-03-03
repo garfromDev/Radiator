@@ -58,12 +58,12 @@ class DecisionMaker(object):
     #1 apply overrule by user
     if self.overruled.value():
       metaMode=self.overMode.value()
-      info = "applyed overruled "+metaMode
+      info = info + "  applyed overruled "+metaMode
 
     #2 eco mode
     if metaMode != CST.CONFORT:
       self._heater.setEcoMode()
-      info="maked decision setEcoMode"
+      info= info + "  maked decision setEcoMode"
       return
 
     # metaMode == CST.CONFORT:
@@ -75,7 +75,7 @@ class DecisionMaker(object):
       confort_mode = confort_mode.make_cold()
     elif self._felt_temp_manager.feltTempSuperHot(): 
       confort_mode = confort_mode.make_cold().make_cold()
-    logging.info("after feltTemperature evaluation, mode is %s",confort_mode)
+    logging.debug("after feltTemperature evaluation, mode is %s",confort_mode)
                                  
     #4 adaptation of confort mode according user bonus
     if self.userBonus.value():
@@ -85,7 +85,7 @@ class DecisionMaker(object):
                       
     #5 application of confort mode
     self._heater.set_from_confort_mode(confort_mode)
-    info = "Heating mode applied : {}".format(confort_mode)
+    info = info + "  Heating mode applied : {}".format(confort_mode)
     logging.info(info)
     return info
 
@@ -93,7 +93,6 @@ class DecisionMaker(object):
 
 if __name__ == '__main__':
   print("testing DecisionMaker manually")
-  logging.basicConfig(filename='Radiator.log', level=logging.DEBUG, format='%(asctime)s %(message)s')
   test = DecisionMaker()
   print("decision  taken : "+test.makeDecision())
   print("Decision taken can be inspected in log file or through StateDisplay")
