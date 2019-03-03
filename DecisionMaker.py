@@ -2,7 +2,7 @@
 import logging
 
 from CST import CST
-from CurrentTemperature import InsideCondition
+from InsideCondition  import InsideCondition
 from FeltTemperature import FeltTemperature
 from FilteredVar import FilteredVar
 from HeatCalendar import HeatCalendar
