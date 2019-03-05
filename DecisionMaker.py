@@ -6,7 +6,7 @@ from InsideCondition  import InsideCondition
 from FeltTemperature import FeltTemperature
 from FilteredVar import FilteredVar
 from HeatCalendar import HeatCalendar
-from HeatMode import HeatMode
+from HeatMode import HeatMode, Confort_mode
 from UserInteractionManager import UserInteractionManager
 
 
@@ -24,7 +24,7 @@ class DecisionMaker(object):
   def __init__(self, calendar=HeatCalendar(calFile=CST.WEEKCALJSON), userManager=UserInteractionManager()):
     logging.info("DecisionMaker init")
     self._calendar = calendar
-    self.metaMode = FilteredVar(cacheDuration = CST.METACACHING, getter = self._calendar.getCurrentMode)
+    self.metaMode = FilteredVar(cacheDuration = CST.METACACHING, getter = self._calendar.getCurrentMode).value
     self._heater = HeatMode()
 
     #create an instance of InsideCondition to avoid duplicating instance for temperature and light_level
@@ -44,11 +44,11 @@ class DecisionMaker(object):
     self.overMode =  FilteredVar(cacheDuration = CST.TEMPCACHING, getter=self._userManager.overMode).value
 
   
-            
+ 
   def makeDecision(self):
     #0 get meta mode from calendar
     metaMode = self.metaMode()
-    info = "mode from calendar : "+metaMode
+    info = "mode from calendar : " + metaMode
     logging.info("makeDecision metamode = {} temp = {:.1f} Bonus = {} feltCold = {} feltHot = {} feltSuperHot = {} userDown = {} overruled = {} overMode = {}".format(metaMode,
                                                                                                          self.insideTemp(),
                                                                                                          self.userBonus(),
@@ -57,8 +57,7 @@ class DecisionMaker(object):
                                                                                                          self.feltTempSuperHot(),
                                                                                                          self.userDown(),
                                                                                                          self.overruled(),
-                                                                                                         self.overMode() )
-                )
+                                                                                                         self.overMode() ) )
 
     #1 apply overrule by user
     if self.overruled():
@@ -68,26 +67,26 @@ class DecisionMaker(object):
     #2 eco mode
     if metaMode != CST.CONFORT:
       self._heater.setEcoMode()
-      info= info + "  maked decision setEcoMode"
-      return
+      info = info + "  maked decision setEcoMode"
+      return info
 
     # metaMode == CST.CONFORT:
     #3 adaptation of confort mode according felt temperature
     confort_mode = Confort_mode()
-    if self._feltTempCold():
+    if self.feltTempCold():
       confort_mode = confort_mode.make_hot()
     elif self.feltTempHot():
       confort_mode = confort_mode.make_cold()
     elif self.feltTempSuperHot(): 
       confort_mode = confort_mode.make_cold().make_cold()
     logging.debug("after feltTemperature evaluation, mode is %s",confort_mode)
-                                 
+
     #4 adaptation of confort mode according user bonus
     if self.userBonus():
       confort_mode = confort_mode.make_hot()
     elif self.userDown():
       confort_mode = confort_mode.make_cold()
-                      
+ 
     #5 application of confort mode
     self._heater.set_from_confort_mode(confort_mode)
     info = info + "  Heating mode applied : {}".format(confort_mode)
