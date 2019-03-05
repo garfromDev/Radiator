@@ -24,14 +24,14 @@ class Confort_mode(object):
       
     def _set(self, confort_mode):
         self.confort_mode = confort_mode
-        self._current_index = self.mode_list.index(confort_mode) 
+        self._current_index = self._mode_list.index(confort_mode) 
       
-    def make_hot(self)
-        new_mode = self._mode_list[min(self._current_index+1, len(self._mode_list)-1 )
+    def make_hot(self):
+        new_mode = self._mode_list[min(self._current_index+1, len(self._mode_list)-1 ) ]
         return Confort_mode(new_mode)
                             
     def make_cold(self):
-        new_mode = self._mode_list[max(self._current_index-1, 0 )
+        new_mode = self._mode_list[max(self._current_index-1, 0) ]
         return Confort_mode(new_mode)                  
                  
     def __repr__(self):
@@ -39,7 +39,7 @@ class Confort_mode(object):
 				 
 				 
 				 
-class HeatMode:
+class HeatMode(object):
     # outPlusWaveform :
     # The GPIO output that drive the first OptoTriac (in GPIO.BCM notation)
     # this output supress negative waveform
