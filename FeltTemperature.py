@@ -85,7 +85,11 @@ class FeltTemperature(object):
   def _feltTemperature(self):
       """
       :return: the calculated felt temperature taking into account the different parameters
+       return targetTemp  if insideTemp is None
+       return insideTemp if calculation fail
       """
+      if  not self.insideTemperature():
+          return self.targetTemp
       felt = self.insideTemperature()\
         + self._wallTemperatureEffect() * const.WALL_FACTOR \
         + self._windowTemperatureEffect() * const.WINDOW_FACTOR \
@@ -162,3 +166,6 @@ if __name__ == '__main__':
                                                                                 test.feltTempCold(),
                                                                                test.feltTempHot(),
                                                                                test.feltTempSuperHot()))
+  mock_temp = None
+  print("temp:None -> feltTempCold:{}").format(test.feltTempCold())
+
