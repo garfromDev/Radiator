@@ -47,7 +47,7 @@ class FeltTemperature(object):
       :param windowTransmissionCoeff: window insulation property
     """
     self.targetTemp = targetTemp
-    self.insideTemperature = insideTemperature
+    self.insideTemperature = lambda : insideTemperature() or self.targetTemp
     self.outsideSunLevel = outsideSunLevel
     self.insideSunLevel = insideSunLevel
     self.humidity = humidity
@@ -88,8 +88,6 @@ class FeltTemperature(object):
        return targetTemp  if insideTemp is None
        return insideTemp if calculation fail
       """
-      if  not self.insideTemperature():
-          return self.targetTemp
       felt = self.insideTemperature()\
         + self._wallTemperatureEffect() * const.WALL_FACTOR \
         + self._windowTemperatureEffect() * const.WINDOW_FACTOR \
@@ -143,9 +141,10 @@ class FeltTemperature(object):
       :param U: the total transmission coeff of the wall or window in W / m2 K
       :return the surface temperature in °C
       """
+
       delta = outsideTemperature(None) - insideTemperature()
       phi = delta * U
-      return insideTemperature() + phi * Ri
+      return insideTemperature() + phi * Ri 
 
 
 
