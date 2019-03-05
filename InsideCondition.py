@@ -17,6 +17,9 @@ CST.SUN_NONE = "NONE"
 CST.SUN_PERCENT_THRESHOLD = 80
 CST.LOWSUN_PERCENT_THRESHOLD = 60
 
+CST.MIN_REALISTIC_TEMP = 2
+CST.MAX_REALISTIC_TEMP = 50
+
 class InsideCondition:
     """
       get the inside light level and temperature from the sensor connected to the SPI adc
@@ -74,6 +77,7 @@ class InsideCondition:
 # return the temperature value in degree, None if impossible to calculate
 # with my schematic, temperature range is 0 to 58,1 degree Celcius
 # higher temperature will be 58,1, this is not a concern for a heating regulation
+# allowed temperature will be truncated to avoid false temperature when SC to grounf or +Vref
     def temperature(self):
         try: #calculate the adc delta value corresponding to MAX_DELTA_TEMP temperature delta in °
             degree = CST.MAX_DELTA_TEMP * self._sensorGain * self._adcRange / self._voltageRef
@@ -84,10 +88,11 @@ class InsideCondition:
             temp = float(voltage) * (self._voltageRef / self._adcRange) / self._sensorGain
         except: #would fail if voltage=None or adcRange=0 or sensorGain=0
             temp = None
+	if temp and temp >= CST.MIN_REALISTIC_TEMP and temp <= CST.MAX_REALISTIC_TEMP:
+          return temp
 
-        return temp
-    
-    
+        return None
+
     #--------- internal ---------------------------------------------------
     def _filteredVoltage(self, maxDelta, measure, interval = CST.LM35_INTERVAL):
         # perform 3 measurement at interval secondes delay using measure() and return the mean of the two closest value

@@ -50,7 +50,7 @@ class DecisionMaker(object):
     metaMode = self.metaMode()
     info = "mode from calendar : " + metaMode
     logging.info("makeDecision metamode = {} temp = {:.1f} Bonus = {} feltCold = {} feltHot = {} feltSuperHot = {} userDown = {} overruled = {} overMode = {}".format(metaMode,
-                                                                                                         self.insideTemp(),
+                                                                                                         self.insideTemp() or 9999,
                                                                                                          self.userBonus(),
                                                                                                          self.feltTempCold(),
                                                                                                          self.feltTempHot(),

@@ -29,11 +29,11 @@ class Confort_mode(object):
     def make_hot(self):
         new_mode = self._mode_list[min(self._current_index+1, len(self._mode_list)-1 ) ]
         return Confort_mode(new_mode)
-                            
+
     def make_cold(self):
         new_mode = self._mode_list[max(self._current_index-1, 0) ]
-        return Confort_mode(new_mode)                  
-                 
+        return Confort_mode(new_mode)
+
     def __repr__(self):
         return self._mode_list[self._current_index]
 				 
@@ -99,9 +99,9 @@ class HeatMode(object):
                            ])
         self.sequencer.start(ratioSeq)
         self._displayer.displayRatioMode(ratio) 
-        
-                                   
-    def set_from_confort_mode( new_mode):
+
+
+    def set_from_confort_mode(self, new_mode):
         """
         :param Confort_mode new_mode: the mode to apply
         Apply the mode if confort, minus1, minus2, does nothing else
