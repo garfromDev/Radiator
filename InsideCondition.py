@@ -67,6 +67,7 @@ class InsideCondition:
             :return: the light condition SUN, LOWSUN, NONE , NONE if impossible to calculate
         """
         light_percent = self.light()
+#        import pdb; pdb.set_trace()
         if light_percent > CST.SUN_PERCENT_THRESHOLD:
             return CST.SUN
         if light_percent > CST.LOWSUN_PERCENT_THRESHOLD:

@@ -25,7 +25,7 @@ class Confort_mode(object):
     def _set(self, confort_mode):
         self.confort_mode = confort_mode
         self._current_index = self._mode_list.index(confort_mode) 
-      
+
     def make_hot(self):
         new_mode = self._mode_list[min(self._current_index+1, len(self._mode_list)-1 ) ]
         return Confort_mode(new_mode)
@@ -36,9 +36,24 @@ class Confort_mode(object):
 
     def __repr__(self):
         return self._mode_list[self._current_index]
-				 
-				 
-				 
+
+    def __eq__(self,other):
+        return self._current_index == other._current_index
+
+
+class ConfortMinus1(Confort_mode):
+    def __init__(self):
+        super(ConfortMinus1,self).__init__(Confort_mode.minus1)
+
+class ConfortMinus2(Confort_mode):
+    def __init__(self):
+        super(ConfortMinus2,self).__init__(Confort_mode.minus2)
+
+class Confort(Confort_mode):
+    def __init__(self):
+        super(Confort,self).__init__(Confort_mode.confort) 
+
+
 class HeatMode(object):
     # outPlusWaveform :
     # The GPIO output that drive the first OptoTriac (in GPIO.BCM notation)
@@ -77,7 +92,7 @@ class HeatMode(object):
         self.sequencer.cancel()
         self._setEcoMode()
         self._displayer.displayEcoMode()
-        
+ 
     # set the pilot wire to confort minus 1 degree (4'57 flat, 3" sinusoid)    
     def setConfortMinus1(self):
         logging.debug("starting sequencer with sequence confortMinus1Seq") 
@@ -86,6 +101,7 @@ class HeatMode(object):
 
     # set the pilot wire to confort minus 2 degree (4'53 flat, 7" sinusoid)    
     def setConfortMinus2(self):
+        logging.debug("starting sequencer with sequence confortMinus2Seq")
         self.sequencer.start(self._confortMinus2Seq)
         self._displayer.displayConfortMinus2Mode()
 
@@ -106,12 +122,16 @@ class HeatMode(object):
         :param Confort_mode new_mode: the mode to apply
         Apply the mode if confort, minus1, minus2, does nothing else
         """
-        if new_mode == Confort_mode.confort:
+        #import pdb; pdb.set_trace()
+        logging.debug("HeatMode setting confort mode to %s",new_mode) 
+        if new_mode == Confort():
             self.setConfortMode()
-        elif new_mode == Confort_mode.minus1:
+        elif new_mode == ConfortMinus1():
             self.setConfortMinus1()
-        elif new_mode == Confort_mode.minus2:
-            self.setConfortMinus2()  
+        elif new_mode == ConfortMinus2():
+            self.setConfortMinus2()
+        else:
+            logging.error("Heatmode unknow mode %s",new_mode)
 
 
     #-----------------------------------------------------------    
