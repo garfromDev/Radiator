@@ -107,13 +107,13 @@ class HeatMode(object):
         Apply the mode if confort, minus1, minus2, does nothing else
         """
         if new_mode == Confort_mode.confort:
-            setConfortMode()
+            self.setConfortMode()
         elif new_mode == Confort_mode.minus1:
-            setConfortMinus1()
+            self.setConfortMinus1()
         elif new_mode == Confort_mode.minus2:
-            setConfortMinus2()  
-                                   
-                                   
+            self.setConfortMinus2()  
+
+
     #-----------------------------------------------------------    
     # set the Triac control output to parameters value    
     # will initialize HW if hw has not been initialized
