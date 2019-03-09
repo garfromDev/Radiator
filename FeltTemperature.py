@@ -91,7 +91,6 @@ class FeltTemperature(object):
       felt = self.insideTemperature()\
         + self._wallTemperatureEffect() * const.WALL_FACTOR \
         + self._windowTemperatureEffect() * const.WINDOW_FACTOR \
-        + self._insideTemperatureEffect() * const.INSIDE_TEMP_FACTOR\
         + self._lightEffect() * const.SUN_FACTOR\
         + self._humidityEffect() * const.HUMIDITY_FACTOR
       return felt or self.insideTemperature()
