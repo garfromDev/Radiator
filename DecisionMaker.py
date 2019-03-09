@@ -29,6 +29,7 @@ class DecisionMaker(object):
 
     #create an instance of InsideCondition to avoid duplicating instance for temperature and light_level
     ic = InsideCondition()
+    self._ic = ic
     # we keep direct access to inside_temp for logging
     self.insideTemp = FilteredVar(cacheDuration = CST.TEMPCACHING, getter=ic.temperature).value
     self._felt_temp_manager = FeltTemperature( insideTemperature=ic.temperature,
@@ -49,8 +50,9 @@ class DecisionMaker(object):
     #0 get meta mode from calendar
     metaMode = self.metaMode()
     info = "mode from calendar : " + metaMode
-    logging.info("makeDecision metamode = {} temp = {:.1f} Bonus = {} feltCold = {} feltHot = {} feltSuperHot = {} userDown = {} overruled = {} overMode = {}".format(metaMode,
+    logging.info("makeDecision metamode = {} temp = {:.1f} Light = {}  Bonus = {} feltCold = {} feltHot = {} feltSuperHot = {} userDown = {} overruled = {} overMode = {}".format(metaMode,
                                                                                                          self.insideTemp() or 9999,
+                                                                                                         self._ic.light(),
                                                                                                          self.userBonus(),
                                                                                                          self.feltTempCold(),
                                                                                                          self.feltTempHot(),
