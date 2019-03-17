@@ -8,6 +8,7 @@ from CloudManager import CloudManager
 from Rolling import Rolling
 from CST import CST
 from RGB_Displayer import RGB_Displayer
+import WatchFile
 
 CST.DEBUG_STATUS = "debug.json"
 CST.DEBUG_KEY = "debug_mode"
@@ -62,4 +63,5 @@ if __name__ == '__main__':
 
   timer=threading.Timer(12,go)
   timer.start()
-  
+  WatchFile.configure(fileName = CST.USER_JSON)
+  WatchFile.start()
