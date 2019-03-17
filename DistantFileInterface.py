@@ -17,15 +17,19 @@ class DistantFileInterface(object):
       Will always fetch distant file unrespective of the date and overwrite local file
       Does nothing in case of error (connexion, not existing file, ...
     """
-    ftp =  ftplib.FTP(self._server, self._login, self._pswd)
-    ftp.cwd(self._path)
+    try:
+      ftp =  ftplib.FTP(self._server, self._login, self._pswd)
+      ftp.cwd(self._path)
+    except Exception as err:
+      logging.error("failure ftp connexion "+repr(err))
+      return
     with open(fileName, 'wb') as f:
       try:
         ftp.retrbinary('RETR ' + fileName, f.write)
       except:
         logging.error("failure ftp retrieval of " + fileName)
-
-    ftp.quit()
+      finally:
+        ftp.quit()
 
 
 if __name__ == '__main__':

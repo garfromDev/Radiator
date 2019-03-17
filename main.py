@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+import json
 import logging
 import threading
 from ActionSequencer import Action, ActionSequencer
@@ -10,12 +10,18 @@ from CST import CST
 from RGB_Displayer import RGB_Displayer
 import WatchFile
 
+CST.DEBUG_STATUS = "debug.json"
+CST.DEBUG_KEY = "debug_mode"
+""" a file may contain a debug_mode boolean to activate debug logging
+   this file is not under git conf to allow local overwriting of the status, debug will be false if no file available
+"""
 sequencer = ActionSequencer() #must be global to remain alive at the end of main
 
 def main():
   for handler in logging.root.handlers[:]:
     logging.root.removeHandler(handler)
-  logging.basicConfig(filename='Radiator2.log', level=logging.INFO, format='%(asctime)s %(message)s')
+  level = logging.DEBUG if _get_debug_status() else logging.INFO
+  logging.basicConfig(filename='Radiator2.log', level=level, format='%(asctime)s %(message)s')
   logging.info('Started')
   global decider  #must be global to remain alive at the end of main
   decider = DecisionMaker()
@@ -27,7 +33,24 @@ def main():
   global sequencer  #must be global to remain alive at the end of main
   logging.debug("ready to start maln sequencer")
   sequencer.start(mainSeq)
-  
+
+def _get_debug_status():
+  """
+    :return: debug status  from the file
+    if file opening fails, return false 
+  """
+  # ouvrir le fichier
+  try:
+    with open( CST.DEBUG_STATUS) as debug_load:
+      debug = json.load(debug_load)
+      res=debug[CST.DEBUG_KEY]
+  except Exception as err:
+    #soit le fichier n'a pu être lu, soit le calendrier n'est pas complet
+    logging.error(err.message)
+    res=False
+  return res
+
+
 if __name__ == '__main__':
   #display flashing sequence to confirm reboot
   displayer=RGB_Displayer()
