@@ -2,6 +2,7 @@
 import logging
 from CST import CST
 from DistantFileInterface import DistantFileInterface
+CST.PSWD_FILE
 CST.FTP_SERVER = "perso-ftp.orange.fr"
 CST.FTP_PATH = "/Applications/Radiator"
 CST.FTP_LOGIN = "fromontaline@orange.fr"
@@ -36,6 +37,8 @@ class CloudManager(object):
     self._distantFileInterface.fetch(self._userDecisionFileName)
 
 
+def __get_pswd():
+  with file.open()
 if __name__ == '__main__':
   print("testing CloudManager manually")
   test = CloudManager()
