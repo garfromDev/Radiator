@@ -37,8 +37,13 @@ class CloudManager(object):
     self._distantFileInterface.fetch(self._userDecisionFileName)
 
 
-def __get_pswd():
-  with file.open()
+def get_pswd():
+  with open(CST.PSWD_INFO) as pwd:
+    content = json.load(pwd)
+    print(content)
+  CST.FTP_PSWD = content["ftp_pswd"]
+    
+    
 if __name__ == '__main__':
   print("testing CloudManager manually")
   test = CloudManager()
