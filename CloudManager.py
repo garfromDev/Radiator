@@ -36,7 +36,7 @@ class CloudManager(object):
     self._distantFileInterface.fetch(self._userDecisionFileName)
 
 
-def get_pswd():
+def get_pswd(f):
   """
   Open the file named CST.PSW_INFO and get login information
   file is json dictionary with keys :
@@ -45,7 +45,7 @@ def get_pswd():
   In case of errors reading/decoding the file, CST.FTP_LOGIN is set to None
   """
   try:
-    with open(CST.PSWD_INFO) as pwd:
+    with open(f) as pwd:
       content = json.load(pwd)
       CST.FTP_PSWD = content["ftp_pswd"]
       CST.FTP_SERVER = content["ftp_server"]
