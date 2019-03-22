@@ -2,8 +2,11 @@
 import logging
 import SimpleHTTPServer
 import SocketServer
+import os
+import threading
 
-from CST import CST
+class CST:
+    pass
 
 CST.HTTP_PORT = 8000
 
@@ -14,10 +17,39 @@ This module will (upon import, no configuration needed):
 - perform conversion upon timer
 """
 
-def convert_to_html( log_file, line_nb):
-  
+def convert_to_html(line_nb):
+    try:
+        with open(log_file) as f:
+            with open(CST.HTML_FILE) as h:
+                back_x_lines(f, line_nb)
+                write_header(h)
+                for line in f.readlines():
+                    h.write(to_html(line))
+    except IOError as err:
+      logging.error("convert_to_html fails to convert %s to %s",
+                    log_file,
+                    CST.HTML_FILE) 
+            
+      
+def back_x_lines(f, lines):
+    f.readline()
+    f.seek(-2, os.SEEK_CUR)
+    for _ in xrange(lines):
+        if not back_one_line(f):
+            break
 
+def back_one_line(f):
+    try:
+        while f.read(1) != b"\n":   # Until EOL is found...
+            f.seek(-2, os.SEEK_CUR)
+    except IOError:
+        return False
+    else:
+        return True
+
+
+threading.timer(CST.MAIN_TIMING, 
 Handler = SimpleHTTPServer.SimpleHTTPRequestHandler
 httpd = SocketServer.TCPServer(("", CST.HTTP_PORT), Handler)
-Logging.info("starting HTTP server on port %s",CST.HTTP_PORT)
+logging.info("starting HTTP server on port %s",CST.HTTP_PORT)
 httpd.serve_forever()
