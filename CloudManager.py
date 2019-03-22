@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
 import logging
+import json
+
 from CST import CST
 from DistantFileInterface import DistantFileInterface
-CST.PSWD_FILE
-CST.FTP_SERVER = "perso-ftp.orange.fr"
-CST.FTP_PATH = "/Applications/Radiator"
-CST.FTP_LOGIN = "fromontaline@orange.fr"
-CST.FTP_PSWD = "orange3310"
+
+CST.PSWD_INFO = "pswd.json"
 
 
 class CloudManager(object):
@@ -37,13 +36,28 @@ class CloudManager(object):
     self._distantFileInterface.fetch(self._userDecisionFileName)
 
 
-def get_pswd():
-  with open(CST.PSWD_INFO) as pwd:
-    content = json.load(pwd)
-    print(content)
-  CST.FTP_PSWD = content["ftp_pswd"]
-    
-    
+def get_pswd(f):
+  """
+  Open the file f and get login information
+  file is json dictionary with keys :
+  ftp_pswd, ftp_server, ftp_path, ftp_login
+  value are loaded into CST
+  in case of IO or Decode errors, nothing happens, error are logged
+  """
+  try:
+    with open(f) as pwd:
+      content = json.load(pwd)
+      CST.FTP_PSWD = content["ftp_pswd"]
+      CST.FTP_SERVER = content["ftp_server"]
+      CST.FTP_PATH = content["ftp_path"]
+      CST.FTP_LOGIN = content["ftp_login"]
+  except IOError, json.JSONDecodeError as error:
+    logging.error("Cloud Manager not able to open or decode %s - %s", CST.PSWD_INFO, error.message)
+
+  
+# the login information are loaded at importation of the module  
+get_pswd(CST.PSWD_INFO)
+
 if __name__ == '__main__':
   print("testing CloudManager manually")
   test = CloudManager()
