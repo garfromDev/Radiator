@@ -5,6 +5,9 @@ import logging
 
 class DistantFileInterface(object):
 
+  def __init__(self):
+    self._server=None #cannot be used until configure() is called
+    
   def configure(self, server, path, login, pswd):
     self._server=server
     self._path = path
@@ -17,6 +20,9 @@ class DistantFileInterface(object):
       Will always fetch distant file unrespective of the date and overwrite local file
       Does nothing in case of error (connexion, not existing file, ...
     """
+    if not self._server:
+      return #configuration not done
+    
     try:
       ftp =  ftplib.FTP(self._server, self._login, self._pswd)
       ftp.cwd(self._path)
@@ -35,9 +41,8 @@ class DistantFileInterface(object):
 if __name__ == '__main__':
   print("testing ftp manually")
   testFtp=DistantFileInterface()
-  testFtp.configure(server="perso-ftp.orange.fr",
+  testFtp.configure(server="",
                     path="/Applications/Radiator",
-                    login="fromontaline@orange.fr",
-                    pswd="orange3310")
-  testFtp.fetch('userInteraction.json')
-
+                    login="",
+                    pswd="")
+  testFtp.fetch('userInteraction.json') #should return silently doing nothing
