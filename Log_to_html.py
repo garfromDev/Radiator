@@ -47,6 +47,17 @@ def back_one_line(f):
     else:
         return True
 
+"""
+line = "2019-03-09 11:47:37,962 makeDecision metamode = confort temp = 20.1 Bonus = False feltCold = False feltHot = True feltSuperHot = False userDown = False overruled = False overMode = confort"
+import re
+r = re.compile("[\S]+ = [\S]+")
+print(r.findall(line))
+k = [ x.split()[0] for x in r.findall(line) ]
+v = [ x.split()[2] for x in r.findall(line) ]
+d = dict(zip(k,v))
+print(d)
+"""
+
 
 threading.timer(CST.MAIN_TIMING, 
 Handler = SimpleHTTPServer.SimpleHTTPRequestHandler
