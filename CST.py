@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 import const as CST
+import subprocess
 
-# This utility module define constant
-
+""" This utility module define constant """
+CST.VERSION = subprocess.check_output(["git", "describe", "--always"]).strip()
+#VERSION will be valid only when launched from the local repo
 
 CST.MIN         = 60            # conversion of minutes to second
 CST.WEEKCALJSON = "week.json"   # the file that defines the weekly calendar
