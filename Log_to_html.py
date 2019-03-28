@@ -84,15 +84,23 @@ def back_one_line(f):
     
 def to_html_from_input_value(line):
     dict = get_dict_from_log_line(line)
-    if dict['feltCold'] : 
+    output = "<p>"
+    if dict['feltCold']: 
         dict['felt'] = 'cold'
-    if dict['feltHot'] : 
+    if dict['feltHot']: 
         dict['felt'] = 'hot' 
-    if dict['feltSuperHot'] : 
+    if dict['feltSuperHot']: 
         dict['felt'] = 'super hot'
-    
-    for k in ['metamode', 'temp', 'light', 'user_action', 'felt' ]:
-        pass
+    if dict['overruled']:
+        if dict['Bonus']:
+            dict['user_action'] = 'user cold'
+        elif dict['userDown']:
+            dict['user_action'] = 'user hot'
+        else:
+            dict['user_action'] = dict['overMode']
+    for k, pad in [('metamode',8), ('temp',4), ('light',5), ('user_action',10), ('felt',4) ]:
+        output += "  " + format(dict[k], "<{}".format(pad))
+    return output
     
 """
 line = "2019-03-09 11:47:37,962 makeDecision metamode = confort temp = 20.1 Bonus = False feltCold = False feltHot = True feltSuperHot = False userDown = False overruled = False overMode = confort"
