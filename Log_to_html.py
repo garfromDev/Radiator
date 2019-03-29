@@ -100,7 +100,12 @@ def to_html_from_input_value(line):
             dict['user_action'] = dict['overMode']
     for k, pad in [('metamode',8), ('temp',4), ('light',5), ('user_action',10), ('felt',4) ]:
         output += "  " + format(dict[k], "<{}".format(pad))
-    return output
+    return output + "</p>"
+    
+    
+def get_dict_from_log_line(line):
+    pass
+
     
 """
 line = "2019-03-09 11:47:37,962 makeDecision metamode = confort temp = 20.1 Bonus = False feltCold = False feltHot = True feltSuperHot = False userDown = False overruled = False overMode = confort"
@@ -113,8 +118,11 @@ d = dict(zip(k,v))
 print(d)
 """
 
+def start_generating():
+    update_html()
+    threading.timer(CST.MAIN_TIMING, start_generating).start()
 
-threading.timer(CST.MAIN_TIMING, 
+start_generating()
 Handler = SimpleHTTPServer.SimpleHTTPRequestHandler
 httpd = SocketServer.TCPServer(("", CST.HTTP_PORT), Handler)
 logging.info("starting HTTP server on port %s",CST.HTTP_PORT)
