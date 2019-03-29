@@ -10,7 +10,7 @@ import CST as CST
 
 CST.HTTP_PORT = 8000
 CST.HTML_HEADER = 'header.html'
-CST.HTML_FILE = 'index.html' #default file served by simple HTTP server
+CST.HTML_FILE = 'index.html'  # default file served by simple HTTP server
 
 """
 This module will (upon import, no configuration needed):
@@ -18,6 +18,7 @@ This module will (upon import, no configuration needed):
 - provide a function to convert Radiator log file to index.html file
 - perform conversion upon timer
 """
+
 
 def convert_to_html(line_nb):
     """
@@ -30,19 +31,21 @@ def convert_to_html(line_nb):
                 back_x_lines(f, line_nb)
                 write_header(h)
                 line = find_input_value_line(f)
-                while line != '' #end of file reached
+                while line != '':  # end of file reached
                     h.write(to_html_from_input_value(line))
                     line = find_decision_taken_kine(f)
-                    h.write(to_html_from_decision_made(line))         
+                    h.write(to_html_from_decision_made(line))
     except IOError as err:
-      logging.error("convert_to_html fails to convert %s to %s",
-                    log_file,
-                    CST.HTML_FILE) 
-            
+        logging.error("convert_to_html fails to convert %s to %s",
+                      log_file,
+                      CST.HTML_FILE)
+
+
 def write_header(html_file):
     with open(CST.HTML_HEADER) as hdr:
         html_file.write(hdr.read())
-        
+
+
 def find_input_value_line(f):
     """find the next line in file f that match the expression
     and return it
@@ -61,7 +64,7 @@ def find_input_value_line(f):
     reached = false
     while not reached:
         l = f.readline()
-        reached = (l =='') or  inp_val.match(l)
+        reached = (l == '') or inp_val.match(l)
     return l
 
 
@@ -72,6 +75,7 @@ def back_x_lines(f, lines):
         if not back_one_line(f):
             break
 
+
 def back_one_line(f):
     try:
         while f.read(1) != b"\n":   # Until EOL is found...
@@ -81,15 +85,15 @@ def back_one_line(f):
     else:
         return True
 
-    
+
 def to_html_from_input_value(line):
     dict = get_dict_from_log_line(line)
     output = "<p>"
-    if dict['feltCold']: 
+    if dict['feltCold']:
         dict['felt'] = 'cold'
-    if dict['feltHot']: 
-        dict['felt'] = 'hot' 
-    if dict['feltSuperHot']: 
+    if dict['feltHot']:
+        dict['felt'] = 'hot'
+    if dict['feltSuperHot']:
         dict['felt'] = 'super hot'
     if dict['overruled']:
         if dict['Bonus']:
@@ -98,17 +102,22 @@ def to_html_from_input_value(line):
             dict['user_action'] = 'user hot'
         else:
             dict['user_action'] = dict['overMode']
-    for k, pad in [('metamode',8), ('temp',4), ('light',5), ('user_action',10), ('felt',4) ]:
+    for k, pad in [('metamode', 8),
+                   ('temp', 4),
+                   ('light', 5),
+                   ('user_action', 10),
+                   ('felt', 4)]:
         output += "  " + format(dict[k], "<{}".format(pad))
     return output + "</p>"
-    
-    
+
+
 def get_dict_from_log_line(line):
     pass
 
-    
+
 """
-line = "2019-03-09 11:47:37,962 makeDecision metamode = confort temp = 20.1 Bonus = False feltCold = False feltHot = True feltSuperHot = False userDown = False overruled = False overMode = confort"
+line = "2019-03-09 11:47:37,962 makeDecision metamode = confort temp = 20.1
+Bonus = False feltCold = False feltHot = True feltSuperHot = False userDown = False overruled = False overMode = confort"
 import re
 r = re.compile("[\S]+ = [\S]+")
 print(r.findall(line))
@@ -118,12 +127,14 @@ d = dict(zip(k,v))
 print(d)
 """
 
+
 def start_generating():
     update_html()
     threading.timer(CST.MAIN_TIMING, start_generating).start()
 
+
 start_generating()
 Handler = SimpleHTTPServer.SimpleHTTPRequestHandler
 httpd = SocketServer.TCPServer(("", CST.HTTP_PORT), Handler)
-logging.info("starting HTTP server on port %s",CST.HTTP_PORT)
+logging.info("starting HTTP server on port %s", CST.HTTP_PORT)
 httpd.serve_forever()
