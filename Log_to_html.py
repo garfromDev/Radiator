@@ -103,7 +103,7 @@ def back_one_line(f):
 
 def to_html_from_input_value(line):
     dict = get_dict_from_log_line(line)
-    output = "<p>"
+    output = "<tr>"
     if not dict:
       return output
     print("Dictionaire from log ------------>  ", dict)
@@ -125,7 +125,7 @@ def to_html_from_input_value(line):
                    ('light', 5),
                    ('user_action', 10),
                    ('felt', 6)]:
-        output += "  " + format(dict[k], "<{}".format(pad))
+        output += "<td>" + dict[k]+ "</td>"
     return output
 
 
@@ -133,7 +133,7 @@ def to_html_from_decision_made(line):
     mode_exp = re.compile(r"applied : (\w+)")
     found = mode_exp.search(line)
     mode = found.groups()[0] if found else ""
-    return format(mode, "<{}".format(8)) + "</p>"
+    return "<td>"+mode+"</td></tr>"
 
 
 def get_dict_from_log_line(line):
