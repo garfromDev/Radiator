@@ -62,12 +62,15 @@ class InsideCondition:
         return light
 
     
-    def light_condition(self):
+    def light_condition(self, light_percent = None):
         """
+	    :param light_percent: numeric value between 0 and 100
             :return: the light condition SUN, LOWSUN, NONE , NONE if impossible to calculate
         """
-        light_percent = self.light()
 #        import pdb; pdb.set_trace()
+        if light_percent == None: #it is not possible to refer to self in default value because instance not created
+	    light_percent = self.light() #if a value was given, it is different from none
+	
         if light_percent > CST.SUN_PERCENT_THRESHOLD:
             return CST.SUN
         if light_percent > CST.LOWSUN_PERCENT_THRESHOLD:
