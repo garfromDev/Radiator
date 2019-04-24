@@ -172,4 +172,6 @@ httpd.serve_forever()
 
 """ idea to have graph served through HTML :
 https://pythonspot.com/flask-and-great-looking-charts-using-chart-js/
+to have scrollable table:
+ https://forum.alsacreations.com/topic-4-62439-1-TABLE--Scrollable-TBODY-and-fixed-THEAD-reloaded.html
 """
