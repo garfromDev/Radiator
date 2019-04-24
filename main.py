@@ -9,6 +9,7 @@ from Rolling import Rolling
 from CST import CST
 from RGB_Displayer import RGB_Displayer
 import WatchFile
+import log_to_html #this will start html interface to log file
 
 CST.DEBUG_STATUS = "debug.json"
 CST.DEBUG_KEY = "debug_mode"
@@ -21,7 +22,7 @@ def main():
   for handler in logging.root.handlers[:]:
     logging.root.removeHandler(handler)
   level = logging.DEBUG if _get_debug_status() else logging.INFO
-  logging.basicConfig(filename='Radiator2.log', level=level, format='%(asctime)s %(message)s')
+  logging.basicConfig(filename=CST.LOG_FILE, level=level, format='%(asctime)s %(message)s')
   logging.info('Started')
   global decider  #must be global to remain alive at the end of main
   decider = DecisionMaker()

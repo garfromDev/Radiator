@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 import const as CST
+import subprocess
 
-# This utility module define constant
-
+""" This utility module define constant """
+CST.VERSION = subprocess.check_output(["git", "describe", "--always"]).strip()
+#VERSION will be valid only when launched from the local repo
 
 CST.MIN         = 60            # conversion of minutes to second
 CST.WEEKCALJSON = "week.json"   # the file that defines the weekly calendar
@@ -17,3 +19,4 @@ CST.UNKNOW = "unknow"           # unknow meta mode
 CST.MAX_DELTA_TEMP = 0.4        # maximum temperature span between 2 simultaneous measurement for filtering (in °C)
 CST.LM35_INTERVAL = 0.01        # interval in sec between 2 measure for filtering temperature measurement
 CST.USER_JSON = "userInteraction.json"
+CST.LOG_FILE = "Radiator2.log"
