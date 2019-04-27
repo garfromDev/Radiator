@@ -9,7 +9,7 @@ from Rolling import Rolling
 from CST import CST
 from RGB_Displayer import RGB_Displayer
 import WatchFile
-import log_to_html #this will start html interface to log file
+import Log_to_html #this will start html interface to log file
 
 CST.DEBUG_STATUS = "debug.json"
 CST.DEBUG_KEY = "debug_mode"
@@ -46,7 +46,7 @@ def _get_debug_status():
       debug = json.load(debug_load)
       res=debug[CST.DEBUG_KEY]
   except Exception as err:
-    #soit le fichier n'a pu être lu, soit le calendrier n'est pas complet
+    #soit le fichier n'a pu être lu, soit le dictionnaire n'est pas complet
     logging.error(err.message)
     res=False
   return res
