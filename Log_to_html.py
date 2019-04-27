@@ -1,26 +1,28 @@
-# -*- coding: utf-8 -*-
+# -*-coding: utf-8 -*-
+"""
+This module will (upon import, no configuration needed):
+- launch a simple HTTP server to serve index.html from current directory                                                                                                                  - provide a function to convert Radiator log file to index.html file
+- perform conversion upon timer
+"""   
+
 import logging
+from os.path import getmtime
 import os
 import re
 import SimpleHTTPServer
 import SocketServer
 import threading
+import time
 
-import CST as CST
+from CST import CST
 
 
 CST.HTTP_PORT = 8000
 CST.HTML_HEADER = 'header.html'
 CST.HTML_FOOTER = 'footer.html'
 CST.HTML_FILE = 'index.html'  # default file served by simple HTTP server
-CST.NB_OF_LOG_LINES = 10 #nb of status log lines served as HTML
+CST.NB_OF_LOG_LINES = 30 #nb of status log lines served as HTML (not all lines are lines with value)
 
-"""
-This module will (upon import, no configuration needed):
-- launch a simple HTTP server to serve index.html from current directory
-- provide a function to convert Radiator log file to index.html file
-- perform conversion upon timer
-"""
 
 def convert_to_html(log_file, line_nb):
     """
@@ -30,27 +32,35 @@ def convert_to_html(log_file, line_nb):
     try:
         with open(log_file) as f:
             with open(CST.HTML_FILE, 'w') as h:
-                back_x_lines(f, line_nb)
-                write_header(header=CST.HTML_HEADER, to=h)
+                _back_x_lines(f, line_nb)
+                _write_header(header=CST.HTML_HEADER, to=h)
+                h.write("<p>last update : {}</p>".format( _get_date_of(log_file) ))
                 line=f.readline()
                 while line != '':  # end of file reached
-                    line = find_input_value_line(f)
-                    h.write(to_html_from_input_value(line))
-                    line = find_decision_taken_line(f)
-                    h.write(to_html_from_decision_made(line)+"\n")
-                write_header(header=CST.HTML_FOOTER, to=h)
+                    line = _find_input_value_line(f)
+                    h.write(_to_html_from_input_value(line))
+                    line = _find_decision_taken_line(f)
+                    h.write(_to_html_from_decision_made(line)+"\n")
+                _write_header(header=CST.HTML_FOOTER, to=h)
     except IOError as err:
         logging.error("convert_to_html fails to convert %s to %s",
                       log_file,
                       CST.HTML_FILE)
 
 
-def write_header(header, to):
+def _write_header(header, to):
     with open(header) as hdr:
         to.write(hdr.read())
 
+def _get_date_of(file):
+    """ :return: the date of last file access in local time as string
+    crash if file do not exist, this shall not be the case in this module
+    """
+    t = getmtime(file)
+    return time.ctime(t)
 
-def find_input_value_line(f):
+
+def _find_input_value_line(f):
     """find the next line in file f that match the expression
     and return it
     :param f: the file object
@@ -65,34 +75,34 @@ def find_input_value_line(f):
         metamode
         \s+  #un ou des espaces
         =""", re.VERBOSE)
-    return find_line_matching(f, inp_val)
+    return _find_line_matching(f, inp_val)
 
 
-def find_decision_taken_line(f):
+def _find_decision_taken_line(f):
     """ find the line explaining which decision has been taken
     :return: the line, empty string if end of file reached
     """
     dec = re.compile(r".+Heating mode applied \:")
-    return find_line_matching(f, dec)
+    return _find_line_matching(f, dec)
 
 
-def find_line_matching(f, expr):
+def _find_line_matching(f, expr):
     reached = False
     while not reached:
         l = f.readline() #empty string if EOF
         reached = (l == '') or expr.match(l)
-    return l      
+    return l
 
-def back_x_lines(f, lines):
-    f.readline()
-    f.seek(-2, os.SEEK_CUR)
+def _back_x_lines(f, lines):
+    f.seek(0, os.SEEK_END)
     for _ in xrange(lines):
-        if not back_one_line(f):
+        if not _back_one_line(f):
             break
 
 
-def back_one_line(f):
+def _back_one_line(f):
     try:
+        f.seek(-2, os.SEEK_CUR)
         while f.read(1) != b"\n":   # Until EOL is found...
             f.seek(-2, os.SEEK_CUR)
     except IOError:
@@ -101,22 +111,23 @@ def back_one_line(f):
         return True
 
 
-def to_html_from_input_value(line):
-    dict = get_dict_from_log_line(line)
+def _to_html_from_input_value(line):
+    dict = _get_dict_from_log_line(line)
     output = "<tr>"
     if not dict:
       return output
-    print("Dictionaire from log ------------>  ", dict)
-    if dict['feltcold']:
+    logging.debug("Dictionaire from log ------------> %s ", dict)
+    if eval(dict['feltcold']):
         dict['felt'] = 'cold'
-    if dict['felthot']:
+    if eval(dict['felthot']):
         dict['felt'] = 'hot'
-    if dict['feltsuperhot']:
+    if eval(dict['feltsuperhot']):
         dict['felt'] = 'super hot'
-    if dict['overruled']:
-        if dict['bonus']:
+    dict['user_action']='' #default value
+    if eval(dict['overruled']):
+        if eval(dict['bonus']):
             dict['user_action'] = 'user cold'
-        elif dict['userdown']:
+        elif eval(dict['userdown']):
             dict['user_action'] = 'user hot'
         else:
             dict['user_action'] = dict['overMode']
@@ -129,14 +140,14 @@ def to_html_from_input_value(line):
     return output
 
 
-def to_html_from_decision_made(line):
+def _to_html_from_decision_made(line):
     mode_exp = re.compile(r"applied : (\w+)")
     found = mode_exp.search(line)
     mode = found.groups()[0] if found else ""
     return "<td>"+mode+"</td></tr>"
 
 
-def get_dict_from_log_line(line):
+def _get_dict_from_log_line(line):
     r = re.compile(r"[\S]+ = [\S]+")
     k = [x.split()[0].lower() for x in r.findall(line)] #all keys are lowered
     v = [x.split()[2] for x in r.findall(line)]
@@ -157,11 +168,11 @@ print(d)
 """
 
 def update_html():
-    convert_to_html(log_file=CST.LOG_FILE, line_nb=CST.NB_OF_LOG_LINES)
-    
+    convert_to_html(log_file = 'Radiator2.log', line_nb=CST.NB_OF_LOG_LINES)
+
 def start_generating():
     update_html()
-    threading.timer(CST.MAIN_TIMING, start_generating).start()
+    threading.Timer(CST.MAIN_TIMING, start_generating).start()
 
 
 start_generating()
