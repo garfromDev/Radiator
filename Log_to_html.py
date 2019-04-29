@@ -35,12 +35,13 @@ def convert_to_html(log_file, line_nb):
                 _back_x_lines(f, line_nb)
                 _write_header(header=CST.HTML_HEADER, to=h)
                 h.write("<p>last update : {}</p>".format( _get_date_of(log_file) ))
-                line=f.readline()
+                line=_find_input_value_line(f)
                 while line != '':  # end of file reached
-                    line = _find_input_value_line(f)
-                    h.write(_to_html_from_input_value(line))
-                    line = _find_decision_taken_line(f)
-                    h.write(_to_html_from_decision_made(line)+"\n")
+                    if _is_input_value(line):
+                        h.write(_to_html_from_input_value(line))
+                    if _is_decision_taken(line):
+                        h.write(_to_html_from_decision_made(line)+"\n")
+                    line=f.readline()
                 _write_header(header=CST.HTML_FOOTER, to=h)
     except IOError as err:
         logging.error("convert_to_html fails to convert %s to %s",
@@ -60,11 +61,11 @@ def _get_date_of(file):
     return time.ctime(t)
 
 
-def _find_input_value_line(f):
-    """find the next line in file f that match the expression
-    and return it
-    :param f: the file object
-    :return: the line, empty string if end of file reached"""
+def _is_input_value(line):
+    """check if the line in match the expression
+    wiche means it is a log line about decision made
+    :param line: the line to check as string
+    :return: True or False"""
     inp_val = re.compile(r"""
         ^\S+ #début de ligne suivi de quelque chose (la date)
         \s+  #un ou des espaces
@@ -75,15 +76,15 @@ def _find_input_value_line(f):
         metamode
         \s+  #un ou des espaces
         =""", re.VERBOSE)
-    return _find_line_matching(f, inp_val)
+    return True if inp_val.search(line) else False
 
 
-def _find_decision_taken_line(f):
-    """ find the line explaining which decision has been taken
-    :return: the line, empty string if end of file reached
+def _is_decision_taken(line):
+    """ check if the line is explaining which decision has been taken
+    :return: True or False
     """
     dec = re.compile(r".+Heating mode applied \:")
-    return _find_line_matching(f, dec)
+    return True if dec.search(line) else False
 
 
 def _find_line_matching(f, expr):
@@ -174,12 +175,15 @@ def start_generating():
     update_html()
     threading.Timer(CST.MAIN_TIMING, start_generating).start()
 
-
-start_generating()
-Handler = SimpleHTTPServer.SimpleHTTPRequestHandler
-httpd = SocketServer.TCPServer(("", CST.HTTP_PORT), Handler)
-logging.info("starting HTTP server on port %s", CST.HTTP_PORT)
-threading.Thread(target=httpd.serve_forever).start()
+if __name__ == '__main__':
+    print("converting log file to html, server and timer will not be started...")
+    update_html()
+else:
+    start_generating()
+    Handler = SimpleHTTPServer.SimpleHTTPRequestHandler
+    httpd = SocketServer.TCPServer(("", CST.HTTP_PORT), Handler)
+    logging.info("starting HTTP server on port %s", CST.HTTP_PORT)
+    threading.Thread(target=httpd.serve_forever).start()
 
 """ idea to have graph served through HTML :
 https://pythonspot.com/flask-and-great-looking-charts-using-chart-js/
