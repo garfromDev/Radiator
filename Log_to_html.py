@@ -60,6 +60,16 @@ def _get_date_of(file):
     t = getmtime(file)
     return time.ctime(t)
 
+def _find_input_value_line(f):
+    """find the next line in file f that match the expression
+    and return it
+    :param f: the file object
+    :return: the line, empty string if end of file reached"""
+    line=f.readline()
+    while not (_is_input_value(line) or line==''):
+        line=f.readline()
+    return line
+
 
 def _is_input_value(line):
     """check if the line in match the expression
