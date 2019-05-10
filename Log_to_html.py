@@ -128,6 +128,7 @@ def _to_html_from_input_value(line):
     if not dict:
       return output
     logging.debug("Dictionaire from log ------------> %s ", dict)
+    dict['felt'] = 'normal'
     if eval(dict['feltcold']):
         dict['felt'] = 'cold'
     if eval(dict['felthot']):
