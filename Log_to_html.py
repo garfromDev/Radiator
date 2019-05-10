@@ -36,11 +36,16 @@ def convert_to_html(log_file, line_nb):
                 _write_header(header=CST.HTML_HEADER, to=h)
                 h.write("<p>last update : {}</p>".format( _get_date_of(log_file) ))
                 line=_find_input_value_line(f)
+                line_completed = False
                 while line != '':  # end of file reached
                     if _is_input_value(line):
+                        if not line_completed:
+                            h.write("<td> </td></tr>\n")
                         h.write(_to_html_from_input_value(line))
-                    if _is_decision_taken(line):
+                        line_completed = False
+                    elif _is_decision_taken(line):
                         h.write(_to_html_from_decision_made(line)+"\n")
+                        line_completed = True
                     line=f.readline()
                 _write_header(header=CST.HTML_FOOTER, to=h)
     except IOError as err:
