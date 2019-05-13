@@ -9,11 +9,9 @@ import Adafruit_MCP3008
 import RPi.GPIO as GPIO
 
 from CST import CST
+import Sun_levels
 
 CST.MAX_LIGHT_DELTA = 4 #max delta in percent between 2 measurement
-CST.SUN = "SUN"
-CST.LOWSUN = "LOWSUN"
-CST.SUN_NONE = "NONE"
 CST.SUN_PERCENT_THRESHOLD = 80
 CST.LOWSUN_PERCENT_THRESHOLD = 60
 
