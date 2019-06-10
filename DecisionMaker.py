@@ -78,7 +78,7 @@ class DecisionMaker(object):
       confort_mode = confort_mode.make_hot()
     elif self.feltTempHot():
       confort_mode = confort_mode.make_cold()
-    elif self.feltTempSuperHot(): 
+    elif self.feltTempSuperHot():
       confort_mode = confort_mode.make_cold().make_cold()
     logging.debug("after feltTemperature evaluation, mode is %s",confort_mode)
 
@@ -87,7 +87,7 @@ class DecisionMaker(object):
       confort_mode = confort_mode.make_hot()
     elif self.userDown():
       confort_mode = confort_mode.make_cold()
- 
+
     #5 application of confort mode
     self._heater.set_from_confort_mode(confort_mode)
     info = info + "  Heating mode applied : {}".format(confort_mode)

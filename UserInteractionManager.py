@@ -5,6 +5,7 @@ from datetime import datetime
 from FilteredVar import FilteredVar
 from CST import CST
 CST.JSON_PATH = '/home/pi/Program/Radiator/' # the path to the weekly calendar
+CST.DEFAULT_TARGET_TEMP = None
 
 class UserInteractionManager(object):
   """
@@ -13,8 +14,8 @@ class UserInteractionManager(object):
     it will fetch the user decision in a json file 
   """
   
-  def __init__(self, path=CST.JSON_PATH, file=CST.USER_JSON):
-    self._jsonFile = path + file
+  def __init__(self, path=CST.JSON_PATH, json_file=CST.USER_JSON):
+    self._jsonFile = path + json_file
     self._userInputs=FilteredVar(cacheDuration = CST.METACACHING, getter = self._getUserInputs)
     
     
@@ -61,15 +62,20 @@ class UserInteractionManager(object):
       with open( self._jsonFile) as usrDecision:
         usr = json.load(usrDecision)
         res=usr
+        if not 'targetTemp' in res:
+          res['targetTemp'] = CST.DEFAULT_TARGET_TEMP
+
     except Exception as err:
       #soit le fichier n'a pu être lu, soit le calendrier n'est pas complet
       logging.error(err.message)
       res={"overruled":{"status":False, "expirationDate":"01-01-2000","overMode":"UNKNOW"},
            "userBonus":{"status":False, "expirationDate":"01-01-2000"},
-           "userDown":{"status":False, "expirationDate":"01-01-2000"}}
+           "userDown":{"status":False, "expirationDate":"01-01-2000"},
+           "targetTemp": CST.DEFAULT_TARGET_TEMP,}
     return res
 
-  def _isValidDate(self, dateString):
+  @staticmethod
+  def _isValidDate(dateString):
     """
       return true if the datestring in format 30/06/2018 is in the future
       be carrefull, it is taken at 0h am, so if the date is today, it is no valid anymore
@@ -94,7 +100,7 @@ class UserInteractionManager(object):
     """
       return: the target temp chosen by the user or None
     """
-    return None # TODO implement!
+    return self._userInputs.value()['targetTemp']
   
     
 if __name__ == '__main__':  

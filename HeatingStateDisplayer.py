@@ -13,7 +13,7 @@ class HeatingStateDisplayer:
     """
     def __init__(self, displayer=RGB_Displayer()):
         self._displayer = displayer
-        self._displayer.turnOff
+        self._displayer.turnOff()
         self._sequencer=ActionSequencer() #used to blink the LED
         self._minus2Sequence=Rolling([Action(self._displayer.setColorGreen, duration=4),
                                       Action(self._displayer.turnOff, duration=1)])

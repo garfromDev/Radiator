@@ -6,6 +6,15 @@ import os
 import sys
 import logging
 
+"""
+this module is intended to be used as direct function,
+no class definition
+It provides mechanism to check periodic updating of a file
+and trigger reboot if no update done (used to indirectly check network
+connexion)
+usage : 
+  call configure(), then start()
+"""
 # this is a pointer to the module object instance itself.
 this = sys.modules[__name__]
 
@@ -44,13 +53,13 @@ def check():
     after maxRetry tentative, will trigger action
   """
   if _checkFile():
-    this._retryNb = 0
+    this._retry_nb = 0
     logging.debug("file %s not outdated", this.fileToWatch)
   else:
   #file outDated
     logging.debug("file %s outdated", this.fileToWatch)
-    this._retryNb += 1
-    if _retryNb > maxRetry:
+    this._retry_nb += 1
+    if this._retry_nb > this.maxRetry:
       reboot()
   # launch again timer for next check
   logging.debug("start again WatchFile timer")
@@ -77,11 +86,11 @@ def start():
   """
     This module will look for the last modification of the given file
     if the time since last modified is over delay, it fails
-    if it fails more than maxRetry, rebbot will be triggered
+    if it fails more than maxRetry, reboot will be triggered
 
     :return: true if parameter allows to run at least once
   """
-  if delay == None or fileToWatch == None:
+  if delay is None or fileToWatch is None:
     return False
   watchTimer = threading.Timer(timeBetweenCheck, check)
   watchTimer.start()

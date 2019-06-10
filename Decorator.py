@@ -4,7 +4,7 @@ import functools
 
 def filtered(delay):
   """ any function decorated with it will be
-    filtred, updated only if delay is expired
+    filtered, updated only if delay is expired
   """
   def real_decorator(f):
     f.last_update = 0

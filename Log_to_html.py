@@ -49,20 +49,21 @@ def convert_to_html(log_file, line_nb):
                     line=f.readline()
                 _write_header(header=CST.HTML_FOOTER, to=h)
     except IOError as err:
-        logging.error("convert_to_html fails to convert %s to %s",
+        logging.error("convert_to_html fails to convert %s to %s : %s",
                       log_file,
-                      CST.HTML_FILE)
+                      CST.HTML_FILE,
+                      err.message)
 
 
 def _write_header(header, to):
     with open(header) as hdr:
         to.write(hdr.read())
 
-def _get_date_of(file):
+def _get_date_of(the_file):
     """ :return: the date of last file access in local time as string
     crash if file do not exist, this shall not be the case in this module
     """
-    t = getmtime(file)
+    t = getmtime(the_file)
     return time.ctime(t)
 
 def _find_input_value_line(f):
@@ -98,7 +99,7 @@ def _is_decision_taken(line):
     """ check if the line is explaining which decision has been taken
     :return: True or False
     """
-    dec = re.compile(r".+Heating mode applied \:")
+    dec = re.compile(r".+Heating mode applied :")
     return True if dec.search(line) else False
 
 
@@ -128,32 +129,32 @@ def _back_one_line(f):
 
 
 def _to_html_from_input_value(line):
-    dict = _get_dict_from_log_line(line)
+    param_dict = _get_dict_from_log_line(line)
     output = "<tr>"
-    if not dict:
+    if not param_dict:
       return output
-    logging.debug("Dictionaire from log ------------> %s ", dict)
-    dict['felt'] = 'normal'
-    if eval(dict['feltcold']):
-        dict['felt'] = 'cold'
-    if eval(dict['felthot']):
-        dict['felt'] = 'hot'
-    if eval(dict['feltsuperhot']):
-        dict['felt'] = 'super hot'
-    dict['user_action']='' #default value
-    if eval(dict['overruled']):
-        if eval(dict['bonus']):
-            dict['user_action'] = 'user cold'
-        elif eval(dict['userdown']):
-            dict['user_action'] = 'user hot'
+    logging.debug("Dictionaire from log ------------> %s ", param_dict)
+    param_dict['felt'] = 'normal'
+    if eval(param_dict['feltcold']):
+        param_dict['felt'] = 'cold'
+    if eval(param_dict['felthot']):
+        param_dict['felt'] = 'hot'
+    if eval(param_dict['feltsuperhot']):
+        param_dict['felt'] = 'super hot'
+    param_dict['user_action']='' #default value
+    if eval(param_dict['overruled']):
+        if eval(param_dict['bonus']):
+            param_dict['user_action'] = 'user cold'
+        elif eval(param_dict['userdown']):
+            param_dict['user_action'] = 'user hot'
         else:
-            dict['user_action'] = dict['overMode']
+            param_dict['user_action'] = param_dict['overMode']
     for k, pad in [('metamode', 8),
                    ('temp', 4),
                    ('light', 5),
                    ('user_action', 10),
                    ('felt', 6)]:
-        output += "<td>" + dict[k]+ "</td>"
+        output += "<td>" + param_dict[k]+ "</td>"
     return output
 
 

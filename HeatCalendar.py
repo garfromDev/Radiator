@@ -67,7 +67,8 @@ class HeatCalendar:
     m = time.strftime("%M",self.localtime()) #get the minute 00 to 59
     return "%s:%s" % (h, self._normalize(m))
                       
-  def _normalize(self, minutes):
+  @staticmethod
+  def _normalize(minutes):
     m = int(minutes) / 15
     rounded = m * 15
     return '{:02d}'.format(rounded)
