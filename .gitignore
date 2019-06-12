@@ -1,0 +1,14 @@
+*.pyc
+*.*.*
+*.log
+*.csv
+debug.json
+pswd.json
+userInteraction.json
+index.html
+holiday.json
+*.swp
+newweek.json
+log.html
+report.html
+output.xml

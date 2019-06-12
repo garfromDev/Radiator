@@ -22,9 +22,10 @@ class DistantFileInterface(object):
     """
     if not self._server:
       return #configuration not done
-    
+
     try:
-      ftp =  ftplib.FTP(self._server, self._login, self._pswd)
+      ftp =  ftplib.FTP_TLS(self._server, self._login, self._pswd)
+      ftp.prot_p()
       ftp.cwd(self._path)
     except Exception as err:
       logging.error("failure ftp connexion "+repr(err))
