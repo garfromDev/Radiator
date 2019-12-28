@@ -11,8 +11,8 @@ class RollingLibrary(object):
       self._result = ''
       self._roll = Rolling()
       
-    def create_rolling_list_with(self, list):
-       self._roll = Rolling(list)
+    def create_rolling_list_with(self, action_list):
+       self._roll = Rolling(action_list)
       
     def result_should_be(self, expected):
       if str(self._result) != expected: #arguments of robot are always string

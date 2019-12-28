@@ -9,7 +9,7 @@ class DistantFileInterface(object):
     self._server=None #cannot be used until configure() is called
     
   def configure(self, server, path, login, pswd):
-    self._server=server
+    self._server = server
     self._path = path
     self._login = login
     self._pswd = pswd
