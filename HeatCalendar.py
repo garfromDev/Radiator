@@ -40,7 +40,7 @@ class HeatCalendar:
   def getCurrentMode(self):
     # ouvrir le fichier
     try:
-      with open( self._calFile) as wcal:
+      with open(self._calFile) as wcal:
         calendar = json.load(wcal)
         metaMode=calendar['weekCalendar'][self.day()][self.hour()]
     except Exception as err:
