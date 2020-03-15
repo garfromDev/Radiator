@@ -3,7 +3,7 @@ import const
 const.RI = 0.125
 const.WINDOW_Ri = 0.13
 const.FELT_TEMP_COLD_DELTA = -1.0
-const.FELT_TEMP_HOT_DELTA = +0.8
+const.FELT_TEMP_HOT_DELTA = +0.9
 const.SUPER_HOT_DELTA = 2
 
 #factors define the ratio that is applied to the effect
