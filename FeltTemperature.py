@@ -3,7 +3,7 @@ import const
 const.RI = 0.125
 const.WINDOW_Ri = 0.13
 const.FELT_TEMP_COLD_DELTA = -1.0
-const.FELT_TEMP_HOT_DELTA = +0.8
+const.FELT_TEMP_HOT_DELTA = +0.9
 const.SUPER_HOT_DELTA = 2
 
 #factors define the ratio that is applied to the effect
@@ -47,7 +47,7 @@ class FeltTemperature(object):
       :param windowTransmissionCoeff: window insulation property
     """
     self.targetTemp = targetTemp
-    self.insideTemperature = lambda : insideTemperature() or self.targetTemp
+    self.insideTemperature = lambda: insideTemperature() or self.targetTemp
     self.outsideSunLevel = outsideSunLevel
     self.insideSunLevel = insideSunLevel
     self.humidity = humidity
@@ -63,23 +63,23 @@ class FeltTemperature(object):
       - inside air temp is too low OR
       - wall temperature is lower than air temperature and no sun OR
       - humidity is high and no sun
-      - 
+      -
     """
-    return ( self._feltTemperature() < (self.targetTemp + const.FELT_TEMP_COLD_DELTA) )
+    return self._feltTemperature() < (self.targetTemp + const.FELT_TEMP_COLD_DELTA)
 
 
   def feltTempHot(self):
     """
       :return: True if user will feel hot versus target temperature
     """
-    return ( self._feltTemperature() > (self.targetTemp + const.FELT_TEMP_HOT_DELTA) )
+    return self._feltTemperature() > (self.targetTemp + const.FELT_TEMP_HOT_DELTA)
     
     
   def feltTempSuperHot(self):
       """
       :return: True if user will feel really hot versus target temperature
       """
-      return (  self._feltTemperature()  > self.targetTemp + const.SUPER_HOT_DELTA)
+      return self._feltTemperature() > self.targetTemp + const.SUPER_HOT_DELTA
     
     
   def _feltTemperature(self):
@@ -125,25 +125,25 @@ class FeltTemperature(object):
       """
       :return the calculated wall temperature based on wall transmission coeff
       """
-      return _surfaceTemperature(self.wallTransmissionCoeff, const.RI)
+      return self._surfaceTemperature(self.wallTransmissionCoeff, const.RI)
 
 
   def _windowTemperature(self):
       """
       :return the calculated window surface temperature based on window transmission coeff
       """
-      return _surfaceTemperature(self.windowTransmissionCoeff, const.WINDOW_Ri)
+      return self._surfaceTemperature(self.windowTransmissionCoeff, const.WINDOW_Ri)
     
     
-  def _surfaceTemperature(U, Ri):
+  def _surfaceTemperature(self, U, Ri):
       """
-      :param U: the total transmission coeff of the wall or window in W / m2 K
-      :return the surface temperature in °C
+      @param U: the total transmission coeff of the wall or window in W / m2 K
+      @return: the surface temperature in °C
       """
 
-      delta = outsideTemperature(None) - insideTemperature()
+      delta = self.outsideTemperature(None) - self.insideTemperature()
       phi = delta * U
-      return insideTemperature() + phi * Ri 
+      return self.insideTemperature() + phi * Ri
 
 
 
@@ -165,5 +165,5 @@ if __name__ == '__main__':
                                                                                test.feltTempHot(),
                                                                                test.feltTempSuperHot()))
   mock_temp = None
-  print("temp:None -> feltTempCold:{}").format(test.feltTempCold())
+  print "temp:None -> feltTempCold:{}".format(test.feltTempCold())
 
