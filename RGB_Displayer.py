@@ -25,21 +25,22 @@ class RGB_Displayer:
         GPIO.setup(self._outBlue, GPIO.OUT)
         logging.debug("RGB_Displayer initialized")
 
-
    # Set the Led to red    
     def setColorRed(self):
         self._turnColorOn(self._outRed)
-      
 
    # Set the Led to green    
     def setColorGreen(self):	    
         self._turnColorOn(self._outGreen)
-		
-		
+
    # Set the Led to Blue    
     def setColorBlue(self):   
         self._turnColorOn(self._outBlue)
-              
+
+   # Set the Led to kind of yellow
+    def setColorYellow(self):
+        self._turnColorOn([self._outRed, self._outGreen])
+
     # turn all Leds off
     def turnOff(self):
         GPIO.output(self._outRed, GPIO.LOW)
@@ -48,9 +49,15 @@ class RGB_Displayer:
 	
     #---------------------------------------
     def _turnColorOn(self, ledOutput):
+        """
+        :param ledOutput: the output channel, or a list of output channel
+        """
         self.turnOff()
-        if not self._inhibit():	    
-            GPIO.output(ledOutput, GPIO.HIGH)
+        if not isinstance(ledOutput, list):
+            ledOutput = [ledOutput]
+        if not self._inhibit():
+            for out in ledOutput:
+                GPIO.output(out, GPIO.HIGH)
     
     
 if __name__ == '__main__':

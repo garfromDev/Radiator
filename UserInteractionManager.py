@@ -28,7 +28,7 @@ class UserInteractionManager(object):
   
   def overMode(self):
     """
-      return: the metamode choosen by the user (ECO, CONFORT, ..)
+      return: the metamode choosen by the user (ECO, CONFORT, OFF..)
       It is the consumer responsability to check overrule validity, no check done here
       In case the userInputs dictionary do not contains key, return UNKNOW
     """
