@@ -34,8 +34,8 @@ def convert_to_html(log_file, line_nb):
             with open(CST.HTML_FILE, 'w') as h:
                 _back_x_lines(f, line_nb)
                 _write_header(header=CST.HTML_HEADER, to=h)
-                h.write("<p>last update : {}</p>".format( _get_date_of(log_file) ))
-                line=_find_input_value_line(f)
+                h.write("<p>last update : {}</p>".format(_get_date_of(log_file)))
+                line =_find_input_value_line(f)
                 line_completed = False
                 while line != '':  # end of file reached
                     if _is_input_value(line):
@@ -148,7 +148,7 @@ def _to_html_from_input_value(line):
         elif eval(param_dict['userdown']):
             param_dict['user_action'] = 'user hot'
         else:
-            param_dict['user_action'] = param_dict['overMode']
+            param_dict['user_action'] = param_dict['overmode']
     for k, pad in [('metamode', 8),
                    ('temp', 4),
                    ('light', 5),

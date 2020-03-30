@@ -13,7 +13,8 @@ class HeatingStateDisplayer:
     Eco     : blue
     Confort : red
     Minus1  : green
-    Off     : green + red
+    Minus2  : green flashing
+    Off     : blue flashing slow
     """
     def __init__(self, displayer=RGB_Displayer()):
         self._displayer = displayer
@@ -21,6 +22,8 @@ class HeatingStateDisplayer:
         self._sequencer=ActionSequencer() #used to blink the LED
         self._minus2Sequence=Rolling([Action(self._displayer.setColorGreen, duration=4),
                                       Action(self._displayer.turnOff, duration=1)])
+        self._off_sequence = Rolling([Action(self._displayer.setColorBlue, duration=2),
+                                      Action(self._displayer.turnOff, duration=4)])
 
     def displayConfortMode(self):
         self._sequencer.cancel()
@@ -31,8 +34,7 @@ class HeatingStateDisplayer:
         self._displayer.setColorBlue()
 
     def displayOffMode(self):
-        self._sequencer.cancel()
-        self._displayer.setColorYellow()
+        self._sequencer.start(self._off_sequence)
 
     def displayConfortMinus1Mode(self):
         self._sequencer.cancel()

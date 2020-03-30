@@ -18,7 +18,7 @@ class RGB_Displayer:
         self._outRed = outRed
         self._outGreen = outGreen
         self._outBlue = outBlue
-        self._inhibit=inhibit
+        self._inhibit = inhibit
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(self._outRed, GPIO.OUT)
         GPIO.setup(self._outGreen, GPIO.OUT)
@@ -36,10 +36,6 @@ class RGB_Displayer:
    # Set the Led to Blue    
     def setColorBlue(self):   
         self._turnColorOn(self._outBlue)
-
-   # Set the Led to kind of yellow
-    def setColorYellow(self):
-        self._turnColorOn([self._outRed, self._outGreen])
 
     # turn all Leds off
     def turnOff(self):
