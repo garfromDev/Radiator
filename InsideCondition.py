@@ -2,11 +2,17 @@
 # inspired of example from Tony DiCola, License: Public Domain
 import logging
 import time
+import os
 
-# Import SPI library (for hardware SPI) and MCP3008 library.
-import Adafruit_GPIO.SPI as SPI
-import Adafruit_MCP3008
-import RPi.GPIO as GPIO
+
+test = os.getenv("RADIATOR_TEST_ENVIRONMENT")
+if test:
+    import random
+else:
+    # Import SPI library (for hardware SPI) and MCP3008 library.
+    import Adafruit_GPIO.SPI as SPI
+    import Adafruit_MCP3008
+    import RPi.GPIO as GPIO
 
 from CST import CST
 
@@ -31,7 +37,8 @@ class InsideCondition:
            adcRange : the output range of ADC converter (0 to 1023 for MCP3008)
            sensorGain : the voltage change per degrees of the thermal sensor (10 mV / degree for LM35)
         """
-        GPIO.setmode(GPIO.BCM)
+        if not test:
+            GPIO.setmode(GPIO.BCM)
         self._sensorPin = ThSensorPin
         self._lightSensorPin = lightSensorPin
         self._voltageRef = voltageRef
@@ -40,7 +47,8 @@ class InsideCondition:
         #  init SPI connexion
         SPI_PORT = 0
         SPI_DEVICE = 0
-        self._mcp = Adafruit_MCP3008.MCP3008(spi=SPI.SpiDev(SPI_PORT, SPI_DEVICE))
+        if not test:
+            self._mcp = Adafruit_MCP3008.MCP3008(spi=SPI.SpiDev(SPI_PORT, SPI_DEVICE))
 
 
     def light(self):
@@ -49,6 +57,8 @@ class InsideCondition:
             with my schematic, light range is 0 to 100%
             0% means no light
         """
+        if test:
+            return random.random() * 100
         try:
             maxDelta = CST.MAX_LIGHT_DELTA * self._adcRange / 100
         except:
@@ -89,11 +99,14 @@ class InsideCondition:
             degree = CST.MAX_DELTA_TEMP * self._sensorGain * self._adcRange / self._voltageRef
         except:
             degree = self._adcRange  # no filterig will be done
-        voltage = self._filteredVoltage(maxDelta=degree, measure = lambda: self._mcp.read_adc(self._sensorPin))
-        try:
-            temp = float(voltage) * (self._voltageRef / self._adcRange) / self._sensorGain
-        except:  # would fail if voltage=None or adcRange=0 or sensorGain=0
-            temp = None
+        if test:
+            temp = random.randint(15, 25)
+        else:
+            voltage = self._filteredVoltage(maxDelta=degree, measure = lambda: self._mcp.read_adc(self._sensorPin))
+            try:
+                temp = float(voltage) * (self._voltageRef / self._adcRange) / self._sensorGain
+            except:  # would fail if voltage=None or adcRange=0 or sensorGain=0
+                temp = None
         if temp and CST.MIN_REALISTIC_TEMP <= temp <= CST.MAX_REALISTIC_TEMP:
             return temp
 
