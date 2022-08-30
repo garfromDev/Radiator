@@ -9,8 +9,8 @@ import logging
 from os.path import getmtime
 import os
 import re
-import SimpleHTTPServer
-import SocketServer
+from http.server import SimpleHTTPRequestHandler
+import socketserver
 import threading
 import time
 
@@ -52,7 +52,7 @@ def convert_to_html(log_file, line_nb):
         logging.error("convert_to_html fails to convert %s to %s : %s",
                       log_file,
                       CST.HTML_FILE,
-                      err.message)
+                      err)
 
 
 def _write_header(header, to):
@@ -197,8 +197,8 @@ if __name__ == '__main__':
     update_html()
 else:
     start_generating()
-    Handler = SimpleHTTPServer.SimpleHTTPRequestHandler
-    httpd = SocketServer.TCPServer(("", CST.HTTP_PORT), Handler)
+    Handler = SimpleHTTPRequestHandler
+    httpd = socketserver.TCPServer(("", CST.HTTP_PORT), Handler)
     logging.info("starting HTTP server on port %s", CST.HTTP_PORT)
     threading.Thread(target=httpd.serve_forever).start()
 

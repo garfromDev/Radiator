@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
-
-import RPi.GPIO as GPIO
+import os
+test = os.getenv("RADIATOR_TEST_ENVIRONMENT")
+if not test:
+    import RPi.GPIO as GPIO
 import time
 import logging
 
@@ -19,6 +21,8 @@ class RGB_Displayer:
         self._outGreen = outGreen
         self._outBlue = outBlue
         self._inhibit=inhibit
+        if test:
+            return
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(self._outRed, GPIO.OUT)
         GPIO.setup(self._outGreen, GPIO.OUT)
@@ -42,6 +46,8 @@ class RGB_Displayer:
               
     # turn all Leds off
     def turnOff(self):
+        if test:
+            return
         GPIO.output(self._outRed, GPIO.LOW)
         GPIO.output(self._outGreen, GPIO.LOW)
         GPIO.output(self._outBlue, GPIO.LOW)
@@ -49,7 +55,7 @@ class RGB_Displayer:
     #---------------------------------------
     def _turnColorOn(self, ledOutput):
         self.turnOff()
-        if not self._inhibit():	    
+        if not self._inhibit() and not test:
             GPIO.output(ledOutput, GPIO.HIGH)
     
     

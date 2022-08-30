@@ -47,7 +47,7 @@ def _get_debug_status():
       res=debug[CST.DEBUG_KEY]
   except Exception as err:
     #soit le fichier n'a pu être lu, soit le dictionnaire n'est pas complet
-    logging.error(err.message)
+    logging.error(err)
     res=False
   return res
 

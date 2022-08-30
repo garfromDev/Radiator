@@ -165,5 +165,5 @@ if __name__ == '__main__':
                                                                                test.feltTempHot(),
                                                                                test.feltTempSuperHot()))
   mock_temp = None
-  print "temp:None -> feltTempCold:{}".format(test.feltTempCold())
+  print("temp:None -> feltTempCold:{}".format(test.feltTempCold()))
 
