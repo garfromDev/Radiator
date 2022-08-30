@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
+import os
+test = os.getenv("RADIATOR_TEST_ENVIRONMENT")
 
-import RPi.GPIO as GPIO
+if not test:
+	import RPi.GPIO as GPIO
 from Rolling import Rolling
 from ActionSequencer import Action, ActionSequencer
 import logging
@@ -75,9 +78,10 @@ class HeatMode(object):
 
 	# Must be called once prior to use to initialize HW setting
 	def hwInit(self):
-		GPIO.setmode(GPIO.BCM)
-		GPIO.setup(self._outPlusWaveform, GPIO.OUT)
-		GPIO.setup(self._outMinusWaveform, GPIO.OUT)
+		if not test:
+			GPIO.setmode(GPIO.BCM)
+			GPIO.setup(self._outPlusWaveform, GPIO.OUT)
+			GPIO.setup(self._outMinusWaveform, GPIO.OUT)
 		self.initDone = True
 
    # Set the pilot wire to confort mode = no sinusoid    
@@ -137,6 +141,8 @@ class HeatMode(object):
 	# set the Triac control output to parameters value
 	# will initialize HW if hw has not been initialized
 	def _setOutputs(self, plus, minus):
+		if test:
+			return
 		if not self.initDone:
 			self.hwInit()
 		GPIO.output(self._outPlusWaveform, plus)
