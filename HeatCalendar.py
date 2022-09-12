@@ -84,9 +84,8 @@ class HeatCalendar:
 
     @staticmethod
     def _normalize(minutes):
-        m = int(minutes) / 15
-        rounded = m * 15
-        return '{:02d}'.format(rounded)
+        """ return 0, 15, 30, 45"""
+        return 15 * (int(minutes) // 15)
 
 # PROBLEMATIQUE DE TEST
 # faire :  HeatCalendar(localtime = lambda x=1: time.strptime("2018 02 26 08 00", "%Y %m %d %H %M") ) pour

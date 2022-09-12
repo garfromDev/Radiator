@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import const as CST
+import os
 import subprocess
 
 """ This utility module define constant """
@@ -8,10 +9,11 @@ CST.VERSION = subprocess.check_output(["git", "describe", "--always"]).strip()
 
 CST.MIN         = 60            # conversion of minutes to second
 CST.WEEKCALJSON = "week.json"   # the file that defines the weekly calendar
-CST.CALENDAR_PATH = "./"         # the path to the weekly calendar file
+CST.BASE_PATH = os.getenv("CALENDAR_PATH") or "./"         # the path for other files
+CST.CALENDAR_PATH = os.getenv("CALENDAR_PATH") or "./"         # the path to the weekly calendar file
 CST.METACACHING = 5 * CST.MIN   # caching duration for meta mode check
 CST.TEMPCACHING = 2 * CST.MIN   # caching duration for temperature check
-CST.MAIN_TIMING  = 6 * CST.MIN # main looprefreshing
+CST.MAIN_TIMING  = 1 * CST.MIN # main looprefreshing
 CST.CONFORT = "confort"         # confort meta mode
 CST.CONFORTPLUS = "confortPlus" # confort plus meta mode
 CST.ECO = "eco"                 # eco meta mode

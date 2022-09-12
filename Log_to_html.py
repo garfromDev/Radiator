@@ -30,7 +30,7 @@ def convert_to_html(log_file, line_nb):
     in debug mode there could be other lines intercaled
     """
     try:
-        with open(log_file) as f:
+        with open(log_file, "r") as f:
             with open(CST.HTML_FILE, 'w') as h:
                 _back_x_lines(f, line_nb)
                 _write_header(header=CST.HTML_HEADER, to=h)
@@ -112,7 +112,7 @@ def _find_line_matching(f, expr):
 
 def _back_x_lines(f, lines):
     f.seek(0, os.SEEK_END)
-    for _ in xrange(lines):
+    for _ in range(lines):
         if not _back_one_line(f):
             break
 

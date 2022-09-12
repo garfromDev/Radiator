@@ -28,7 +28,7 @@ class DecisionMaker(object):
     self._heater = HeatMode()
 
     #create an instance of InsideCondition to avoid duplicating instance for temperature and light_level
-    ic = InsideCondition()
+    ic = InsideCondition.shared()
     self._ic = ic
     # we keep direct access to inside_temp for logging
     self.insideTemp = FilteredVar(cacheDuration = CST.TEMPCACHING, getter=ic.temperature).value
@@ -43,7 +43,7 @@ class DecisionMaker(object):
     self.userDown = FilteredVar(cacheDuration = CST.TEMPCACHING, getter=self._userManager.userDown).value
     self.overruled = FilteredVar(cacheDuration = CST.TEMPCACHING, getter=self._userManager.overruled).value
     self.overMode =  FilteredVar(cacheDuration = CST.TEMPCACHING, getter=self._userManager.overMode).value
-
+    logging.info("DecisionMaker init finished")
 
   def makeDecision(self):
     #0 get meta mode from calendar
@@ -69,6 +69,7 @@ class DecisionMaker(object):
     if metaMode != CST.CONFORT:
       self._heater.setEcoMode()
       info = info + "  maked decision setEcoMode"
+      logging.info(info)
       return info
 
     # metaMode == CST.CONFORT:

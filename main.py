@@ -9,7 +9,7 @@ from Rolling import Rolling
 from CST import CST
 from RGB_Displayer import RGB_Displayer
 import WatchFile
-import Log_to_html #this will start html interface to log file
+# import Log_to_html #this will start html interface to log file
 
 CST.DEBUG_STATUS = "debug.json"
 CST.DEBUG_KEY = "debug_mode"
@@ -52,21 +52,26 @@ def _get_debug_status():
   return res
 
 
-if __name__ == '__main__':
-  #display flashing sequence to confirm reboot
-  displayer=RGB_Displayer()
-  seq=Rolling([Action(displayer.setColorGreen, 2),
-              Action(displayer.turnOff, 2)])
-  s=ActionSequencer()
+def start_radiator():
+  global s
+  # display flashing sequence to confirm reboot
+  displayer = RGB_Displayer()
+  seq = Rolling([Action(displayer.setColorGreen, 2),
+                 Action(displayer.turnOff, 2)])
+  s = ActionSequencer()
   s.start(seq)
 
-  #start main sequencer and stop flashing
+  # start main sequencer and stop flashing
   def go():
     s.cancel()
     main()
 
-  timer=threading.Timer(12,go)
+  timer = threading.Timer(12, go)
   timer.start()
+
+
+if __name__ == '__main__':
+  start_radiator()
 
   #start WatchFile (will reboot if wifi connexion lost)
   WatchFile.configure(fileName=CST.USER_JSON)
