@@ -4,7 +4,7 @@ import json
 from datetime import datetime
 from FilteredVar import FilteredVar
 from CST import CST
-CST.JSON_PATH = '/home/pi/Program/Radiator/' # the path to the weekly calendar
+CST.JSON_PATH = CST.BASE_PATH or './'  # the path to the weekly calendar
 CST.DEFAULT_TARGET_TEMP = None
 
 class UserInteractionManager(object):

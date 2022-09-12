@@ -31,6 +31,16 @@ class InsideCondition:
       get the inside light level and temperature from the sensor connected to the SPI adc
       it can be used with FilteredVar mechanism, using value() as getter
     """
+    _shared = None
+
+    @classmethod
+    def shared(cls, ThSensorPin= 1, voltageRef= 581.0, adcRange=1024.0, thSensorGain=10.0, lightSensorPin=3):
+        if not cls._shared:
+            cls._shared = cls(ThSensorPin, voltageRef, adcRange, thSensorGain, lightSensorPin)
+        return cls._shared
+
+
+
     def __init__(self, ThSensorPin= 1, voltageRef= 581.0, adcRange=1024.0, thSensorGain=10.0, lightSensorPin=3):
         """ sensorPin : the pin of the MPC3008 where the sensor is connected (pin 1 in my schematic)
            voltageRef : the reference voltage of the ADC, in mV (581mV in my schematic)
@@ -100,7 +110,7 @@ class InsideCondition:
         except:
             degree = self._adcRange  # no filterig will be done
         if test:
-            temp = random.randint(15, 25)
+            temp = float(random.randint(15, 25))
         else:
             voltage = self._filteredVoltage(maxDelta=degree, measure = lambda: self._mcp.read_adc(self._sensorPin))
             try:
@@ -148,7 +158,7 @@ class InsideCondition:
 
 if __name__ == '__main__':
     print("testing InsideCondition manually")
-    test = InsideCondition()
+    test = InsideCondition.shared()
     print(test.temperature())
     print(test.light())
     print(test.light_condition())

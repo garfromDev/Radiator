@@ -149,11 +149,13 @@ class HeatMode(object):
 		GPIO.output(self._outMinusWaveform, minus)
 
 	def _setConfortMode(self):
-		self._setOutputs( plus = GPIO.LOW, minus = GPIO.LOW)
+		if not test:
+			self._setOutputs( plus = GPIO.LOW, minus = GPIO.LOW)
 		logging.debug("HeatMode -> setConfortMode")
  
 	def _setEcoMode(self):
-		self._setOutputs( plus = GPIO.HIGH, minus = GPIO.HIGH)
+		if not test:
+			self._setOutputs( plus = GPIO.HIGH, minus = GPIO.HIGH)
 		logging.debug("HeatMode -> setEcoMode")
 
 
