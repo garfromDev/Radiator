@@ -2,8 +2,8 @@
 import logging
 import json
 
-from CST import CST
-from DistantFileInterface import DistantFileInterface
+from .CST import CST
+from .DistantFileInterface import DistantFileInterface
 
 CST.PSWD_INFO = "pswd.json"
 

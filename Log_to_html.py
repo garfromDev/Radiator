@@ -14,7 +14,7 @@ import socketserver
 import threading
 import time
 
-from CST import CST
+from .CST import CST
 
 
 CST.HTTP_PORT = 8000

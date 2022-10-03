@@ -2,7 +2,7 @@ import os.path
 import subprocess
 import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
-from HeatMode import HeatMode
+from .HeatMode import HeatMode
 import RPi.GPIO as GPIO
 
 MINUS = 24

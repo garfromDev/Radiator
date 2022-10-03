@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from RGB_Displayer import RGB_Displayer
-from Rolling import Rolling
-from ActionSequencer import Action, ActionSequencer
+from .RGB_Displayer import RGB_Displayer
+from .Rolling import Rolling
+from .ActionSequencer import Action, ActionSequencer
 import time
 
 class HeatingStateDisplayer:

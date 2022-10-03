@@ -4,10 +4,10 @@ test = os.getenv("RADIATOR_TEST_ENVIRONMENT")
 
 if not test:
 	import RPi.GPIO as GPIO
-from Rolling import Rolling
-from ActionSequencer import Action, ActionSequencer
+from .Rolling import Rolling
+from .ActionSequencer import Action, ActionSequencer
 import logging
-from HeatingStateDisplayer import HeatingStateDisplayer
+from .HeatingStateDisplayer import HeatingStateDisplayer
 
 # This module alow to drive pilot wire
 

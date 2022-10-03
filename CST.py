@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import const as CST
+from . import const as CST
 import os
 import subprocess
 

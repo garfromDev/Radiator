@@ -19,7 +19,7 @@
 # print(wk['weekCalendar']['Monday']['08:15'])
 # ==================================================
 
-from CST import CST
+from .CST import CST
 import time
 import json
 import logging

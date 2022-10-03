@@ -2,13 +2,13 @@
 import json
 import logging
 import threading
-from ActionSequencer import Action, ActionSequencer
-from DecisionMaker import DecisionMaker
-from CloudManager import CloudManager
-from Rolling import Rolling
-from CST import CST
-from RGB_Displayer import RGB_Displayer
-import WatchFile
+from .ActionSequencer import Action, ActionSequencer
+from .DecisionMaker import DecisionMaker
+from .CloudManager import CloudManager
+from .Rolling import Rolling
+from .CST import CST
+from .RGB_Displayer import RGB_Displayer
+from . import WatchFile
 # import Log_to_html #this will start html interface to log file
 
 CST.DEBUG_STATUS = "debug.json"
