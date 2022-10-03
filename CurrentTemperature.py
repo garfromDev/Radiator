@@ -6,7 +6,7 @@ import Adafruit_GPIO.SPI as SPI
 import Adafruit_MCP3008
 import RPi.GPIO as GPIO
 import time
-from CST import CST
+from .CST import CST
 import logging
 
 # this object get the inside ambiant temperature from the sensor connected to the SPI adc

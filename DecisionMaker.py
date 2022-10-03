@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 import logging
 
-from CST import CST
-from InsideCondition  import InsideCondition
-from FeltTemperature import FeltTemperature
-from FilteredVar import FilteredVar
-from HeatCalendar import HeatCalendar
-from HeatMode import HeatMode, Confort_mode
-from UserInteractionManager import UserInteractionManager
+from .CST import CST
+from .InsideCondition  import InsideCondition
+from .FeltTemperature import FeltTemperature
+from .FilteredVar import FilteredVar
+from .HeatCalendar import HeatCalendar
+from .HeatMode import HeatMode, Confort_mode
+from .UserInteractionManager import UserInteractionManager
 
 
 class DecisionMaker(object):

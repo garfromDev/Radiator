@@ -14,7 +14,7 @@ else:
     import Adafruit_MCP3008
     import RPi.GPIO as GPIO
 
-from CST import CST
+from .CST import CST
 
 CST.MAX_LIGHT_DELTA = 4  #  max delta in percent between 2 measurement
 CST.SUN = "SUN"

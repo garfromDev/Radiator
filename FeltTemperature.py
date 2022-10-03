@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import const
+from . import const
 const.RI = 0.125
 const.WINDOW_Ri = 0.13
 const.FELT_TEMP_COLD_DELTA = -1.0

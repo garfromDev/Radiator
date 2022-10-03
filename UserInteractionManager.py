@@ -2,8 +2,8 @@
 import logging
 import json
 from datetime import datetime
-from FilteredVar import FilteredVar
-from CST import CST
+from .FilteredVar import FilteredVar
+from .CST import CST
 CST.JSON_PATH = CST.BASE_PATH or './'  # the path to the weekly calendar
 CST.DEFAULT_TARGET_TEMP = None
 
@@ -47,7 +47,7 @@ class UserInteractionManager(object):
   
   def userDown(self):
     """
-      return: true if user has requested to increase temperature
+      return: true if user has requested to decrease temperature
     """
     return self._isValid(self._userInputs.value()["userDown"]) 
   
