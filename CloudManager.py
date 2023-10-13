@@ -52,7 +52,7 @@ def get_pswd(f):  #  this is a module function, not part of the class
             CST.FTP_PATH = content["ftp_path"]
             CST.FTP_LOGIN = content["ftp_login"]
     except (IOError, ValueError) as error:
-        logging.error("Cloud Manager not able to open or decode %s - %s", CST.PSWD_INFO, error)
+        logging.info("Cloud Manager not able to open or decode %s - %s", CST.PSWD_INFO, error)
         CST.FTP_LOGIN = None
 
 
