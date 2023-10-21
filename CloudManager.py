@@ -32,8 +32,8 @@ class CloudManager(object):
     fetch the file from distant location using provided DistantFileInterface
     file will be saved in local directory with same name, overwriting without warning
     """
-        self._distantFileInterface.fetch(self._weekCalendarFileName)
-        self._distantFileInterface.fetch(self._userDecisionFileName)
+        # self._distantFileInterface.fetch(self._weekCalendarFileName)
+        # self._distantFileInterface.fetch(self._userDecisionFileName)
 
 
 def get_pswd(f):  #  this is a module function, not part of the class

@@ -16,10 +16,10 @@ class HeatModeLibrary(object):
         #self._heat = HeatMode(23,24)
 
     def set_mode_to_confort(self):
-        self._heat.setConfortMode()
+        self._heat.set_confort_mode()
         
     def set_mode_to_eco(self):
-        self._heat.setEcoMode()	
+        self._heat.set_eco_mode()
         
     def output_plus_should_be(self, expected):
         self._output_X_should_be( PLUS, expected)
@@ -28,13 +28,13 @@ class HeatModeLibrary(object):
         self._output_X_should_be( MINUS, expected)
         
     def set_mode_to_confort_minus_one(self):
-        self._heat.setConfortMinus1()
+        self._heat.set_confort_minus1()
         
     def set_mode_to_confort_minus_two(self):
-        self._heat.setConfortMinus2()     
+        self._heat.set_confort_minus2()
         
     def set_mode_to_custom_ratio_of(self, ratio):
-        self._heat.setConfortRatio(int(ratio))
+        self._heat.set_confort_ratio(int(ratio))
 
     def color_should_be(self, color):
         ucolor = color.upper()

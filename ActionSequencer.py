@@ -49,7 +49,7 @@ class ActionSequencer:
             logging.debug("perform action %s", currentAction.action.__name__)
             # print("perform action "+currentAction.action.__name__)
             currentAction.action()  # perform the first action
-        except exception as e:
+        except Exception as e:
             logging.debug("action failed : %s %s", currentAction, e)
             # print("action failed", self._caller)
             pass  # None or crashy, maybe next action will behave better
