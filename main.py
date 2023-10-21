@@ -21,22 +21,25 @@ sequencer = ActionSequencer()  # must be global to remain alive at the end of ma
 decider: DecisionMaker = None
 
 
-def main():
+def main(app):
+    print("=== radiator main() started")
     for handler in logging.root.handlers[:]:
         logging.root.removeHandler(handler)
     level = logging.DEBUG if _get_debug_status() else logging.INFO
     logging.basicConfig(filename=CST.LOG_FILE, level=level, format='%(asctime)s %(message)s')
-    logging.info('Started')
+    logging.info('!!!!! Started !!!!!!')
+    print("!!!!! Started !!!!!!")
     global decider  # must be global to remain alive at the end of main
     decider = DecisionMaker()
     global cloudManager  # must be global to remain alive at the end of main
     cloudManager = CloudManager()
-    makeDecision = Action(action=decider.makeDecision, duration=CST.MAIN_TIMING)
-    updateLocalFiles = Action(action=cloudManager.update, duration=1)
-    mainSeq = Rolling([updateLocalFiles, makeDecision])
+    makeDecision = Action(action=decider.make_decision, duration=CST.MAIN_TIMING)
+    print("===TIMING ", CST.MAIN_TIMING)
+    mainSeq = Rolling([makeDecision])
     global sequencer  # must be global to remain alive at the end of main
     logging.debug("ready to start maln sequencer")
     sequencer.start(mainSeq)
+    print("Main sequenceur started")
 
 
 def _get_debug_status():
@@ -56,22 +59,26 @@ def _get_debug_status():
     return res
 
 
-def start_radiator():
+def start_radiator(app, avoid_flash: bool = False):
     global s
     # display flashing sequence to confirm reboot
-    displayer = RGB_Displayer()
-    seq = Rolling([Action(displayer.setColorGreen, 2),
-                   Action(displayer.turnOff, 2)])
-    s = ActionSequencer()
-    s.start(seq)
+    if avoid_flash:
+        print("staring without flash")
+        main(app)
+    else:
+        displayer = RGB_Displayer()
+        seq = Rolling([Action(displayer.setColorGreen, 2),
+                       Action(displayer.turnOff, 2)])
+        s = ActionSequencer()
+        s.start(seq)
 
-    # start main sequencer and stop flashing
-    def go():
-        s.cancel()
-        main()
+        # start main sequencer and stop flashing
+        def go():
+            s.cancel()
+            main(app)
 
-    timer = threading.Timer(12, go)
-    timer.start()
+        timer = threading.Timer(12, go)
+        timer.start()
 
 
 if __name__ == '__main__':

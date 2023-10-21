@@ -18,8 +18,11 @@
 #wk = json.loads(j)
 # print(wk['weekCalendar']['Monday']['08:15'])
 # ==================================================
+import os
 
+from app.models import OverMode
 from .CST import CST
+from .HeatMode import ComfortMode
 import time
 import json
 import logging
@@ -41,19 +44,24 @@ class HeatCalendar:
     # return the meta mode for the current hour and time
     # hour and time is given by system time
     # meta mode is given by the json file defined in CST.WEEKCALJSON
+    # les modes peuvent être en minuscule dans le fichier (confort)
     # WARNING: no check done on metamode value
-    def getCurrentMode(self):
+    def getCurrentMode(self) -> OverMode:
         # ouvrir le fichier
+        # print("getCurrentMode", os.path.join(os.path.dirname(__file__), self._calFile) )
         try:
-            with open(self._calFile) as wcal:
+            with open(os.path.join(os.path.dirname(__file__), self._calFile)) as wcal:
                 calendar = json.load(wcal)
                 metaMode = calendar['weekCalendar'][self.day()][self.hour()]
+                # print("from weekcal : ", metaMode)
         except Exception as err:
             # soit le fichier n'a pu être lu, soit le calendrier n'est pas
             # complet
             logging.error(err)
-            metaMode = CST.UNKNOW
-        return metaMode
+            print("getCurrentMode error %s" % err)
+            return OverMode.UNKNOWN
+        print("getCurrentMode returning %s" % metaMode)
+        return OverMode(metaMode.upper())
 
     # return the day in the form of 'Monday', 'Tuesday', ...
     def day(self):
@@ -80,12 +88,13 @@ class HeatCalendar:
         """
         h = time.strftime("%H", self.localtime())  # get the hour 00 to 23
         m = time.strftime("%M", self.localtime())  # get the minute 00 to 59
+        # TODO: probablement 0 hour n'est pas converti en 00
         return "%s:%s" % (h, self._normalize(m))
 
     @staticmethod
-    def _normalize(minutes):
-        """ return 0, 15, 30, 45"""
-        return 15 * (int(minutes) // 15)
+    def _normalize(minutes) -> str:
+        """ return 00, 15, 30, 45"""
+        return f"{15 * (int(minutes) // 15):0=2}"
 
 # PROBLEMATIQUE DE TEST
 # faire :  HeatCalendar(localtime = lambda x=1: time.strptime("2018 02 26 08 00", "%Y %m %d %H %M") ) pour

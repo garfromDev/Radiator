@@ -1,105 +1,175 @@
 # -*- coding: utf-8 -*-
 import logging
-
+from typing import Optional, Any
+from app import models
+from app.models import OverMode
 from .CST import CST
-from .InsideCondition  import InsideCondition
+from .InsideCondition import InsideCondition
 from .FeltTemperature import FeltTemperature
 from .FilteredVar import FilteredVar
 from .HeatCalendar import HeatCalendar
-from .HeatMode import HeatMode, Confort_mode
+from .HeatMode import HeatMode, ComfortMode
 from .UserInteractionManager import UserInteractionManager
 
 
 class DecisionMaker(object):
-  """ Central decision point of Radiator
-      will be called every x min by main sequencer
-      Create and parameterize during init() the different objects needed
-      decide meta-mode based on HeatCalendar and user overrule
-      in metaConfort, decide heating mode based on 
-        - ext temp
-        - sun
-        - felt internal temp (combine heat and humidity)
-   """
-  
-  def __init__(self, calendar=HeatCalendar(calFile=CST.WEEKCALJSON), userManager=UserInteractionManager()):
-    logging.info("DecisionMaker init")
-    self._calendar = calendar
-    self.metaMode = FilteredVar(cacheDuration = CST.METACACHING, getter = self._calendar.getCurrentMode).value
-    self._heater = HeatMode()
+    """Central decision point of Radiator
+    will be called every x min by main sequencer
+    Create and parameterize during init() the different objects needed
+    decide meta-mode based on HeatCalendar and user overrule
+    in metaComfort, decide heating mode based on
+      - ext temp
+      - sun
+      - felt internal temp (combine heat and humidity)
+    """
 
-    #create an instance of InsideCondition to avoid duplicating instance for temperature and light_level
-    ic = InsideCondition.shared()
-    self._ic = ic
-    # we keep direct access to inside_temp for logging
-    self.insideTemp = FilteredVar(cacheDuration = CST.TEMPCACHING, getter=ic.temperature).value
-    self._felt_temp_manager = FeltTemperature( insideTemperature=ic.temperature,
-                                             insideSunLevel = ic.light_condition)
-    self.feltTempCold = FilteredVar(cacheDuration = CST.TEMPCACHING, getter=self._felt_temp_manager.feltTempCold).value
-    self.feltTempHot = FilteredVar(cacheDuration = CST.TEMPCACHING, getter=self._felt_temp_manager.feltTempHot).value
-    self.feltTempSuperHot = FilteredVar(cacheDuration = CST.TEMPCACHING, getter=self._felt_temp_manager.feltTempSuperHot).value
+    _userManager: Any
 
-    self._userManager = userManager
-    self.userBonus = FilteredVar(cacheDuration = CST.TEMPCACHING, getter=self._userManager.userBonus).value
-    self.userDown = FilteredVar(cacheDuration = CST.TEMPCACHING, getter=self._userManager.userDown).value
-    self.overruled = FilteredVar(cacheDuration = CST.TEMPCACHING, getter=self._userManager.overruled).value
-    self.overMode =  FilteredVar(cacheDuration = CST.TEMPCACHING, getter=self._userManager.overMode).value
-    logging.info("DecisionMaker init finished")
+    @property
+    def user_bonus(self) -> bool:
+        return self._userManager.userBonus()
 
-  def makeDecision(self):
-    #0 get meta mode from calendar
-    metaMode = self.metaMode()
-    info = "mode from calendar : " + metaMode
-    logging.info("makeDecision metamode = {} temp = {:.1f} Light = {}  Bonus = {} feltCold = {} feltHot = {} feltSuperHot = {} userDown = {} overruled = {} overMode = {}".format(metaMode,
-                                                                                                         self.insideTemp() or 9999,
-                                                                                                         self._ic.light(),
-                                                                                                         self.userBonus(),
-                                                                                                         self.feltTempCold(),
-                                                                                                         self.feltTempHot(),
-                                                                                                         self.feltTempSuperHot(),
-                                                                                                         self.userDown(),
-                                                                                                         self.overruled(),
-                                                                                                         self.overMode() ) )
+    @property
+    def user_down(self) -> bool:
+        return self._userManager.userDown()
 
-    #1 apply overrule by user
-    if self.overruled():
-      metaMode=self.overMode()
-      info = info + "  applyed overruled "+metaMode
+    @property
+    def overruled(self) -> bool:
+        # print("=== DecisionMaker overruled  %s" % self._userManager.overruled())
+        return self._userManager.overruled()
 
-    #2 eco mode
-    if metaMode != CST.CONFORT:
-      self._heater.setEcoMode()
-      info = info + "  maked decision setEcoMode"
-      logging.info(info)
-      return info
+    @property
+    def overmode(self) -> OverMode:
+        return self._userManager.over_mode()
 
-    # metaMode == CST.CONFORT:
-    #3 adaptation of confort mode according felt temperature
-    confort_mode = Confort_mode()
-    if self.feltTempCold():
-      confort_mode = confort_mode.make_hot()
-    elif self.feltTempHot():
-      confort_mode = confort_mode.make_cold()
-    elif self.feltTempSuperHot():
-      confort_mode = confort_mode.make_cold().make_cold()
-    logging.debug("after feltTemperature evaluation, mode is %s",confort_mode)
+    def __init__(
+        self,
+        calendar=HeatCalendar(calFile=CST.WEEKCALJSON),
+        user_manager: Optional[UserInteractionManager] = None,
+    ):
+        logging.info("DecisionMaker init")
+        self._calendar = calendar
+        self.metaMode = FilteredVar(
+            cacheDuration=CST.METACACHING, getter=self._calendar.getCurrentMode
+        ).value
+        self._heater = HeatMode()
 
-    #4 adaptation of confort mode according user bonus
-    if self.userBonus():
-      confort_mode = confort_mode.make_hot()
-    elif self.userDown():
-      confort_mode = confort_mode.make_cold()
+        # create an instance of InsideCondition to avoid duplicating instance for temperature and light_level
+        ic = InsideCondition.shared()
+        self._ic = ic
+        # we keep direct access to inside_temp for logging
+        self.insideTemp = FilteredVar(
+            cacheDuration=CST.TEMPCACHING, getter=ic.temperature
+        ).value
+        self._felt_temp_manager = FeltTemperature(
+            insideTemperature=ic.temperature, insideSunLevel=ic.light_condition
+        )
+        self.feltTempCold = FilteredVar(
+            cacheDuration=CST.TEMPCACHING, getter=self._felt_temp_manager.feltTempCold
+        ).value
+        self.feltTempHot = FilteredVar(
+            cacheDuration=CST.TEMPCACHING, getter=self._felt_temp_manager.feltTempHot
+        ).value
+        self.feltTempSuperHot = FilteredVar(
+            cacheDuration=CST.TEMPCACHING,
+            getter=self._felt_temp_manager.feltTempSuperHot,
+        ).value
+        self._userManager = user_manager or UserInteractionManager(
+            user_interaction_provider=models.UserInteraction
+        )
+        logging.info("DecisionMaker init finished")
 
-    #5 application of confort mode
-    self._heater.set_from_confort_mode(confort_mode)
-    info = info + "  Heating mode applied : {}".format(confort_mode)
-    logging.info(info)
-    return info
+    def make_decision(self) -> str:
+        print("=== makeDecision ==========")
+        # 0 get meta mode from calendar
+        meta_mode: OverMode = self._calendar.getCurrentMode()
+        print("=== meta_mode %s" % meta_mode)
+        self._userManager.update()
+        print("=== updated ")
+        info = "mode from calendar : " + str(meta_mode)
+        # logging.info(
+        #     "makeDecision metamode = {} temp = {:.1f} Light = {}  Bonus = {} feltCold = {} feltHot = {}"
+        #     " feltSuperHot = {} userDown = {} overruled = {} overMode = {}".format(
+        #         meta_mode,
+        #         self.insideTemp() or 9999,
+        #         self._ic.light(),
+        #         self.user_bonus,
+        #         self.feltTempCold(),
+        #         self.feltTempHot(),
+        #         self.feltTempSuperHot(),
+        #         self.user_down,
+        #         self.overruled,
+        #         self.overmode,
+        #     )
+        # )
+        print(
+            "makeDecision metamode = {} temp = {:.1f} Light = {}  Bonus = {} feltCold = {} feltHot = {}"
+            " feltSuperHot = {} userDown = {} overruled = {} overMode = {}".format(
+                meta_mode,
+                self.insideTemp() or 9999,
+                self._ic.light(),
+                self.user_bonus,
+                self.feltTempCold(),
+                self.feltTempHot(),
+                self.feltTempSuperHot(),
+                self.user_down,
+                self.overruled,
+                self.overmode,
+            )
+        )
+
+        #  1 apply overrule by user
+        print("=== 1 apply overrule by user")
+        if self.overruled:
+            # print("=== self is overruled")
+            meta_mode = self.overmode
+            # print("=== ", meta_mode)
+            info = info + "  applied overruled " + str(meta_mode)
+        print("=== ", info)
+        #  2 eco mode
+        if meta_mode != OverMode.CONFORT:
+            # UNKNOWN will apply eco
+            self._heater.set_eco_mode()
+            info = info + "  make decision setEcoMode"
+            logging.info(info)
+            print(info)
+            return info
+
+        # metaMode == CONFORT:
+
+        comfort_mode = ComfortMode()
+        #  3 adaptation of comfort mode according user bonus
+        if self.user_bonus:
+            comfort_mode = ComfortMode("confort")
+        elif self.user_down:
+            comfort_mode = ComfortMode("minus2")
+
+        #  4 adaptation of comfort mode according felt temperature
+        if not self.overruled:
+            if self.feltTempCold():
+                comfort_mode = comfort_mode.make_hot()
+            elif self.feltTempHot():
+                comfort_mode = comfort_mode.make_cold()
+            elif self.feltTempSuperHot():
+                comfort_mode = comfort_mode.make_cold().make_cold()
+            logging.debug("after feltTemperature evaluation, mode is %s", comfort_mode)
+            print("after feltTemperature evaluation, mode is %s" % comfort_mode)
+        #  4 adaptation of comfort mode according user bonus
+        if self.user_bonus:
+            comfort_mode = comfort_mode.make_hot()
+        elif self.user_down:
+            comfort_mode = comfort_mode.make_cold()
+
+        # 5 application of comfort mode
+        self._heater.set_from_confort_mode(comfort_mode)
+        info = info + "  Heating mode applied : {}".format(comfort_mode)
+        logging.info(info)
+        print("=== Decision Maker ", info)
+        return info
 
 
-
-if __name__ == '__main__':
-  print("testing DecisionMaker manually")
-  test = DecisionMaker()
-  print("decision  taken : "+test.makeDecision())
-  print("Decision taken can be inspected in log file or through StateDisplay")
-
+if __name__ == "__main__":
+    print("testing DecisionMaker manually")
+    test = DecisionMaker()
+    print("decision  taken : " + test.make_decision())
+    print("Decision taken can be inspected in log file or through StateDisplay")

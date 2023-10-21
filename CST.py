@@ -7,13 +7,17 @@ import subprocess
 CST.VERSION = subprocess.check_output(["git", "describe", "--always"]).strip()
 #VERSION will be valid only when launched from the local repo
 
-CST.MIN         = 60            # conversion of minutes to second
+CST.MIN = 60                    # conversion of minutes to second
+CST.SEC = 1
 CST.WEEKCALJSON = "week.json"   # the file that defines the weekly calendar
 CST.BASE_PATH = os.getenv("CALENDAR_PATH") or "./"         # the path for other files
 CST.CALENDAR_PATH = os.getenv("CALENDAR_PATH") or "./"         # the path to the weekly calendar file
 CST.METACACHING = 5 * CST.MIN   # caching duration for meta mode check
 CST.TEMPCACHING = 2 * CST.MIN   # caching duration for temperature check
-CST.MAIN_TIMING  = 1 * CST.MIN # main looprefreshing
+CST.MAIN_TIMING = 1 * CST.MIN   # main looprefreshing
+if os.getenv("RADIATOR_TEST_ENVIRONMENT"):
+    CST.MAIN_TIMING = 5 * CST.SEC
+    CST.METACACHING = 5 * CST.SEC
 CST.CONFORT = "confort"         # confort meta mode
 CST.CONFORTPLUS = "confortPlus" # confort plus meta mode
 CST.ECO = "eco"                 # eco meta mode
