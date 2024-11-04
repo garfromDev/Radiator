@@ -52,7 +52,6 @@ class ActionSequencer:
         except Exception as e:
             logging.debug("action failed : %s %s", currentAction, e)
             # print("action failed", self._caller)
-            pass  # None or crashy, maybe next action will behave better
 
         # print("preparing next action", self._caller)
         try:

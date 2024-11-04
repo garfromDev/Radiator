@@ -97,6 +97,7 @@ class UserInteractionManager(object):
         except Exception as err:
             # soit le fichier n'a pu être lu, soit le calendrier n'est pas complet
             logging.error(err)
+            print("!!!!!! _getUserInputs error ", err)
             res = default
         print("== _getUserInputs %s" % res)
         return res
