@@ -12,6 +12,10 @@ from .HeatMode import HeatMode, ComfortMode
 from .UserInteractionManager import UserInteractionManager
 
 
+logger = logging.getLogger('werkzeug') # grabs underlying WSGI logger
+handler = logging.FileHandler('test.log') # creates handler for the log file
+logger.addHandler(handler) #
+
 class DecisionMaker(object):
     """Central decision point of Radiator
     will be called every x min by main sequencer
@@ -47,7 +51,7 @@ class DecisionMaker(object):
         calendar=HeatCalendar(calFile=CST.WEEKCALJSON),
         user_manager: Optional[UserInteractionManager] = None,
     ):
-        logging.info("DecisionMaker init")
+        logger.info("DecisionMaker init")
         self._calendar = calendar
         self.metaMode = FilteredVar(
             cacheDuration=CST.METACACHING, getter=self._calendar.getCurrentMode
@@ -75,9 +79,9 @@ class DecisionMaker(object):
             getter=self._felt_temp_manager.feltTempSuperHot,
         ).value
         self._userManager = user_manager or UserInteractionManager(
-            user_interaction_provider=models.UserInteraction
+            user_interaction_provider=models.UserInteraction()
         )
-        logging.info("DecisionMaker init finished")
+        logger.info("DecisionMaker init finished")
 
     def make_decision(self) -> str:
         print("=== makeDecision ==========")
@@ -131,9 +135,10 @@ class DecisionMaker(object):
             # UNKNOWN will apply eco
             self._heater.set_eco_mode()
             info = info + "  make decision setEcoMode"
-            logging.info(info)
+            logger.info(info)
             print(info)
-            return info
+            print(f"=== will return {str(meta_mode)}")
+            return str(meta_mode)
 
         # metaMode == CONFORT:
 
@@ -152,7 +157,7 @@ class DecisionMaker(object):
                 comfort_mode = comfort_mode.make_cold()
             elif self.feltTempSuperHot():
                 comfort_mode = comfort_mode.make_cold().make_cold()
-            logging.debug("after feltTemperature evaluation, mode is %s", comfort_mode)
+            logger.debug("after feltTemperature evaluation, mode is %s", comfort_mode)
             print("after feltTemperature evaluation, mode is %s" % comfort_mode)
         #  4 adaptation of comfort mode according user bonus
         if self.user_bonus:
@@ -163,9 +168,10 @@ class DecisionMaker(object):
         # 5 application of comfort mode
         self._heater.set_from_confort_mode(comfort_mode)
         info = info + "  Heating mode applied : {}".format(comfort_mode)
-        logging.info(info)
+        logger.info(info)
         print("=== Decision Maker ", info)
-        return info
+        print(f"=== will return {str(comfort_mode)}")
+        return str(comfort_mode)
 
 
 if __name__ == "__main__":

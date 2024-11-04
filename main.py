@@ -2,9 +2,11 @@
 import json
 import logging
 import threading
+from flask_apscheduler import APScheduler
+from Radiator.UserInteractionManager import UserInteractionManager
+from app import models
 from .ActionSequencer import Action, ActionSequencer
 from .DecisionMaker import DecisionMaker
-from .CloudManager import CloudManager
 from .Rolling import Rolling
 from .CST import CST
 from .RGB_Displayer import RGB_Displayer
@@ -19,9 +21,20 @@ CST.DEBUG_KEY = "debug_mode"
 """
 sequencer = ActionSequencer()  # must be global to remain alive at the end of main
 decider: DecisionMaker = None
+scheduler = APScheduler()
+
+
+@scheduler.task('interval', id='make_decision', seconds=5, misfire_grace_time=900)
+def periodic_make_decision()-> None:
+    print("periodic_make_decision")
+    with scheduler.app.app_context():
+        decider = DecisionMaker(user_manager=UserInteractionManager(user_interaction_provider=models.UserInteraction()))
+        print("décision prise : ", decider.make_decision())
 
 
 def main(app):
+    scheduler.init_app(app)
+    scheduler.start()
     print("=== radiator main() started")
     for handler in logging.root.handlers[:]:
         logging.root.removeHandler(handler)
@@ -29,17 +42,7 @@ def main(app):
     logging.basicConfig(filename=CST.LOG_FILE, level=level, format='%(asctime)s %(message)s')
     logging.info('!!!!! Started !!!!!!')
     print("!!!!! Started !!!!!!")
-    global decider  # must be global to remain alive at the end of main
-    decider = DecisionMaker()
-    global cloudManager  # must be global to remain alive at the end of main
-    cloudManager = CloudManager()
-    makeDecision = Action(action=decider.make_decision, duration=CST.MAIN_TIMING)
-    print("===TIMING ", CST.MAIN_TIMING)
-    mainSeq = Rolling([makeDecision])
-    global sequencer  # must be global to remain alive at the end of main
-    logging.debug("ready to start maln sequencer")
-    sequencer.start(mainSeq)
-    print("Main sequenceur started")
+
 
 
 def _get_debug_status():
@@ -63,7 +66,7 @@ def start_radiator(app, avoid_flash: bool = False):
     global s
     # display flashing sequence to confirm reboot
     if avoid_flash:
-        print("staring without flash")
+        print("starting without flash")
         main(app)
     else:
         displayer = RGB_Displayer()
