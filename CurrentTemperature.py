@@ -7,7 +7,7 @@ import Adafruit_MCP3008
 import RPi.GPIO as GPIO
 import time
 from .CST import CST
-import logging
+from logger_provider import logger
 
 # this object get the inside ambiant temperature from the sensor connected to the SPI adc
 # it can be used with FilteredVar mechanism, using value() as getter
@@ -36,7 +36,7 @@ class InsideTemperature:
 			degree = CST.MAX_DELTA_TEMP * self._sensorGain * self._adcRange / self._voltageRef
 		except:
 			degree = self._adcRange #no filterig will be done
-		voltage = self._filteredVoltage(maxDelta=degree, measure = lambda :self._mcp.read_adc(self._sensorPin))
+		voltage = self._filteredVoltage(maxDelta=degree, measure=lambda :self._mcp.read_adc(self._sensorPin))
 		try:
 			temp = float(voltage) * (self._voltageRef / self._adcRange) / self._sensorGain
 		except: #would fail if voltage=None or adcRange=0 or sensorGain=0
@@ -74,7 +74,7 @@ class InsideTemperature:
 			 ], key=lambda f:f[0])
 		if fv[0][0] < maxDelta:
 			return fv[0][1] # return the mean of two closest value
-		logging.info("filteredVOltage returned None because delta is %s", fv[0][0])
+		logger.info("filteredVOltage returned None because delta is %s", fv[0][0])
 		return None         # if the value are two far apart, return None
 
 

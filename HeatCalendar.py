@@ -22,10 +22,9 @@ import os
 
 from app.models import OverMode
 from .CST import CST
-from .HeatMode import ComfortMode
+from .logger_provider import logger
 import time
 import json
-import logging
 
 
 class HeatCalendar:
@@ -48,19 +47,15 @@ class HeatCalendar:
     # WARNING: no check done on metamode value
     def getCurrentMode(self) -> OverMode:
         # ouvrir le fichier
-        # print("getCurrentMode", os.path.join(os.path.dirname(__file__), self._calFile) )
         try:
             with open(os.path.join(os.path.dirname(__file__), self._calFile)) as wcal:
                 calendar = json.load(wcal)
                 metaMode = calendar['weekCalendar'][self.day()][self.hour()]
-                # print("from weekcal : ", metaMode)
         except Exception as err:
             # soit le fichier n'a pu être lu, soit le calendrier n'est pas
             # complet
-            logging.error(err)
-            print("getCurrentMode error %s" % err)
+            logger.error(err)
             return OverMode.UNKNOWN
-        print("getCurrentMode returning %s" % metaMode)
         return OverMode(metaMode.upper())
 
     # return the day in the form of 'Monday', 'Tuesday', ...
