@@ -12,17 +12,15 @@ from .CST import CST
 from .RGB_Displayer import RGB_Displayer
 from . import WatchFile
 
-# import Log_to_html #this will start html interface to log file
+
 
 CST.DEBUG_STATUS = "debug.json"
 CST.DEBUG_KEY = "debug_mode"
 """ a file may contain a debug_mode boolean to activate debug logging
    this file is not under git conf to allow local overwriting of the status, debug will be false if no file available
 """
-sequencer = ActionSequencer()  # must be global to remain alive at the end of main
-decider: DecisionMaker = None
 scheduler = APScheduler()
-
+decider = DecisionMaker(user_manager=UserInteractionManager(user_interaction_provider=models.UserInteraction()))
 
 @scheduler.task('interval', id='make_decision', seconds=5, misfire_grace_time=900)
 def periodic_make_decision()-> None:

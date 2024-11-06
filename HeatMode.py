@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
+from .logger_provider import logger
 
 test = os.getenv("RADIATOR_TEST_ENVIRONMENT")
 
@@ -7,11 +8,10 @@ if not test:
     import RPi.GPIO as GPIO
 from .Rolling import Rolling
 from .ActionSequencer import Action, ActionSequencer
-import logging
 from .HeatingStateDisplayer import HeatingStateDisplayer
 
 
-# This module alow to drive pilot wire
+# This module allows to drive pilot wire
 
 class ComfortMode(object):
     """ abstract representation of confort mode
@@ -77,7 +77,6 @@ class HeatMode(object):
                                           Action(self._setEcoMode, duration=7)])
         self._displayer = state_displayer
         self.initDone = False
-        logging.debug("HeatMode initialized")
 
     # Must be called once prior to use to initialize HW setting
     def hw_init(self):
@@ -101,13 +100,13 @@ class HeatMode(object):
 
     # set the pilot wire to confort minus 1 degree (4'57 flat, 3" sinusoid)
     def set_confort_minus1(self):
-        logging.debug("starting sequencer with sequence confortMinus1Seq")
+        logger.debug("starting sequencer with sequence confortMinus1Seq")
         self.sequencer.start(self._confortMinus1Seq)
         self._displayer.displayConfortMinus1Mode()
 
     # set the pilot wire to confort minus 2 degree (4'53 flat, 7" sinusoid)
     def set_confort_minus2(self):
-        logging.debug("starting sequencer with sequence confortMinus2Seq")
+        logger.debug("starting sequencer with sequence confortMinus2Seq")
         self.sequencer.start(self._confortMinus2Seq)
         self._displayer.displayConfortMinus2Mode()
 
@@ -128,7 +127,7 @@ class HeatMode(object):
         Apply the mode if confort, minus1, minus2, does nothing else
         """
         # import pdb; pdb.set_trace()
-        logging.debug("HeatMode setting confort mode to %s", new_mode)
+        logger.info("HeatMode setting confort mode to %s", new_mode)
         if new_mode == Comfort():
             self.set_confort_mode()
         elif new_mode == ComfortMinus1():
@@ -136,7 +135,7 @@ class HeatMode(object):
         elif new_mode == ComfortMinus2():
             self.set_confort_minus2()
         else:
-            logging.error("Heatmode unknow mode %s", new_mode)
+            logger.error("Heatmode unknow mode %s", new_mode)
 
     # -----------------------------------------------------------
     # set the Triac control output to parameters value
@@ -152,12 +151,10 @@ class HeatMode(object):
     def _setConfortMode(self):
         if not test:
             self._setOutputs(plus=GPIO.LOW, minus=GPIO.LOW)
-        logging.debug("HeatMode -> setConfortMode")
 
     def _setEcoMode(self):
         if not test:
             self._setOutputs(plus=GPIO.HIGH, minus=GPIO.HIGH)
-        logging.debug("HeatMode -> setEcoMode")
 
 
 if __name__ == '__main__':

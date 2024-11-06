@@ -2,10 +2,10 @@
 import logging
 from datetime import datetime
 from typing import Protocol, Dict, Any, cast
-
-from Radiator.HeatMode import ComfortMode
 from app.models import UserInteraction, OverMode
 from .CST import CST
+from .logger_provider import logger
+
 
 CST.JSON_PATH = CST.BASE_PATH or './'  # the path to the weekly calendar
 CST.DEFAULT_TARGET_TEMP = None
@@ -28,12 +28,8 @@ class UserInteractionManager(object):
       it will fetch the user decision in a json file
     """
 
-    # def __init__(self, path=CST.JSON_PATH, json_file=CST.USER_JSON, ):
-    #   self._jsonFile = path + json_file
-    #   self._userInputs=FilteredVar(cacheDuration = CST.METACACHING, getter = self._getUserInputs)
-
     def __init__(self, user_interaction_provider: UserInteractionProvider):
-        print("=== init UserInteractionManager with provider %s" % user_interaction_provider)
+        logger.info("=== init UserInteractionManager with provider %s" % user_interaction_provider)
         self._userInputs = None
         self._user_interaction_provider = user_interaction_provider
         self.update()
@@ -45,8 +41,7 @@ class UserInteractionManager(object):
         """
           return: true if user has decided to temporary overrule the heatCalendar
         """
-        print("overruled checking %s" % self._userInputs["overruled"])
-        print("overruled will return %s" % self._isValid(self._userInputs["overruled"]))
+        logger.info("overruled will return %s" % self._isValid(self._userInputs["overruled"]))
         return self._isValid(self._userInputs["overruled"])
 
     def over_mode(self) -> OverMode:
@@ -96,10 +91,9 @@ class UserInteractionManager(object):
 
         except Exception as err:
             # soit le fichier n'a pu être lu, soit le calendrier n'est pas complet
-            logging.error(err)
-            print("!!!!!! _getUserInputs error ", err)
+            logger.error(err)
             res = default
-        print("== _getUserInputs %s" % res)
+        logger.info("== _getUserInputs %s" % res)
         return res
 
     @staticmethod
@@ -114,13 +108,10 @@ class UserInteractionManager(object):
           return true if the status is true and the expiration date not met
           will return False if decisionBloc dictionnary do not contain appropriate keys
         """
-        # print("_isValid status %s" % (decision_bloc["status"]))
-        # print("_isValid expirationDate ", decision_bloc["expirationDate"])
         try:
             return bool(decision_bloc["status"] and self._is_valid_date(decision_bloc["expirationDate"]))
         except Exception as err:
-            logging.error(err)
-            print("_isValid Error ", err)
+            logger.error(err)
             return False
 
     def targetTemp(self) -> float:
