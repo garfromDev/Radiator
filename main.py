@@ -84,7 +84,3 @@ def start_radiator(app, avoid_flash: bool = False):
 
 if __name__ == '__main__':
     start_radiator()
-
-    # start WatchFile (will reboot if wifi connexion lost)
-    WatchFile.configure(fileName=CST.USER_JSON)
-    WatchFile.start()
