@@ -28,11 +28,12 @@ class UserInteractionManager(object):
       it will fetch the user decision in a json file
     """
 
-    def __init__(self, user_interaction_provider: UserInteractionProvider):
+    def __init__(self, user_interaction_provider: UserInteractionProvider, app):
         logger.info("=== init UserInteractionManager with provider %s" % user_interaction_provider)
         self._userInputs = None
         self._user_interaction_provider = user_interaction_provider
         self.update()
+        self.app=app
 
     def update(self) -> None:
         self._userInputs = self._getUserInputs()
@@ -77,17 +78,18 @@ class UserInteractionManager(object):
                    "userDown": {"status": False, "expirationDate": "01-01-2000"},
                    "targetTemp": CST.DEFAULT_TARGET_TEMP, }
         try:
-            user_interaction: UserInteraction = self._user_interaction_provider.current()
-            res = user_interaction and {
-                "overruled": {"status": user_interaction.overruled_status,
-                              "expirationDate": user_interaction.overruled_exp_date,
-                              "overMode": user_interaction.overmode_status},
-                "userBonus": {"status": user_interaction.userbonus_status,
-                              "expirationDate": user_interaction.userbonus_exp_date},
-                "userDown": {"status": user_interaction.userdown_status,
-                             "expirationDate": user_interaction.userdown_exp_date},
-                "targetTemp": user_interaction.targettemp or CST.DEFAULT_TARGET_TEMP,
-            } or default
+            with self.app.app_context():
+                user_interaction: UserInteraction = self._user_interaction_provider.current()
+                res = user_interaction and {
+                    "overruled": {"status": user_interaction.overruled_status,
+                                  "expirationDate": user_interaction.overruled_exp_date,
+                                  "overMode": user_interaction.overmode_status},
+                    "userBonus": {"status": user_interaction.userbonus_status,
+                                  "expirationDate": user_interaction.userbonus_exp_date},
+                    "userDown": {"status": user_interaction.userdown_status,
+                                 "expirationDate": user_interaction.userdown_exp_date},
+                    "targetTemp": user_interaction.targettemp or CST.DEFAULT_TARGET_TEMP,
+                } or default
 
         except Exception as err:
             # soit le fichier n'a pu être lu, soit le calendrier n'est pas complet

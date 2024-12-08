@@ -10,8 +10,6 @@ from .DecisionMaker import DecisionMaker
 from .Rolling import Rolling
 from .CST import CST
 from .RGB_Displayer import RGB_Displayer
-from . import WatchFile
-
 
 
 CST.DEBUG_STATUS = "debug.json"
@@ -20,13 +18,13 @@ CST.DEBUG_KEY = "debug_mode"
    this file is not under git conf to allow local overwriting of the status, debug will be false if no file available
 """
 scheduler = APScheduler()
-decider = DecisionMaker(user_manager=UserInteractionManager(user_interaction_provider=models.UserInteraction()))
+
 
 @scheduler.task('interval', id='make_decision', seconds=5, misfire_grace_time=900)
 def periodic_make_decision()-> None:
     print("periodic_make_decision")
     with scheduler.app.app_context():
-        decider = DecisionMaker(user_manager=UserInteractionManager(user_interaction_provider=models.UserInteraction()))
+        decider = DecisionMaker(user_manager=UserInteractionManager(user_interaction_provider=models.UserInteraction(), app=scheduler.app))
         print("décision prise : ", decider.make_decision())
 
 
