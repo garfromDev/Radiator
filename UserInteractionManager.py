@@ -29,11 +29,11 @@ class UserInteractionManager(object):
     """
 
     def __init__(self, user_interaction_provider: UserInteractionProvider, app):
-        logger.info("=== init UserInteractionManager with provider %s" % user_interaction_provider)
+        logger.info("=== init UserInteractionManager with provider %s  app %s" % (user_interaction_provider, app))
         self._userInputs = None
         self._user_interaction_provider = user_interaction_provider
         self.update()
-        self.app=app
+        self.app = app
 
     def update(self) -> None:
         self._userInputs = self._getUserInputs()

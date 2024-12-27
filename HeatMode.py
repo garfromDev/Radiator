@@ -2,7 +2,7 @@
 import os
 from .logger_provider import logger
 
-test = os.getenv("RADIATOR_TEST_ENVIRONMENT")
+test = os.getenv("RADIATOR_TEST_ENVIRONMENT", "").upper() == "TRUE"
 
 if not test:
     import RPi.GPIO as GPIO
