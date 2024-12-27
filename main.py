@@ -22,9 +22,10 @@ scheduler = APScheduler()
 
 @scheduler.task('interval', id='make_decision', seconds=5, misfire_grace_time=900)
 def periodic_make_decision()-> None:
-    print("periodic_make_decision")
+    print("periodic_make_decision app= ", scheduler.app)
     with scheduler.app.app_context():
-        decider = DecisionMaker(user_manager=UserInteractionManager(user_interaction_provider=models.UserInteraction(), app=scheduler.app))
+        decider = DecisionMaker(user_manager=UserInteractionManager(user_interaction_provider=models.UserInteraction(),
+                                                                    app=scheduler.app))
         print("décision prise : ", decider.make_decision())
 
 

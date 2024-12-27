@@ -5,7 +5,7 @@ import time
 import os
 
 
-test = os.getenv("RADIATOR_TEST_ENVIRONMENT")
+test = bool(os.getenv("RADIATOR_TEST_ENVIRONMENT", "").upper() == "TRUE")
 if test:
     import random
 else:
