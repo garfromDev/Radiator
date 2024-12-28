@@ -20,25 +20,22 @@ CST.DEBUG_KEY = "debug_mode"
 scheduler = APScheduler()
 
 
-@scheduler.task('interval', id='make_decision', seconds=5, misfire_grace_time=900)
+@scheduler.task('interval', id='make_decision', seconds=20, misfire_grace_time=900)
 def periodic_make_decision()-> None:
-    print("periodic_make_decision app= ", scheduler.app)
     with scheduler.app.app_context():
         decider = DecisionMaker(user_manager=UserInteractionManager(user_interaction_provider=models.UserInteraction(),
                                                                     app=scheduler.app))
-        print("décision prise : ", decider.make_decision())
+        decider.make_decision()
 
 
 def main(app):
     scheduler.init_app(app)
     scheduler.start()
-    print("=== radiator main() started")
     for handler in logging.root.handlers[:]:
         logging.root.removeHandler(handler)
     level = logging.DEBUG if _get_debug_status() else logging.INFO
     logging.basicConfig(filename=CST.LOG_FILE, level=level, format='%(asctime)s %(message)s')
     logging.info('!!!!! Started !!!!!!')
-    print("!!!!! Started !!!!!!")
 
 
 
@@ -62,8 +59,7 @@ def _get_debug_status():
 def start_radiator(app, avoid_flash: bool = False):
     global s
     # display flashing sequence to confirm reboot
-    if avoid_flash:
-        print("starting without flash")
+    if avoid_flash:  # from the web app, everything is loaded each time, so no flashing
         main(app)
     else:
         displayer = RGB_Displayer()
