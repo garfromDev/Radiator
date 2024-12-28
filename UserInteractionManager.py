@@ -32,8 +32,8 @@ class UserInteractionManager(object):
         logger.info("=== init UserInteractionManager with provider %s  app %s" % (user_interaction_provider, app))
         self._userInputs = None
         self._user_interaction_provider = user_interaction_provider
+        self._app = app
         self.update()
-        self.app = app
 
     def update(self) -> None:
         self._userInputs = self._getUserInputs()
@@ -78,7 +78,7 @@ class UserInteractionManager(object):
                    "userDown": {"status": False, "expirationDate": "01-01-2000"},
                    "targetTemp": CST.DEFAULT_TARGET_TEMP, }
         try:
-            with self.app.app_context():
+            with self._app.app_context():
                 user_interaction: UserInteraction = self._user_interaction_provider.current()
                 res = user_interaction and {
                     "overruled": {"status": user_interaction.overruled_status,
