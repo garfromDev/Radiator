@@ -14,5 +14,4 @@ class _const:
             raise self.ConstError("Can't rebind const(%s)" % name)
         self.__dict__[name]=value
 import sys
-print("=== sys.modules[%s]=_const()" % __name__)
 sys.modules[__name__]=_const()
