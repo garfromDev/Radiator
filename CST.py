@@ -15,7 +15,7 @@ CST.CALENDAR_PATH = os.getenv("CALENDAR_PATH") or "./"         # the path to the
 CST.METACACHING = 5 * CST.MIN   # caching duration for meta mode check
 CST.TEMPCACHING = 2 * CST.MIN   # caching duration for temperature check
 CST.MAIN_TIMING = 1 * CST.MIN   # main looprefreshing
-if os.getenv("RADIATOR_TEST_ENVIRONMENT"):
+if os.getenv("RADIATOR_TEST_ENVIRONMENT", "False").upper() == "TRUE":
     CST.MAIN_TIMING = 5 * CST.SEC
     CST.METACACHING = 5 * CST.SEC
 CST.CONFORT = "confort"         # confort meta mode
