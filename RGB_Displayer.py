@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
-test = os.getenv("RADIATOR_TEST_ENVIRONMENT")
+test = os.getenv("RADIATOR_TEST_ENVIRONMENT","").upper() == "TRUE"
 if not test:
     import RPi.GPIO as GPIO
 import time
