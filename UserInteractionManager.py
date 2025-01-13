@@ -31,11 +31,10 @@ class UserInteractionManager(object):
     def __init__(self, user_interaction_provider: UserInteractionProvider, app):
         self._userInputs = None
         self._user_interaction_provider = user_interaction_provider
-        self._app = app
-        self.update()
+        self._app = app  # TODO remove ? par contre il faudrait mettre un défaut dans toutes les méthodes
 
-    def update(self) -> None:
-        self._userInputs = self._getUserInputs()
+    def update(self, app) -> None:
+        self._userInputs = self._getUserInputs(app)
 
     def overruled(self) -> bool:
         """
@@ -67,7 +66,7 @@ class UserInteractionManager(object):
         """
         return self._isValid(self._userInputs["userDown"])
 
-    def _getUserInputs(self) -> Dict[str, Any]:
+    def _getUserInputs(self, app) -> Dict[str, Any]:
         """
           return userInteraction dictionary from the database
           if database access fails or database empty, return a stub dict
@@ -77,7 +76,7 @@ class UserInteractionManager(object):
                    "userDown": {"status": False, "expirationDate": "01-01-2000"},
                    "targetTemp": CST.DEFAULT_TARGET_TEMP, }
         try:
-            with self._app.app_context():
+            with app.app_context():
                 user_interaction: UserInteraction = self._user_interaction_provider.current()
                 res = user_interaction and {
                     "overruled": {"status": user_interaction.overruled_status,
@@ -89,12 +88,11 @@ class UserInteractionManager(object):
                                  "expirationDate": user_interaction.userdown_exp_date},
                     "targetTemp": user_interaction.targettemp or CST.DEFAULT_TARGET_TEMP,
                 } or default
-
         except Exception as err:
             # soit le fichier n'a pu être lu, soit le calendrier n'est pas complet
             logger.error(err)
             res = default
-        logger.info("== _getUserInputs %s" % res)
+        logger.debug("== _getUserInputs %s" % res)
         return res
 
     @staticmethod

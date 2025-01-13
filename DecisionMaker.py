@@ -78,12 +78,12 @@ class DecisionMaker(object):
             user_interaction_provider=models.UserInteraction()
         )
 
-    def make_decision(self) -> str:
+    def make_decision(self, app) -> str:
         # 0 get meta mode from calendar
         meta_mode: OverMode = self._calendar.getCurrentMode()
-        self._userManager.update()
+        self._userManager.update(app)
         info = "mode from calendar : " + str(meta_mode)
-        logger.info(
+        logger.debug(
             "makeDecision metamode = {} temp = {:.1f} Light = {}  Bonus = {} feltCold = {} feltHot = {}"
             " feltSuperHot = {} userDown = {} overruled = {} overMode = {}".format(
                 meta_mode,
