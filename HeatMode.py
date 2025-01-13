@@ -88,24 +88,26 @@ class HeatMode(object):
 
     # Set the pilot wire to confort mode = no sinusoid
     def set_confort_mode(self):
-        self.sequencer.cancel()
+        # self.sequencer.cancel()
         self._setConfortMode()
         self._displayer.displayConfortMode()
 
     # Set the pilot wire to eco mode = full sinusoid
     def set_eco_mode(self):
-        self.sequencer.cancel()
+        # self.sequencer.cancel()
         self._setEcoMode()
         self._displayer.displayEcoMode()
 
     # set the pilot wire to confort minus 1 degree (4'57 flat, 3" sinusoid)
     def set_confort_minus1(self):
+        return self.set_confort_mode()
         logger.debug("starting sequencer with sequence confortMinus1Seq")
         self.sequencer.start(self._confortMinus1Seq)
         self._displayer.displayConfortMinus1Mode()
 
     # set the pilot wire to confort minus 2 degree (4'53 flat, 7" sinusoid)
     def set_confort_minus2(self):
+        return self.set_confort_mode()
         logger.debug("starting sequencer with sequence confortMinus2Seq")
         self.sequencer.start(self._confortMinus2Seq)
         self._displayer.displayConfortMinus2Mode()

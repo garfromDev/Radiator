@@ -19,13 +19,14 @@ CST.DEBUG_KEY = "debug_mode"
 """
 scheduler = APScheduler()
 
+decider = DecisionMaker(user_manager=UserInteractionManager(user_interaction_provider=models.UserInteraction(),
+                                                            app=scheduler.app))
+
 
 @scheduler.task('interval', id='make_decision', seconds=20, misfire_grace_time=900)
-def periodic_make_decision()-> None:
+def periodic_make_decision() -> None:
     with scheduler.app.app_context():
-        decider = DecisionMaker(user_manager=UserInteractionManager(user_interaction_provider=models.UserInteraction(),
-                                                                    app=scheduler.app))
-        decider.make_decision()
+        decider.make_decision(scheduler.app)
 
 
 def main(app):
