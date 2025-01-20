@@ -129,7 +129,7 @@ class HeatMode(object):
         Apply the mode if confort, minus1, minus2, does nothing else
         """
         # import pdb; pdb.set_trace()
-        logger.info("HeatMode setting confort mode to %s", new_mode)
+        logger.debug("HeatMode setting confort mode to %s", new_mode)
         if new_mode == Comfort():
             self.set_confort_mode()
         elif new_mode == ComfortMinus1():
