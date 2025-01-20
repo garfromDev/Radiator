@@ -74,7 +74,7 @@ class InsideTemperature:
 			 ], key=lambda f:f[0])
 		if fv[0][0] < maxDelta:
 			return fv[0][1] # return the mean of two closest value
-		logger.info("filteredVOltage returned None because delta is %s", fv[0][0])
+		logger.debug("filteredVOltage returned None because delta is %s", fv[0][0])
 		return None         # if the value are two far apart, return None
 
 

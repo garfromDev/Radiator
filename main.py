@@ -39,7 +39,6 @@ def main(app):
     logging.info('!!!!! Started !!!!!!')
 
 
-
 def _get_debug_status():
     """
       :return: debug status  from the file

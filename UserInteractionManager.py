@@ -40,7 +40,7 @@ class UserInteractionManager(object):
         """
           return: true if user has decided to temporary overrule the heatCalendar
         """
-        logger.info("overruled will return %s" % self._isValid(self._userInputs["overruled"]))
+        logger.debug("overruled will return %s" % self._isValid(self._userInputs["overruled"]))
         return self._isValid(self._userInputs["overruled"])
 
     def over_mode(self) -> OverMode:
