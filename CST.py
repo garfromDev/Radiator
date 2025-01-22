@@ -4,7 +4,6 @@ import os
 import subprocess
 
 """ This utility module define constant """
-CST.VERSION = subprocess.check_output(["git", "describe", "--always"]).strip()
 #VERSION will be valid only when launched from the local repo
 
 CST.MIN = 60                    # conversion of minutes to second
