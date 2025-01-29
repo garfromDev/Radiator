@@ -84,15 +84,12 @@ class DecisionMaker(object):
         self._userManager.update(app)
         info = "mode from calendar : " + str(meta_mode)
         logger.debug(
-            "makeDecision metamode = {} temp = {:.1f} Light = {}  Bonus = {} feltCold = {} feltHot = {}"
-            " feltSuperHot = {} userDown = {} overruled = {} overMode = {}".format(
+            "makeDecision metamode = {} temp = {:.1f} Light = {}  Bonus = {} "
+            "  userDown = {} overruled = {} overMode = {}".format(
                 meta_mode,
                 self.insideTemp() or 9999,
                 self._ic.light(),
                 self.user_bonus,
-                self.feltTempCold(),
-                self.feltTempHot(),
-                self.feltTempSuperHot(),
                 self.user_down,
                 self.overruled,
                 self.overmode,
@@ -118,21 +115,6 @@ class DecisionMaker(object):
             comfort_mode = ComfortMode("confort")
         elif self.user_down:
             comfort_mode = ComfortMode("minus2")
-
-        #  4 adaptation of comfort mode according felt temperature
-        if not self.overruled:
-            if self.feltTempCold():
-                comfort_mode = comfort_mode.make_hot()
-            elif self.feltTempHot():
-                comfort_mode = comfort_mode.make_cold()
-            elif self.feltTempSuperHot():
-                comfort_mode = comfort_mode.make_cold().make_cold()
-            logger.debug("after feltTemperature evaluation, mode is %s", comfort_mode)
-        #  4 adaptation of comfort mode according user bonus
-        if self.user_bonus:
-            comfort_mode = comfort_mode.make_hot()
-        elif self.user_down:
-            comfort_mode = comfort_mode.make_cold()
 
         # 5 application of comfort mode
         self._heater.set_from_confort_mode(comfort_mode)
