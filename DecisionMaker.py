@@ -3,11 +3,7 @@ import logging
 from typing import Optional, Any
 from app import models
 from app.models import OverMode
-from flask.logging import default_handler
 from .CST import CST
-from .InsideCondition import InsideCondition
-from .FeltTemperature import FeltTemperature
-from .FilteredVar import FilteredVar
 from .HeatCalendar import HeatCalendar
 from .HeatMode import HeatMode, ComfortMode
 from .UserInteractionManager import UserInteractionManager
@@ -49,31 +45,8 @@ class DecisionMaker(object):
         user_manager: Optional[UserInteractionManager] = None,
     ):
         self._calendar = calendar
-        self.metaMode = FilteredVar(
-            cacheDuration=CST.METACACHING, getter=self._calendar.getCurrentMode
-        ).value
+        self.metaMode = self._calendar.getCurrentMode()
         self._heater = HeatMode()
-
-        # create an instance of InsideCondition to avoid duplicating instance for temperature and light_level
-        ic = InsideCondition.shared()
-        self._ic = ic
-        # we keep direct access to inside_temp for logging
-        self.insideTemp = FilteredVar(
-            cacheDuration=CST.TEMPCACHING, getter=ic.temperature
-        ).value
-        self._felt_temp_manager = FeltTemperature(
-            insideTemperature=ic.temperature, insideSunLevel=ic.light_condition
-        )
-        self.feltTempCold = FilteredVar(
-            cacheDuration=CST.TEMPCACHING, getter=self._felt_temp_manager.feltTempCold
-        ).value
-        self.feltTempHot = FilteredVar(
-            cacheDuration=CST.TEMPCACHING, getter=self._felt_temp_manager.feltTempHot
-        ).value
-        self.feltTempSuperHot = FilteredVar(
-            cacheDuration=CST.TEMPCACHING,
-            getter=self._felt_temp_manager.feltTempSuperHot,
-        ).value
         self._userManager = user_manager or UserInteractionManager(
             user_interaction_provider=models.UserInteraction()
         )
@@ -84,11 +57,9 @@ class DecisionMaker(object):
         self._userManager.update(app)
         info = "mode from calendar : " + str(meta_mode)
         logger.debug(
-            "makeDecision metamode = {} temp = {:.1f} Light = {}  Bonus = {} "
+            "makeDecision metamode = {}  Bonus = {} "
             "  userDown = {} overruled = {} overMode = {}".format(
                 meta_mode,
-                self.insideTemp() or 9999,
-                self._ic.light(),
                 self.user_bonus,
                 self.user_down,
                 self.overruled,
